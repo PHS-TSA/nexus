@@ -4,10 +4,10 @@
 # the repo. Unless a later match takes precedence,
 # the global owners will be requested for
 # review when someone opens a pull request.
-*             @PHS-TSA/our-democracy
+*             @PHS-TSA/nexus
 
-**.dart          @PHS-TSA/our-democracy
-/.github/        @PHS-TSA/our-democracy
-/packages/*/assets/  @PHS-TSA/our-democracy
-tests/           @PHS-TSA/our-democracy
-pubspec.*        @PHS-TSA/our-democracy
+**.dart          @PHS-TSA/nexus
+/.github/        @PHS-TSA/nexus
+/packages/*/assets/  @PHS-TSA/nexus
+tests/           @PHS-TSA/nexus
+pubspec.*        @PHS-TSA/nexus

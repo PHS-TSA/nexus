@@ -1,5 +1,5 @@
-name: "our_democracy"
-description: "An application to encourage participation in the American democratic system"
+name: "nexus"
+description: "An application for teenage makers."
 
 # Prevent accidental publishing to pub.dev.
 publish_to: "none"
@@ -18,9 +18,9 @@ publish_to: "none"
 # of the product and file versions while build-number is used as the build suffix.
 version: 0.0.1+1
 homepage: https://PHS-TSA.github.io
-documentation: https://github.com/PHS-TSA/our_democracy
-issue_tracker: https://github.com/PHS-TSA/our_democracy/issues
-repository: https://github.com/PHS-TSA/our_democracy.git
+documentation: https://github.com/PHS-TSA/nexus
+issue_tracker: https://github.com/PHS-TSA/nexus/issues
+repository: https://github.com/PHS-TSA/nexus.git
 
 environment:
   sdk: "^3.5.0"

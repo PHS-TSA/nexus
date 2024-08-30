@@ -1,7 +1,7 @@
 import 'package:checks/checks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:our_democracy/src/features/settings/domain/settings_model.dart';
+import 'package:nexus/src/features/settings/domain/settings_model.dart';
 
 void main() {
   group('SettingsModel', () {

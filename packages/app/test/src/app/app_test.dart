@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_checks/flutter_checks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:our_democracy/src/app/app.dart';
-import 'package:our_democracy/src/features/settings/application/settings_service.dart';
-import 'package:our_democracy/src/features/settings/data/preferences_repository.dart';
-import 'package:our_democracy/src/l10n/l10n.dart';
+import 'package:nexus/src/app/app.dart';
+import 'package:nexus/src/features/settings/application/settings_service.dart';
+import 'package:nexus/src/features/settings/data/preferences_repository.dart';
+import 'package:nexus/src/l10n/l10n.dart';
 
 import '../../helpers/mocks.dart';
 

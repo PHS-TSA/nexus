@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_checks/flutter_checks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:our_democracy/src/app/router.gr.dart';
-import 'package:our_democracy/src/app/wrapper_page.dart';
-import 'package:our_democracy/src/l10n/l10n.dart';
-import 'package:our_democracy/src/utils/design.dart';
-import 'package:our_democracy/src/utils/router.dart';
+import 'package:nexus/src/app/router.gr.dart';
+import 'package:nexus/src/app/wrapper_page.dart';
+import 'package:nexus/src/l10n/l10n.dart';
+import 'package:nexus/src/utils/design.dart';
+import 'package:nexus/src/utils/router.dart';
 
 import '../../helpers/riverpod.dart';
 

@@ -1,4 +1,4 @@
-package org.psdr3.our_democracy
+package org.psdr3.nexus
 
 import io.flutter.embedding.android.FlutterActivity
 

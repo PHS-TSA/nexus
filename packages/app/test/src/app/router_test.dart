@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:checks/checks.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:our_democracy/src/app/router.dart';
+import 'package:nexus/src/app/router.dart';
 
 void main() {
   group('router', () {

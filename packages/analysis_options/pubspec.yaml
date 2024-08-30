@@ -1,10 +1,10 @@
 name: analysis_options
-description: "Analyzer configuration for the Our Democracy team."
+description: "Analyzer configuration for the Nexus team."
 version: 0.0.1
 homepage: https://PHS-TSA.github.io
-documentation: https://github.com/PHS-TSA/our_democracy
-issue_tracker: https://github.com/PHS-TSA/our_democracy/issues
-repository: https://github.com/PHS-TSA/our_democracy.git
+documentation: https://github.com/PHS-TSA/nexus
+issue_tracker: https://github.com/PHS-TSA/nexus/issues
+repository: https://github.com/PHS-TSA/nexus.git
 
 environment:
   sdk: ^3.5.0

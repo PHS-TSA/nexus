@@ -2,7 +2,7 @@ import 'package:checks/checks.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:our_democracy/src/app/app.dart';
+import 'package:nexus/src/app/app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helpers/mocks.dart';

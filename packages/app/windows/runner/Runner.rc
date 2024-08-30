@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "PHS-TSA" "\0"
-            VALUE "FileDescription", "Our Democracy" "\0"
+            VALUE "FileDescription", "Nexus" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "Our Democracy" "\0"
+            VALUE "InternalName", "Nexus" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 PHS-TSA. All rights reserved." "\0"
-            VALUE "OriginalFilename", "our_democracy.exe" "\0"
-            VALUE "ProductName", "Our Democracy" "\0"
+            VALUE "OriginalFilename", "nexus.exe" "\0"
+            VALUE "ProductName", "Nexus" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

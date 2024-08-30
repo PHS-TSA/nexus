@@ -1,11 +1,11 @@
 {
-  "name": "Our Democracy",
-  "short_name": "Our Democracy",
+  "name": "Nexus",
+  "short_name": "Nexus",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#0a9f06",
   "theme_color": "#0a9f06",
-  "description": "An application to encourage participation in the American democratic system",
+  "description": "An application for teenage makers.",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [

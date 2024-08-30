@@ -1,6 +1,6 @@
 import 'package:checks/checks.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:our_democracy/src/features/sample/domain/sample_items_model.dart';
+import 'package:nexus/src/features/sample/domain/sample_items_model.dart';
 
 void main() {
   group('SampleItemsModel', () {

@@ -2,7 +2,7 @@ import 'package:checks/checks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_checks/flutter_checks.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:our_democracy/src/features/sample/presentation/items/sample_items_list_page.dart';
+import 'package:nexus/src/features/sample/presentation/items/sample_items_list_page.dart';
 
 import '../../../../../helpers/accessibility.dart';
 import '../../../../../helpers/pump_app.dart';

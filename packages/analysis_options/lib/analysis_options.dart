@@ -1,2 +1,2 @@
-/// Analyzer configuration for the Our Democracy team.
+/// Analyzer configuration for the Nexus team.
 library;

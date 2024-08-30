@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:our_democracy/src/features/settings/application/settings_service.dart';
-import 'package:our_democracy/src/features/settings/data/preferences_repository.dart';
-import 'package:our_democracy/src/features/settings/domain/settings_model.dart';
+import 'package:nexus/src/features/settings/application/settings_service.dart';
+import 'package:nexus/src/features/settings/data/preferences_repository.dart';
+import 'package:nexus/src/features/settings/domain/settings_model.dart';
 
 import '../../../../helpers/mocks.dart';
 
