@@ -36,7 +36,7 @@ dependency_overrides:
   web_socket_channel: 3.0.1 # Supports latest `package:web`.
 
 dependencies:
-  appwrite: ^12.0.4
+  appwrite: ^13.0.0
   auto_route: ^9.2.1+1
   build_version: ^2.1.1
   # The following adds the Cupertino Icons font to your application.
@@ -65,7 +65,7 @@ dev_dependencies:
   build_web_compilers: ^4.0.11
   custom_lint: ^0.6.4
   dhttpd: ^4.1.0
-  flutter_checks: ^0.0.1
+  flutter_checks: ^0.1.0
   flutter_gen_runner: ^5.7.0
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.4.1

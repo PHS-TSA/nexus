@@ -19,7 +19,7 @@ scripts:
     exec: dart pub get
   upgrade:
     description: upgrade dependencies
-    exec: dart pub upgrade
+    exec: dart pub upgrade --major-versions
   clean:
     description: clean project
     exec: flutter clean
