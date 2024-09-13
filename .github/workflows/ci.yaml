@@ -334,7 +334,7 @@ jobs:
           persist-credentials: false
           set-safe-directory: true
       - name: 🕵️ Markdown linting
-        uses: DavidAnson/markdownlint-cli2-action@b4c9feab76d8025d1e83c653fa3990936df0e6c8 # v16.0.0
+        uses: DavidAnson/markdownlint-cli2-action@db43aef879112c3119a410d69f66701e0d530809 # v17.0.0
         id: markdownlint
         with:
           fix: true
