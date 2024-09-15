@@ -14,14 +14,15 @@ class WrapperPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AutoRouter(
       builder: (context, child) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(context.topRoute.title(context)),
-            leading: const AutoLeadingButton(),
-            actions: _getActions(context.router.currentUrl),
-          ),
-          body: child,
-        );
+        // return Scaffold(
+        //   appBar: AppBar(
+        //     title: Text(context.topRoute.title(context)),
+        //     leading: const AutoLeadingButton(),
+        //     actions: _getActions(context.router.currentUrl),
+        //   ),
+        //   body: child,
+        // );
+        return child;
       },
     );
   }
