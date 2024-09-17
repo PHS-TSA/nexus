@@ -19,18 +19,22 @@ class WrapperPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AutoTabsScaffold(
-      routes: const [
-        LocalFeedRoute(),
-        WorldFeedRoute(),
+      routes: [
+        const EmptyShellRoute('Feeds')(
+          children: [
+            const LocalFeedRoute(),
+            const WorldFeedRoute(),
+          ],
+        ),
+        const SampleItemsListRoute(),
+        const SettingsRoute(),
       ],
       appBarBuilder: (context, autoRouter) {
-        final path = autoRouter.routeData.path;
-
         return AppBar(
-          title: Text(autoRouter.routeData.title(context)),
+          title: Text(autoRouter.current.title(context)),
           leading: const AutoLeadingButton(),
-          actions: switch (path) {
-            '/' => [
+          actions: switch (autoRouter.current.path) {
+            '' => [
                 Builder(
                   builder: (context) => IconButton(
                     icon: const Icon(
@@ -48,7 +52,8 @@ class WrapperPage extends ConsumerWidget {
               ],
             _ => [],
           },
-          bottom: switch (path) {
+          bottom: switch (autoRouter.current.path) {
+            // FIXME(lishaduck): This needs some work.
             '/' => TabBar(
                 onTap: autoRouter.setActiveIndex,
                 tabs: const [
@@ -67,7 +72,24 @@ class WrapperPage extends ConsumerWidget {
         );
       },
       bottomNavigationBuilder: (context, autoRouter) {
-        return NavigationBar(destinations: const []);
+        return NavigationBar(
+          selectedIndex: autoRouter.activeIndex,
+          onDestinationSelected: autoRouter.setActiveIndex,
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.feed),
+              label: 'Feeds',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.location_on),
+              label: 'Discover',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+          ],
+        );
       },
     );
   }

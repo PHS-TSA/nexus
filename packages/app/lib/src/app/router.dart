@@ -13,16 +13,14 @@ class AppRouter extends RootStackRouter {
 
   @override
   List<AutoRoute> get routes => [
-        // Probably gonna need to rework wrapper_page app bar for dynamic app bar in actual app.
         AutoRoute(
-          page: WrapperRoute.page, //How does the wrapper page work?
+          page: WrapperRoute.page,
           path: '/',
           children: [
             AutoRoute(
               page: SampleItemsListRoute.page,
               path: 'sample',
               title: (context, data) => 'Sample Items',
-              // initial: true,
             ),
             AutoRoute(
               page: SampleItemDetailsRoute.page,
@@ -34,16 +32,21 @@ class AppRouter extends RootStackRouter {
               path: 'settings',
               title: (context, data) => 'Settings',
             ),
-
             AutoRoute(
-              page: LocalFeedRoute.page,
-              path: 'local',
-              title: (context, data) => 'Test',
-            ),
-            AutoRoute(
-              page: WorldFeedRoute.page,
-              path: 'world',
-              title: (context, data) => 'Test',
+              page: const EmptyShellRoute('Feeds'),
+              path: '',
+              children: [
+                AutoRoute(
+                  page: LocalFeedRoute.page,
+                  path: 'local',
+                  title: (context, data) => 'Test',
+                ),
+                AutoRoute(
+                  page: WorldFeedRoute.page,
+                  path: 'world',
+                  title: (context, data) => 'Test',
+                ),
+              ],
             ),
           ],
         ),
