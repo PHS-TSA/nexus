@@ -13,7 +13,7 @@ class AppRouter extends RootStackRouter {
 
   @override
   List<AutoRoute> get routes => [
-        //Probably gonna need to rework wrapper_page app bar for dynamic app bar in actual app
+        // Probably gonna need to rework wrapper_page app bar for dynamic app bar in actual app.
         AutoRoute(
           page: WrapperRoute.page, //How does the wrapper page work?
           path: '/',
@@ -34,23 +34,16 @@ class AppRouter extends RootStackRouter {
               path: 'settings',
               title: (context, data) => 'Settings',
             ),
+
             AutoRoute(
-              page: HomeRoute.page,
-              path: '',
-              title: (context, data) => 'Home!', // What does title do?
-              initial: true,
-              children: [
-                AutoRoute(
-                  page: LocalFeedRoute.page,
-                  path: 'local_feed',
-                  title: (context, data) => 'Test',
-                ),
-                AutoRoute(
-                  page: WorldFeedRoute.page,
-                  path: 'world_feed',
-                  title: (context, data) => 'Test',
-                ),
-              ],
+              page: LocalFeedRoute.page,
+              path: 'local',
+              title: (context, data) => 'Test',
+            ),
+            AutoRoute(
+              page: WorldFeedRoute.page,
+              path: 'world',
+              title: (context, data) => 'Test',
             ),
           ],
         ),

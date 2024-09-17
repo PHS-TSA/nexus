@@ -1,5 +1,3 @@
-// `riverpod_lint` doesn't recognize that this is the root of the app.
-// ignore_for_file: scoped_providers_should_specify_dependencies
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -21,7 +19,7 @@ typedef BootstrapEnv = ({
 
 /// Turn any widget into a flow-blown app.
 mixin Bootstrap implements Widget {
-  /// Bootstrap the app.
+  /// Bootstrap the app given a [BootstrapEnv].
   ///
   /// This involves
   /// - setting [FlutterError.onError] to log errors to the console,

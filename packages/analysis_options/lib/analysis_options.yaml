@@ -53,7 +53,7 @@ linter:
     unreachable_from_main: true
 
     # Temporary suppression of rules in VGA
-    public_member_api_docs: false
+    public_member_api_docs: false # TODO(lishaduck): Turn this on.
 
     # Rules with false-positives, not in VGA
     discarded_futures: true
