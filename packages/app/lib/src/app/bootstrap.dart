@@ -1,3 +1,5 @@
+// `riverpod_lint` doesn't recognize that this is the root of the app.
+// ignore_for_file: scoped_providers_should_specify_dependencies
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
