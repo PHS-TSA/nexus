@@ -29,18 +29,16 @@ base class FeedService extends _$FeedService {
 
   /// Replace the current posts with newly generated posts.
   Future<void> replacePosts(List<PostEntity> newPosts) async {
-    final currentState = state.valueOrNull;
-
-    if (currentState == null) return;
-
-    state = AsyncData(
-      currentState.copyWith(
-        posts: [
-          // Spread the new list into the generated list.
-          ...currentState.posts,
-          ...newPosts,
-        ],
-      ),
-    );
+    if (state case AsyncData<FeedModel>(:final value)) {
+      state = AsyncData(
+        value.copyWith(
+          posts: [
+            // Spread the new list into the generated list.
+            ...value.posts,
+            ...newPosts,
+          ],
+        ),
+      );
+    }
   }
 }
