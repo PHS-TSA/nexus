@@ -7,7 +7,7 @@ part 'post_entity.freezed.dart';
 @freezed
 sealed class PostEntity with _$PostEntity {
   const factory PostEntity({
-    required ImageProvider image,
     required String body,
+    required ImageProvider? image,
   }) = _PostEntity;
 }

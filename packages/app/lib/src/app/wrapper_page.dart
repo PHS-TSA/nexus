@@ -19,15 +19,17 @@ class WrapperPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AutoTabsScaffold(
-      routes: [
-        const EmptyShellRoute('Feeds')(
-          children: [
-            const LocalFeedRoute(),
-            const WorldFeedRoute(),
-          ],
-        ),
-        const SampleItemsListRoute(),
-        const SettingsRoute(),
+      routes: const [
+        //TODO fix bar
+        // const EmptyShellRoute('Feeds')(
+        //   children: [
+        //     const LocalFeedRoute(),
+        //     const WorldFeedRoute(),
+        //   ],
+        // ),
+        LocalFeedRoute(),
+        SampleItemsListRoute(),
+        SettingsRoute(),
       ],
       appBarBuilder: (context, autoRouter) {
         return AppBar(
