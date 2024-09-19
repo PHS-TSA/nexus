@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,7 +16,7 @@ abstract interface class PreferencesRepository {
   Future<void> setString(String key, String value);
 }
 
-class _SharedPreferencesRepository implements PreferencesRepository {
+final class _SharedPreferencesRepository implements PreferencesRepository {
   _SharedPreferencesRepository(this.prefs);
 
   final SharedPreferencesWithCache prefs;
@@ -30,6 +29,7 @@ class _SharedPreferencesRepository implements PreferencesRepository {
       await prefs.setString(key, value);
 }
 
+/// Get the user's preferences.
 @Riverpod(keepAlive: true)
 PreferencesRepository preferencesRepository(PreferencesRepositoryRef ref) {
   final prefs = ref.watch(sharedPreferencesProvider);
@@ -37,7 +37,7 @@ PreferencesRepository preferencesRepository(PreferencesRepositoryRef ref) {
   return _SharedPreferencesRepository(prefs);
 }
 
-@internal
+/// Load a from a local database.
 Future<SettingsModel> loadSettings(
   SharedPreferencesWithCache prefs,
 ) async {
@@ -49,9 +49,11 @@ Future<SettingsModel> loadSettings(
       : defaultSettings;
 }
 
+/// Get a [SharedPreferencesWithCache] instance.
 @Riverpod(keepAlive: true)
 SharedPreferencesWithCache sharedPreferences(SharedPreferencesRef ref) {
   throw UnimplementedError();
 }
 
+/// The default settings, in case the user has none or they are corrupted.
 const defaultSettings = SettingsModel(themeMode: ThemeMode.system);

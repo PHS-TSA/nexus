@@ -7,6 +7,7 @@ import '../domain/post_entity.dart';
 
 part 'feed_service.g.dart';
 
+/// Provide the values of a feed.
 @riverpod //You can only change state inside of this class
 base class FeedService extends _$FeedService {
   @override
@@ -26,7 +27,7 @@ base class FeedService extends _$FeedService {
     );
   }
 
-  //newPosts is the newly generated posts
+  /// Replace the current posts with newly generated posts.
   Future<void> replacePosts(List<PostEntity> newPosts) async {
     final currentState = state.valueOrNull;
 

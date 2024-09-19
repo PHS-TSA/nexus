@@ -6,7 +6,11 @@ import '../../application/feed_service.dart';
 import '../../domain/feed_entity.dart';
 import '../../domain/post_entity.dart';
 
+/// {@template our_democracy.features.home.presentation.feed}
+/// An infinite loading list of posts.
+/// {@endtemplate}
 class Feed extends ConsumerWidget {
+  /// {@macro our_democracy.features.home.presentation.feed}
   const Feed({required this.feed, super.key});
 
   final FeedEntity feed;

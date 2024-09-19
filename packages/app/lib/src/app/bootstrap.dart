@@ -9,11 +9,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../features/settings/application/settings_service.dart';
 import '../features/settings/data/preferences_repository.dart';
 
+/// The signature of [runApp].
 typedef RunApp = void Function(Widget app);
+
+/// The signature of [SharedPreferencesWithCache.create].
 typedef GetSharedPreferences = Future<SharedPreferencesWithCache> Function({
   required SharedPreferencesWithCacheOptions cacheOptions,
   Map<String, Object?>? cache,
 });
+
+/// The environment needed to bootstrap the app.
 typedef BootstrapEnv = ({
   RunApp runApp,
   GetSharedPreferences getSharedPreferences,
