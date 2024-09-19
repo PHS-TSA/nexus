@@ -10,6 +10,6 @@ class WorldFeedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Feed(feed: const WorldFeed());
+    return const Feed(feed: WorldFeed());
   }
 }

@@ -10,6 +10,6 @@ class LocalFeedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Feed(feed: const LocalFeed());
+    return const Feed(feed: LocalFeed());
   }
 }
