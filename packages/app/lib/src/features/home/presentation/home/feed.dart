@@ -6,7 +6,7 @@ import '../../application/feed_service.dart';
 import '../../domain/feed_entity.dart';
 import '../../domain/post_entity.dart';
 
-class Feed extends HookConsumerWidget {
+class Feed extends ConsumerWidget {
   const Feed({required this.feed, super.key});
 
   final FeedEntity feed;

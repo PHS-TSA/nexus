@@ -9,5 +9,6 @@ part 'feed_model.freezed.dart';
 sealed class FeedModel with _$FeedModel {
   const factory FeedModel({
     required List<PostEntity> posts,
+    required String cursorPos,
   }) = _FeedModel;
 }
