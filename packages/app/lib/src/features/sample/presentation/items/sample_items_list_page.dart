@@ -15,7 +15,7 @@ class SampleItemsListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final items = ref.watch(sampleItemsServiceProvider).valueOrNull?.items;
+    final items = ref.watch(sampleItemsServiceProvider).items;
 
     // To work with lists that may contain a large number of items, it’s best
     // to use the ListView.builder constructor.
@@ -28,11 +28,8 @@ class SampleItemsListPage extends ConsumerWidget {
       // scroll position when a user leaves and returns to the app after it
       // has been killed while running in the background.
       restorationId: 'sampleItemListView',
-      itemCount: items?.length,
+      itemCount: items.length,
       itemBuilder: (context, index) {
-        if (items == null) {
-          return const CircularProgressIndicator();
-        }
         final item = items[index];
         final title = 'SampleItem ${item.id}';
 
