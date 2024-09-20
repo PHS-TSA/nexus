@@ -32,7 +32,7 @@ base class FeedService extends _$FeedService {
           body: 'This works (#${(page - 1) * pageSize + index + 1})',
         ),
       ),
-      // TODO: Set the cursor position to the last post.
+      // TODO(lishaduck): Set the cursor position to the last post.
       cursorPos: '',
     );
   }
