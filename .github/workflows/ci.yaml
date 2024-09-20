@@ -62,7 +62,7 @@ jobs:
             lib/src/l10n/app_localizations_*.dart
           key: ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-${{ hashFiles('**/build.yaml') }}
       - name: 📦 Install dependencies
-        uses: bluefireteam/melos-action@d47b949262f261ba0c99ced3341357ff5ebe78e6 # v3
+        uses: bluefireteam/melos-action@5854af644cb270dc59a0165fbe6bec7391b13781 # v3
         with:
           run-bootstrap: true
 
@@ -137,7 +137,7 @@ jobs:
             lib/src/l10n/app_localizations_*.dart
           key: ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-${{ hashFiles('**/build.yaml') }}
       - name: 📦 Install dependencies
-        uses: bluefireteam/melos-action@d47b949262f261ba0c99ced3341357ff5ebe78e6 # v3
+        uses: bluefireteam/melos-action@5854af644cb270dc59a0165fbe6bec7391b13781 # v3
         with:
           run-bootstrap: true
       - name: 🔧 Build
@@ -190,7 +190,7 @@ jobs:
             lib/src/l10n/app_localizations_*.dart
           key: ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-${{ hashFiles('**/build.yaml') }}
       - name: 📦 Install dependencies
-        uses: bluefireteam/melos-action@d47b949262f261ba0c99ced3341357ff5ebe78e6 # v3
+        uses: bluefireteam/melos-action@5854af644cb270dc59a0165fbe6bec7391b13781 # v3
         with:
           run-bootstrap: true
       - name: 🕵️ Analyze project source
@@ -242,7 +242,7 @@ jobs:
             ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-
             ${{ runner.os }}-
       - name: 📦 Install dependencies
-        uses: bluefireteam/melos-action@d47b949262f261ba0c99ced3341357ff5ebe78e6 # v3
+        uses: bluefireteam/melos-action@5854af644cb270dc59a0165fbe6bec7391b13781 # v3
         with:
           run-bootstrap: true
       - name: 🧪 Run tests
