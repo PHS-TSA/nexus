@@ -1,3 +1,6 @@
+/// This library contains the localization for the app.
+library;
+
 import 'package:flutter/widgets.dart';
 
 import 'app_localizations.dart';

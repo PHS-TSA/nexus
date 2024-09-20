@@ -29,6 +29,7 @@ targets:
         generate_for:
           - lib/src/utils/**.dart
           - lib/src/features/*/domain/*_model.dart
+          - lib/src/features/*/domain/*_entity.dart
         options:
           map: false
           when: false
@@ -37,6 +38,7 @@ targets:
         generate_for:
           - lib/src/utils/**.dart
           - lib/src/features/*/domain/*_model.dart
+          - lib/src/features/*/domain/*_entity.dart
       riverpod_generator:
         # configs for the @riverpod generator
         generate_for:

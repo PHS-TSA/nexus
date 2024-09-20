@@ -52,9 +52,6 @@ linter:
     unnecessary_null_aware_operator_on_extension_on_nullable: true
     unreachable_from_main: true
 
-    # Temporary suppression of rules in VGA
-    public_member_api_docs: false
-
     # Rules with false-positives, not in VGA
     discarded_futures: true
     close_sinks: true

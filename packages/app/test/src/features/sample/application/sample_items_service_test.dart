@@ -8,7 +8,7 @@ void main() {
     test('provides three items', () async {
       final container = ProviderContainer();
 
-      final model = await container.read(sampleItemsServiceProvider.future);
+      final model = container.read(sampleItemsServiceProvider);
       check(model.items.length).equals(3);
     });
   });

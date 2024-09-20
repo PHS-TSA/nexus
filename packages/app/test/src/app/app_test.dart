@@ -20,7 +20,7 @@ extension _WidgetTesterX on WidgetTester {
           sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
           initialSettingsProvider.overrideWithValue(defaultSettings),
         ],
-        child: const MyApp(),
+        child: const App(),
       ),
     );
   }

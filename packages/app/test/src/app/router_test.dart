@@ -28,7 +28,7 @@ void main() {
       test('should be correct for SampleItemListRoute.', () {
         final sampleItemListRoute =
             tested.routes[0].children?.routes.toList()[0];
-        check(sampleItemListRoute?.path).equals('');
+        check(sampleItemListRoute?.path).equals('sample');
       });
       test('should be correct for SampleItemDetailsRoute.', () {
         final sampleItemDetailsRoute =
@@ -38,6 +38,13 @@ void main() {
       test('should be correct for SettingsRoute.', () {
         final settingsRoute = tested.routes[0].children?.routes.toList()[2];
         check(settingsRoute?.path).equals('settings');
+      });
+      test("should be correct for ShellRoute('Feed')", () {
+        final sampleItemDetailsRoute =
+            tested.routes[0].children?.routes.toList()[3];
+        check(sampleItemDetailsRoute?.path)
+            // Home
+            .equals('');
       });
       test('should redirect on 404', () {
         final redirectRoute = tested.routes[1];

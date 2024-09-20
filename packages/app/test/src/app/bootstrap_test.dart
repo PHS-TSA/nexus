@@ -20,7 +20,7 @@ void main() {
   });
 
   test('main does not throw', () async {
-    const app = MyApp();
+    const app = App();
     final env = (
       runApp: (_) {},
       getSharedPreferences: getSharedPreferences,

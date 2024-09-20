@@ -1,3 +1,6 @@
+/// This library provides the app's router to state management.
+library;
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../app/router.dart';

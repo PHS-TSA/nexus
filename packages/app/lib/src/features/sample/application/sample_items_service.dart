@@ -1,3 +1,6 @@
+/// This library provides a service to get sample items.
+library;
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../domain/sample_item_entity.dart';
@@ -5,10 +8,11 @@ import '../domain/sample_items_model.dart';
 
 part 'sample_items_service.g.dart';
 
+/// Provide sample items.
 @riverpod
-class SampleItemsService extends _$SampleItemsService {
+base class SampleItemsService extends _$SampleItemsService {
   @override
-  Future<SampleItemsModel> build() async {
+  SampleItemsModel build() {
     return const SampleItemsModel(
       items: [
         SampleItemEntity(1),

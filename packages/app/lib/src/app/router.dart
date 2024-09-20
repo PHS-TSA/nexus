@@ -1,3 +1,6 @@
+/// This library handles routing for the application declaratively.
+library;
+
 import 'package:auto_route/auto_route.dart';
 
 import 'router.gr.dart';
@@ -5,7 +8,7 @@ import 'router.gr.dart';
 /// The router for the application.
 @AutoRouterConfig(replaceInRouteName: 'Page,Route', deferredLoading: true)
 class AppRouter extends RootStackRouter {
-  /// Create a new instance of [AppRouter].
+  /// Instantiate a new instance of [AppRouter].
   AppRouter();
 
   @override
@@ -19,9 +22,8 @@ class AppRouter extends RootStackRouter {
           children: [
             AutoRoute(
               page: SampleItemsListRoute.page,
-              path: '',
+              path: 'sample',
               title: (context, data) => 'Sample Items',
-              initial: true,
             ),
             AutoRoute(
               page: SampleItemDetailsRoute.page,
@@ -32,6 +34,22 @@ class AppRouter extends RootStackRouter {
               page: SettingsRoute.page,
               path: 'settings',
               title: (context, data) => 'Settings',
+            ),
+            AutoRoute(
+              page: const EmptyShellRoute('Feeds'),
+              path: '',
+              children: [
+                AutoRoute(
+                  page: LocalFeedRoute.page,
+                  path: '', // FIXME: This should be 'local'.
+                  title: (context, data) => 'Test',
+                ),
+                AutoRoute(
+                  page: WorldFeedRoute.page,
+                  path: 'world',
+                  title: (context, data) => 'Test',
+                ),
+              ],
             ),
           ],
         ),
