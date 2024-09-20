@@ -15,15 +15,13 @@ class Feed extends ConsumerWidget {
 
   final FeedEntity feed;
 
-  static const _pageSize = 20;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListView.builder(
       prototypeItem: const _Post(post: PostEntity(body: '', image: null)),
       itemBuilder: (context, index) {
-        final page = index ~/ _pageSize + 1;
-        final indexInPage = index % _pageSize;
+        final page = index ~/ pageSize + 1;
+        final indexInPage = index % pageSize;
         final response = ref.watch(feedServiceProvider(feed, page));
 
         return switch (response) {
@@ -42,9 +40,7 @@ class Feed extends ConsumerWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty<FeedEntity>('feed', feed))
-      ..add(IntProperty('pageSize', _pageSize));
+    properties.add(DiagnosticsProperty<FeedEntity>('feed', feed));
   }
 }
 
