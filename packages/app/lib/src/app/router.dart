@@ -38,7 +38,7 @@ class AppRouter extends RootStackRouter {
               children: [
                 AutoRoute(
                   page: LocalFeedRoute.page,
-                  path: 'local',
+                  path: '', // FIXME: This should be 'local'.
                   title: (context, data) => 'Test',
                 ),
                 AutoRoute(
