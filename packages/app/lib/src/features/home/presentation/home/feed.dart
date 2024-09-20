@@ -62,11 +62,12 @@ class _Post extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: switch (post.image) {
-          // If the image is an ImageProvider, use the image. Else return null.
+          // If the image is an ImageProvider, use the image.
           final ImageProvider image => Image(image: image),
+          // Else, return null.
           null => null,
         },
-        title: const Text('This works'),
+        title: Text(post.body),
       ),
     );
   }
