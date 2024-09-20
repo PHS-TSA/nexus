@@ -1,3 +1,6 @@
+/// This library wraps the application in a shared scaffold.
+library;
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,9 +12,9 @@ import 'router.gr.dart';
 /// {@endtemplate}
 @RoutePage()
 class WrapperPage extends ConsumerWidget {
-  /// Create a new [WrapperPage].
-  ///
   /// {@macro our_democracy.app.wrapper_page}
+  ///
+  /// Construct a new [WrapperPage] widget.
   const WrapperPage({
     super.key,
   });

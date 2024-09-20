@@ -1,3 +1,6 @@
+/// This library contains the root widget of the application.
+library;
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -7,8 +10,13 @@ import '../utils/design.dart';
 import '../utils/router.dart';
 import 'bootstrap.dart';
 
-/// The Widget that configures your application.
+/// {@template our_democracy.app}
+/// The widget that configures your application.
+/// {@endtemplate}
 class App extends ConsumerStatefulWidget with Bootstrap {
+  /// {@macro our_democracy.app}
+  ///
+  /// Construct a new [App] widget.
   const App({
     super.key,
   });

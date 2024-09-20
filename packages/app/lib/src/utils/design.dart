@@ -1,3 +1,6 @@
+/// This library contains the primitive block of our Material-based design system.
+library;
+
 import 'package:flutter/material.dart';
 
 /// The app's color scheme.

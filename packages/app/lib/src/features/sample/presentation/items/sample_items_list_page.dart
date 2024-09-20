@@ -1,3 +1,6 @@
+/// This library contains a widget which presents a demo list of items.
+library;
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -6,9 +9,14 @@ import '../../../../../gen/assets.gen.dart';
 import '../../../../app/router.gr.dart';
 import '../../application/sample_items_service.dart';
 
+/// {@template our_democracy.features.sample.presentation.items.sample_items_list_page}
 /// Displays a list of SampleItems.
+/// {@endtemplate}
 @RoutePage()
 class SampleItemsListPage extends ConsumerWidget {
+  /// {@macro our_democracy.features.sample.presentation.items.sample_items_list_page}
+  ///
+  /// Construct a new [SampleItemsListPage] widget.
   const SampleItemsListPage({
     super.key,
   });

@@ -1,3 +1,6 @@
+/// This library contains the app's primary entrypoint.
+library;
+
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

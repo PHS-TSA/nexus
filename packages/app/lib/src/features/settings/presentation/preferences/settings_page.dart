@@ -1,15 +1,23 @@
+/// This library
+library;
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../application/settings_service.dart';
 
-/// Displays the various settings that can be customized by the user.
+/// {@template our_democracy.features.settings.presentation.preferences}
+/// Display the various settings that can be customized by the user.
 ///
-/// When a user changes a setting, the SettingService is updated and
-/// Widgets that watch the SettingsService are rebuilt.
+/// When a user changes a setting, this updates the [SettingsService] and
+/// [Widget]s that watch the [SettingsService] are rebuilt.
+/// {@endtemplate}
 @RoutePage()
 class SettingsPage extends ConsumerWidget {
+  /// {@macro our_democracy.features.settings.presentation.preferences}
+  ///
+  /// Construct a new [SettingsPage] widget.
   const SettingsPage({super.key});
 
   @override

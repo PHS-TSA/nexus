@@ -1,3 +1,6 @@
+/// This library provides the ability to fetch and persist the user's settings.
+library;
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -8,6 +11,7 @@ import '../domain/settings_model.dart';
 
 part 'preferences_repository.g.dart';
 
+/// Provide access to the user's settings.
 abstract interface class PreferencesRepository {
   /// Load the user's settings from a local database or the internet.
   Future<SettingsModel> load();

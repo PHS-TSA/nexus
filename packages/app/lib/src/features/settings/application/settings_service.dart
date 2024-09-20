@@ -1,3 +1,6 @@
+/// This file provides a service to manage local user settings.
+library;
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -34,6 +37,7 @@ class SettingsService extends _$SettingsService {
   }
 }
 
+/// Load the user's settings from a local database on startup.
 @Riverpod(keepAlive: true)
 SettingsModel initialSettings(InitialSettingsRef ref) {
   throw UnimplementedError();

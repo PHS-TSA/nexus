@@ -1,3 +1,6 @@
+/// This library provides a service to get sample items.
+library;
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../domain/sample_item_entity.dart';

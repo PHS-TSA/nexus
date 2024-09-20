@@ -1,3 +1,6 @@
+/// This library handles routing for the application declaratively.
+library;
+
 import 'package:auto_route/auto_route.dart';
 
 import 'router.gr.dart';
@@ -5,7 +8,7 @@ import 'router.gr.dart';
 /// The router for the application.
 @AutoRouterConfig(replaceInRouteName: 'Page,Route', deferredLoading: true)
 class AppRouter extends RootStackRouter {
-  /// Create a new instance of [AppRouter].
+  /// Instantiate a new instance of [AppRouter].
   AppRouter();
 
   @override
