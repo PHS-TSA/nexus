@@ -8,16 +8,16 @@ import '../utils/router.dart';
 import 'bootstrap.dart';
 
 /// The Widget that configures your application.
-class MyApp extends ConsumerStatefulWidget with Bootstrap {
-  const MyApp({
+class App extends ConsumerStatefulWidget with Bootstrap {
+  const App({
     super.key,
   });
 
   @override
-  ConsumerState<MyApp> createState() => _MyAppState();
+  ConsumerState<App> createState() => _AppState();
 }
 
-class _MyAppState extends ConsumerState<MyApp> with RestorationMixin {
+class _AppState extends ConsumerState<App> with RestorationMixin {
   @override
   String get restorationId => 'wrapper';
 

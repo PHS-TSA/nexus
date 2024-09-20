@@ -6,9 +6,9 @@ import 'src/app/bootstrap.dart';
 
 /// The primary entrypoint of the app.
 ///
-/// This uses [Bootstrap] to launch [MyApp].
+/// This uses [Bootstrap] to launch [App].
 Future<void> main() async {
-  await const MyApp().bootstrap(
+  await const App().bootstrap(
     (
       runApp: runApp,
       getSharedPreferences: SharedPreferencesWithCache.create,
