@@ -1,6 +1,7 @@
 /// This library contains a data class for a feed of posts.
 library;
 
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'post_entity.dart';
@@ -18,7 +19,7 @@ sealed class FeedModel with _$FeedModel {
   /// Create a new, immutable instance of [FeedModel].
   const factory FeedModel({
     /// The posts in the feed.
-    required List<PostEntity> posts,
+    required IList<PostEntity> posts,
 
     /// The database pagination cursor position.
     required String cursorPos,

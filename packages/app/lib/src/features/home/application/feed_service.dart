@@ -1,6 +1,7 @@
 /// This library provides a service to stream posts in DB to the UI.
 library;
 
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../gen/assets.gen.dart';
@@ -31,7 +32,7 @@ base class FeedService extends _$FeedService {
           // Use the index to generate a unique body for each post.
           body: 'This works (#${(page - 1) * pageSize + index + 1})',
         ),
-      ),
+      ).lock,
       // TODO(lishaduck): Set the cursor position to the last post.
       cursorPos: '',
     );
@@ -39,16 +40,12 @@ base class FeedService extends _$FeedService {
 
   // TODO(MattsAttack): This is just an unused example. It should be used or removed.
   /// Replace the current posts with newly generated posts.
-  Future<FeedModel> addPosts(List<PostEntity> newPosts) async {
+  Future<FeedModel> addPosts(IList<PostEntity> newPosts) async {
     // You can only change a Notifier's `state` by adding methods that assign a new value.
     // You can't mutate the state directly, nor can you change it outside of a method.
     return await update((value) {
       return value.copyWith(
-        posts: [
-          // Spread the new list into the generated list.
-          ...value.posts,
-          ...newPosts,
-        ],
+        posts: value.posts.addAll(newPosts),
       );
     });
   }
