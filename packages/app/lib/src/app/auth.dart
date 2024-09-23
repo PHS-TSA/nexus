@@ -1,14 +1,11 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 //Create a user account
 
-@riverpod
-class AuthService extends _$AuthService {
-  @override
-  dynamic build() {
-    throw UnimplementedError();
-  }
+class _AuthRepository {
+  const _AuthRepository(this.account);
+
+  final Account account;
 
 // Register the user(Sign up)
   Future<String> createUser(String name, String email, String password) async {
@@ -35,7 +32,6 @@ class AuthService extends _$AuthService {
         email: email,
         password: password,
       );
-      await UserSavedData.saveEmail(email);
       print('User logged in');
       return true;
     } catch (e) {
