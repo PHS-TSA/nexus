@@ -1,12 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../../../app/router.gr.dart';
+import '../../data/auth_repository.dart';
 
 @RoutePage()
-class SignupPage extends StatelessWidget {
+class SignupPage extends ConsumerWidget {
   const SignupPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final namecontroller = TextEditingController();
     final emailcontroller = TextEditingController();
     final passwordcontroller = TextEditingController();
@@ -43,16 +47,22 @@ class SignupPage extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  // createUser(namecontroller.text, emailcontroller.text,
-                  //         passwordcontroller.text)
-                  //     .then((value) {
-                  //   if (value == 'success') {
-                  //     Navigator.pop(context);
-                  //   } else {
-                  //     ScaffoldMessenger.of(context)
-                  //         .showSnackBar(SnackBar(content: Text(value)));
-                  //   }
-                  // });
+                  ref
+                      .read(authRepositoryProvider)
+                      .createUser(
+                        namecontroller.text,
+                        emailcontroller.text,
+                        passwordcontroller.text,
+                      )
+                      .then((value) {
+                    if (value == 'success') {
+                      //TODO Fix routing
+                      context.router.push(const LoginRoute());
+                    } else {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(value)));
+                    }
+                  });
                 },
                 child: const Text('Sign Up'),
               ),
@@ -61,7 +71,7 @@ class SignupPage extends StatelessWidget {
               ),
               OutlinedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/login');
+                  context.router.push(const LoginRoute());
                 },
                 child: const Text('Login'),
               ),

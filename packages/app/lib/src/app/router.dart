@@ -18,7 +18,7 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
         AutoRoute(
           page: WrapperRoute.page,
-          path: '/',
+          path: '/home/',
           children: [
             AutoRoute(
               page: SampleItemsListRoute.page,
@@ -52,6 +52,21 @@ class AppRouter extends RootStackRouter {
               ],
             ),
           ],
+        ),
+        AutoRoute(
+          page: LoginRoute.page,
+          path: '/login',
+          title: (context, data) => 'Login',
+        ),
+        AutoRoute(
+          page: SignupRoute.page,
+          path: '/sign_up',
+          title: (context, data) => 'Sign Up',
+        ),
+        AutoRoute(
+          page: CheckUserAuth.page,
+          path: '/',
+          title: (context, data) => 'Login',
         ),
         RedirectRoute(path: '/*', redirectTo: '/'),
       ];

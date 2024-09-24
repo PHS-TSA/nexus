@@ -1,12 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../../../app/router.gr.dart';
+import '../../data/auth_repository.dart';
 
 @RoutePage()
-class LoginPage extends StatelessWidget {
+class LoginPage extends ConsumerWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final emailcontroller = TextEditingController();
     final passwordcontroller = TextEditingController();
     return Scaffold(
@@ -43,20 +47,25 @@ class LoginPage extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
+                      // May need to do cool async things here
                       //login the user
-
-                      // loginUser(emailcontroller.text, passwordcontroller.text)
-                      //     .then((value) {
-                      //   if (value) {
-                      //     Navigator.pushReplacementNamed(context, '/home');
-                      //   } else {
-                      //     ScaffoldMessenger.of(context).showSnackBar(
-                      //       const SnackBar(
-                      //         content: Text('Invalid email password'),
-                      //       ),
-                      //     );
-                      //   }
-                      // });
+                      ref
+                          .read(authRepositoryProvider)
+                          .loginUser(
+                            emailcontroller.text,
+                            passwordcontroller.text,
+                          )
+                          .then((value) {
+                        if (value) {
+                          context.router.push(const WrapperRoute());
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Invalid email password'),
+                            ),
+                          );
+                        }
+                      });
 
                       //navigate to the homepage
                     },
@@ -69,7 +78,7 @@ class LoginPage extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/signup');
+                      context.router.push(const SignupRoute());
                     },
                     child: const Text('Sign Up'),
                   ),

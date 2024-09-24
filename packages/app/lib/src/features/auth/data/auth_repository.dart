@@ -6,9 +6,10 @@ import '../../../utils/api.dart';
 part 'auth_repository.g.dart';
 
 abstract interface class AuthRepository {
-  Future<void> createUser(String name, String email, String password);
-  Future<void> loginUser(String email, String password);
+  Future<String> createUser(String name, String email, String password);
+  Future<bool> loginUser(String email, String password);
   Future<void> logoutUser();
+  Future<bool> checkUserAuth();
 }
 
 //Create a user account
@@ -19,23 +20,37 @@ class _AppwriteAuthRepository implements AuthRepository {
 
 // Register the user(Sign up)
   @override
-  Future<void> createUser(String name, String email, String password) async {
-    await account.create(
-      userId: ID.unique(),
-      email: email,
-      password: password,
-      name: name,
-    );
+  Future<String> createUser(String name, String email, String password) async {
+    try {
+      final user = await account.create(
+        userId: ID.unique(),
+        email: email,
+        password: password,
+        name: name,
+      );
+      print('New user created!');
+      return 'success';
+    } on AppwriteException catch (e) {
+      return e.message.toString();
+      print(e);
+    }
   }
 
 // Login the User
 
   @override
-  Future<void> loginUser(String email, String password) async {
-    await account.createEmailPasswordSession(
-      email: email,
-      password: password,
-    );
+  Future<bool> loginUser(String email, String password) async {
+    try {
+      final user = await account.createEmailPasswordSession(
+        email: email,
+        password: password,
+      );
+      print('User logged in');
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
   @override
@@ -45,10 +60,18 @@ class _AppwriteAuthRepository implements AuthRepository {
   }
 
   // check User is authenticated or not
-  Future<void> checkUserAuth() async {
-    print('Trying to checkUserAuth func');
-    //Checks if session exist or not
-    await account.getSession(sessionId: 'current');
+  @override
+  Future<bool> checkUserAuth() async {
+    try {
+      print('Trying to checkUserAuth func');
+      //Checks if session exist or not
+      await account.getSession(sessionId: 'current');
+      //If exist return true
+      return true;
+    } on AppwriteException catch (e) {
+      print(e);
+      return false;
+    }
   }
 }
 
