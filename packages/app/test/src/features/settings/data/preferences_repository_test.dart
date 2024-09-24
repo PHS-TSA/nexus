@@ -1,12 +1,12 @@
 import 'package:checks/checks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:nexus/src/features/settings/application/settings_service.dart';
 import 'package:nexus/src/features/settings/data/preferences_repository.dart';
 
 import '../../../../helpers/mocks.dart';
+import '../../../../helpers/riverpod.dart';
 
 void main() {
   group('PreferencesRepository', () {
@@ -14,7 +14,7 @@ void main() {
       // Arrange
       final mockSharedPreferences = MockSharedPreferences();
 
-      final container = ProviderContainer(
+      final container = createContainer(
         overrides: [
           sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
           initialSettingsProvider.overrideWithValue(defaultSettings),
@@ -36,7 +36,7 @@ void main() {
       when(() => mockSharedPreferences.getString('prefs'))
           .thenReturn('{"themeMode":"dark"}');
 
-      final container = ProviderContainer(
+      final container = createContainer(
         overrides: [
           sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
           initialSettingsProvider.overrideWithValue(defaultSettings),
@@ -55,7 +55,7 @@ void main() {
   group('sharedPreferences', () {
     test('should throw an error if SharedPreferences is not provided', () {
       // Arrange
-      final container = ProviderContainer();
+      final container = createContainer();
 
       // Act
       PreferencesRepository call() =>
