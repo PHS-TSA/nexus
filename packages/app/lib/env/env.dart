@@ -6,7 +6,7 @@ part 'env.g.dart';
 @Envied(useConstantCase: true)
 abstract class Env {
   /// Appwrite project ID
-  @EnviedField(defaultValue: 'pirate-code')
+  @EnviedField(defaultValue: 'nexus-staging')
   static const String projectId = _Env.projectId;
 
   /// Appwrite API endpoint
