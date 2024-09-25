@@ -60,14 +60,6 @@ class LoginPage extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  // const Text(
-                  //   'Welcome to Nexus!',
-                  //   style: TextStyle(
-                  //     fontSize: 28,
-                  //     color: Color.fromARGB(255, 134, 47, 158),
-                  //     backgroundColor: Colors.pink,
-                  //   ),
-                  // ),
                   const SizedBox(
                     height: 32,
                   ),
@@ -110,7 +102,7 @@ class LoginPage extends ConsumerWidget {
                               if (value) {
                                 context.router.push(
                                   const WrapperRoute(),
-                                ); //TODO fix to not have back button
+                                );
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
