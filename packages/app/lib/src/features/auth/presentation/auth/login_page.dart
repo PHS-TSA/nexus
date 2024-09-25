@@ -17,11 +17,6 @@ class LoginPage extends ConsumerWidget {
     final currentWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-      ),
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -50,6 +45,32 @@ class LoginPage extends ConsumerWidget {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
+                  const DecoratedBox(
+                    //TODO Redesign this was for testing
+                    decoration: BoxDecoration(
+                        // color: Colors.white,
+                        // border: Border.all(color: Colors.white),
+                        // borderRadius: BorderRadius.circular(5),
+                        ),
+                    child: Text(
+                      'Welcome to Nexus!',
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: Color.fromARGB(255, 221, 168, 230),
+                      ),
+                    ),
+                  ),
+                  // const Text(
+                  //   'Welcome to Nexus!',
+                  //   style: TextStyle(
+                  //     fontSize: 28,
+                  //     color: Color.fromARGB(255, 134, 47, 158),
+                  //     backgroundColor: Colors.pink,
+                  //   ),
+                  // ),
+                  const SizedBox(
+                    height: 32,
+                  ),
                   TextFormField(
                     controller: emailcontroller,
                     keyboardType: TextInputType.emailAddress,
@@ -59,7 +80,7 @@ class LoginPage extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 16,
                   ),
                   TextFormField(
                     controller: passwordcontroller,
@@ -70,17 +91,16 @@ class LoginPage extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 16,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             // May need to do cool async things here
                             //login the user
-                            ref
+                            await ref
                                 .read(authRepositoryProvider)
                                 .loginUser(
                                   emailcontroller.text,
@@ -105,18 +125,19 @@ class LoginPage extends ConsumerWidget {
                           child: const Text('Login'),
                         ),
                       ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            context.router.push(const SignupRoute());
-                          },
-                          child: const Text('Sign Up'),
-                        ),
-                      ),
                     ],
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: TextButton(
+                      onPressed: () {
+                        context.router.push(const SignupRoute());
+                      },
+                      child: const Text("Don't have an account? Sign up!"),
+                    ),
                   ),
                 ],
               ),
