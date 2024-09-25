@@ -101,29 +101,9 @@ class SignupPage extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: ElevatedButton(
+                          //Don't love button color
                           onPressed: () async {
                             // May need to do cool async things here
-                            //login the user
-                            // await ref
-                            //     .read(authRepositoryProvider)
-                            //     .loginUser(
-                            //       emailcontroller.text,
-                            //       passwordcontroller.text,
-                            //     )
-                            //     .then((value) {
-                            //   if (value) {
-                            //     context.router.push(
-                            //       const WrapperRoute(),
-                            //     );
-                            //   } else {
-                            //     ScaffoldMessenger.of(context).showSnackBar(
-                            //       const SnackBar(
-                            //         content: Text('Invalid email password'),
-                            //       ),
-                            //     );
-
-                            //   }
-                            // });
                             await ref
                                 .read(authRepositoryProvider)
                                 .createUser(
@@ -137,7 +117,9 @@ class SignupPage extends ConsumerWidget {
                                 context.router.push(const LoginRoute());
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(value)),
+                                  SnackBar(
+                                    content: Text(value),
+                                  ), //Change to theme color
                                 );
                               }
                             });
@@ -167,70 +149,5 @@ class SignupPage extends ConsumerWidget {
         ),
       ),
     );
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: const Text('Sign up'),
-    //     automaticallyImplyLeading: false,
-    //   ),
-    //   body: Column(
-    //     children: [
-    //       TextFormField(
-    //         controller: namecontroller,
-    //         keyboardType: TextInputType.emailAddress,
-    //         decoration: const InputDecoration(
-    //           labelText: 'Name',
-    //         ),
-    //       ),
-    //       TextFormField(
-    //         controller: emailcontroller,
-    //         keyboardType: TextInputType.emailAddress,
-    //         decoration: const InputDecoration(
-    //           labelText: 'Email',
-    //         ),
-    //       ),
-    //       TextFormField(
-    //         controller: passwordcontroller,
-    //         obscureText: true,
-    //         decoration: const InputDecoration(
-    //           labelText: 'Password',
-    //         ),
-    //       ),
-    //       Row(
-    //         children: [
-    //           ElevatedButton(
-    //             onPressed: () {
-    //               ref
-    //                   .read(authRepositoryProvider)
-    //                   .createUser(
-    //                     namecontroller.text,
-    //                     emailcontroller.text,
-    //                     passwordcontroller.text,
-    //                   )
-    //                   .then((value) {
-    //                 if (value == 'success') {
-    //                   //TODO Fix routing
-    //                   context.router.push(const LoginRoute());
-    //                 } else {
-    //                   ScaffoldMessenger.of(context)
-    //                       .showSnackBar(SnackBar(content: Text(value)));
-    //                 }
-    //               });
-    //             },
-    //             child: const Text('Sign Up'),
-    //           ),
-    //           const SizedBox(
-    //             width: 20,
-    //           ),
-    //           OutlinedButton(
-    //             onPressed: () {
-    //               context.router.push(const LoginRoute());
-    //             },
-    //             child: const Text('Login'),
-    //           ),
-    //         ],
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }
