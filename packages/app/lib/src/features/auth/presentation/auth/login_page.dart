@@ -13,84 +13,107 @@ class LoginPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final emailcontroller = TextEditingController();
     final passwordcontroller = TextEditingController();
+
+    final currentWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
+        centerTitle: true,
         automaticallyImplyLeading: false,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          children: [
-            TextFormField(
-              controller: emailcontroller,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Email',
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: passwordcontroller,
-              obscureText: true,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Password',
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+        padding: EdgeInsets.only(
+          left: currentWidth / 4,
+          right: currentWidth / 4,
+          top: 35,
+          bottom: 40,
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(
+              255,
+              34,
+              29,
+              43,
+            ), //TODO better color for this
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
               children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // May need to do cool async things here
-                      //login the user
-                      ref
-                          .read(authRepositoryProvider)
-                          .loginUser(
-                            emailcontroller.text,
-                            passwordcontroller.text,
-                          )
-                          .then((value) {
-                        if (value) {
-                          context.router.push(
-                            const WrapperRoute(),
-                          ); //TODO fix to not have back button
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Invalid email password'),
-                            ),
-                          );
-                        }
-                      });
-
-                      //navigate to the homepage
-                    },
-                    child: const Text('Login'),
+                TextFormField(
+                  controller: emailcontroller,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email',
                   ),
                 ),
                 const SizedBox(
-                  width: 20,
+                  height: 10,
                 ),
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {
-                      context.router.push(const SignupRoute());
-                    },
-                    child: const Text('Sign Up'),
+                TextFormField(
+                  controller: passwordcontroller,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
                   ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // May need to do cool async things here
+                          //login the user
+                          ref
+                              .read(authRepositoryProvider)
+                              .loginUser(
+                                emailcontroller.text,
+                                passwordcontroller.text,
+                              )
+                              .then((value) {
+                            if (value) {
+                              context.router.push(
+                                const WrapperRoute(),
+                              ); //TODO fix to not have back button
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Invalid email password'),
+                                ),
+                              );
+                            }
+                          });
+
+                          //navigate to the homepage
+                        },
+                        child: const Text('Login'),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          context.router.push(const SignupRoute());
+                        },
+                        child: const Text('Sign Up'),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
