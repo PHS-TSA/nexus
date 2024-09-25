@@ -14,7 +14,10 @@ class LoginPage extends ConsumerWidget {
     final emailcontroller = TextEditingController();
     final passwordcontroller = TextEditingController();
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(
+        title: const Text('Login'),
+        automaticallyImplyLeading: false,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
@@ -58,7 +61,8 @@ class LoginPage extends ConsumerWidget {
                           .then((value) {
                         if (value) {
                           context.router.push(
-                              const WrapperRoute()); //TODO fix to not have back button
+                            const WrapperRoute(),
+                          ); //TODO fix to not have back button
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
