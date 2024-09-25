@@ -64,7 +64,7 @@ class AppRouter extends RootStackRouter {
           title: (context, data) => 'Sign Up',
         ),
         AutoRoute(
-          page: CheckUserAuth.page,
+          page: CheckUserAuthRoute.page,
           path: '/',
           title: (context, data) => 'Login',
         ),

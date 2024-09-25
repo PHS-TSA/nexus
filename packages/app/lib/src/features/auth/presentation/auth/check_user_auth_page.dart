@@ -6,8 +6,8 @@ import '../../../../app/router.gr.dart';
 import '../../data/auth_repository.dart';
 
 @RoutePage()
-class CheckUserAuth extends ConsumerWidget {
-  const CheckUserAuth({super.key});
+class CheckUserAuthPage extends ConsumerWidget {
+  const CheckUserAuthPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
