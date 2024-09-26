@@ -2,14 +2,18 @@
 library;
 
 import 'package:auto_route/auto_route.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../features/auth/data/auth_repository.dart';
 import 'router.gr.dart';
 
 /// The router for the application.
 @AutoRouterConfig(replaceInRouteName: 'Page,Route', deferredLoading: true)
 class AppRouter extends RootStackRouter {
   /// Instantiate a new instance of [AppRouter].
-  AppRouter();
+  AppRouter(this.ref); //creates a ref so we can use riverpod
+
+  Ref ref;
 
   @override
   final defaultRouteType = const RouteType.material();
@@ -52,11 +56,27 @@ class AppRouter extends RootStackRouter {
               ],
             ),
           ],
+          guards: [
+            AutoRouteGuard.simple((resolver, router) async {
+              if (await ref.read(authRepositoryProvider).checkUserAuth()) {
+                resolver.next();
+              } else {
+                await resolver.redirect(
+                  LoginRoute(
+                    onResult: ({required didLogIn}) => resolver.next(
+                      didLogIn,
+                    ),
+                  ),
+                ); //The parameter brings them back to the page they were before
+              }
+            }),
+          ],
         ),
         AutoRoute(
           page: LoginRoute.page,
           path: '/login',
           title: (context, data) => 'Login',
+          keepHistory: false,
         ),
         AutoRoute(
           page: SignupRoute.page,

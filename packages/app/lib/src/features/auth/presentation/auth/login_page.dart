@@ -1,18 +1,22 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
 import '../../data/auth_repository.dart';
 
 @RoutePage()
-class LoginPage extends ConsumerWidget {
-  const LoginPage({super.key});
+class LoginPage extends HookConsumerWidget {
+  const LoginPage({required this.onResult, super.key});
+
+  final void Function({bool didLogIn}) onResult;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final emailcontroller = TextEditingController();
-    final passwordcontroller = TextEditingController();
+    final emailcontroller = useTextEditingController();
+    final passwordcontroller = useTextEditingController();
 
     final currentWidth = MediaQuery.of(context).size.width;
 
@@ -92,27 +96,26 @@ class LoginPage extends ConsumerWidget {
                           onPressed: () async {
                             // May need to do cool async things here
                             //login the user
-                            await ref
+                            final didLogIn = await ref
                                 .read(authRepositoryProvider)
                                 .loginUser(
                                   emailcontroller.text,
                                   passwordcontroller.text,
-                                )
-                                .then((value) {
-                              if (value) {
-                                context.router.push(
-                                  const WrapperRoute(),
                                 );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Invalid email password'),
-                                  ),
-                                );
-                              }
-                            });
 
-                            //navigate to the homepage
+                            if (didLogIn) {
+                              //navigate to the page the user wanted to go
+                              onResult(
+                                didLogIn: didLogIn,
+                              ); //Runs the function passed in guard and brings user back to previous page
+                            } else {
+                              //Keeps the user on the login page
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Invalid email/password'),
+                                ),
+                              );
+                            }
                           },
                           child: const Text('Login'),
                         ),
@@ -125,8 +128,9 @@ class LoginPage extends ConsumerWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 16),
                     child: TextButton(
-                      onPressed: () {
-                        context.router.push(const SignupRoute());
+                      onPressed: () async {
+                        await context.router
+                            .push(SignupRoute(onResult: onResult));
                       },
                       child: const Text("Don't have an account? Sign up!"),
                     ),
@@ -136,6 +140,17 @@ class LoginPage extends ConsumerWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+      ObjectFlagProperty<void Function({required bool didLogIn})>.has(
+        'onResult',
+        onResult,
       ),
     );
   }
