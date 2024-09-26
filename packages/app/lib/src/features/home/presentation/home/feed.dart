@@ -52,11 +52,13 @@ class Feed extends ConsumerWidget {
     );
   }
 
+  // coverage:ignore-start
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<FeedEntity>('feed', feed));
   }
+  // coverage:ignore-end
 }
 
 class _Post extends StatelessWidget {
@@ -83,9 +85,11 @@ class _Post extends StatelessWidget {
     );
   }
 
+  // coverage:ignore-start
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<PostEntity>('post', post));
   }
+  // coverage:ignore-end
 }
