@@ -79,7 +79,7 @@ class SettingsPage extends ConsumerWidget {
             child: FilledButton(
               onPressed: () async {
                 await ref.read(authRepositoryProvider).logoutUser();
-                await context.router.push(const CheckUserAuthRoute());
+                await context.router.push(LoginRoute());
               } //Add log out method
               ,
               style: ButtonStyle(

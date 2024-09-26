@@ -1,17 +1,17 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
 import '../../data/auth_repository.dart';
+import 'login_page.dart';
 
 @RoutePage()
 class SignupPage extends HookConsumerWidget {
-  const SignupPage({required this.onResult, super.key});
+  const SignupPage({LoginCallback? onResult, super.key}) : _onResult = onResult;
 
-  final void Function({bool didLogIn}) onResult;
+  final LoginCallback? _onResult;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -119,7 +119,7 @@ class SignupPage extends HookConsumerWidget {
                               if (value == 'success') {
                                 //TODO Fix routing
                                 context.router
-                                    .push(LoginRoute(onResult: onResult));
+                                    .push(LoginRoute(onResult: _onResult));
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -142,7 +142,7 @@ class SignupPage extends HookConsumerWidget {
                     padding: const EdgeInsets.only(top: 16),
                     child: TextButton(
                       onPressed: () {
-                        context.router.push(LoginRoute(onResult: onResult));
+                        context.router.push(LoginRoute(onResult: _onResult));
                       },
                       child: const Text('Back to login'),
                     ),
@@ -152,17 +152,6 @@ class SignupPage extends HookConsumerWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(
-      ObjectFlagProperty<void Function({bool didLogIn})>.has(
-        'onResult',
-        onResult,
       ),
     );
   }

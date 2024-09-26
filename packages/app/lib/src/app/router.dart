@@ -91,11 +91,11 @@ class AppRouter extends RootStackRouter {
           path: '/sign_up',
           title: (context, data) => 'Sign Up',
         ),
-        AutoRoute(
-          page: CheckUserAuthRoute.page,
-          path: '/',
-          title: (context, data) => 'Login',
-        ),
+        // AutoRoute(
+        //   page: CheckUserAuthRoute.page,
+        //   path: '/',
+        //   title: (context, data) => 'Login',
+        // ),
         RedirectRoute(path: '/*', redirectTo: '/'),
       ];
 }

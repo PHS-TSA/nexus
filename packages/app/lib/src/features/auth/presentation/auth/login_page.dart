@@ -7,11 +7,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../app/router.gr.dart';
 import '../../data/auth_repository.dart';
 
+//Allows us to make this private so we can run
+typedef LoginCallback = void Function({bool didLogIn});
+
 @RoutePage()
 class LoginPage extends HookConsumerWidget {
-  const LoginPage({required this.onResult, super.key});
+  const LoginPage({LoginCallback? onResult, super.key}) : _onResult = onResult;
 
-  final void Function({bool didLogIn}) onResult;
+  final LoginCallback? _onResult;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -103,10 +106,18 @@ class LoginPage extends HookConsumerWidget {
                                   passwordcontroller.text,
                                 );
 
+                            if (!context.mounted) return;
+
                             if (didLogIn) {
                               //navigate to the page the user wanted to go
                               //Runs the function passed in guard and brings user back to previous page
-                              onResult(didLogIn: didLogIn);
+
+                              if (_onResult != null) {
+                                _onResult(didLogIn: didLogIn);
+                              } else {
+                                await context.router
+                                    .push(const LocalFeedRoute());
+                              }
                             } else {
                               //Keeps the user on the login page
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -129,7 +140,7 @@ class LoginPage extends HookConsumerWidget {
                     child: TextButton(
                       onPressed: () async {
                         await context.router
-                            .push(SignupRoute(onResult: onResult));
+                            .push(SignupRoute(onResult: _onResult));
                       },
                       child: const Text("Don't have an account? Sign up!"),
                     ),
@@ -149,7 +160,7 @@ class LoginPage extends HookConsumerWidget {
     properties.add(
       ObjectFlagProperty<void Function({required bool didLogIn})>.has(
         'onResult',
-        onResult,
+        _onResult,
       ),
     );
   }
