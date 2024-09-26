@@ -21,11 +21,11 @@ void main() {
           .isData()
           .has((i) => i.posts, 'posts')
           .length
-          .equals(20);
+          .equals(pageSize);
 
       // Act
       final postsToAdd = List.generate(
-        20,
+        pageSize,
         (index) => const PostEntity(
           image: null,
           body: 'body',
@@ -41,7 +41,7 @@ void main() {
           .isData()
           .has((i) => i.posts, 'posts')
           .length
-          .equals(40);
+          .equals(pageSize * 2);
     });
   });
 }

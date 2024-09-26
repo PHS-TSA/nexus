@@ -11,7 +11,7 @@ import '../domain/post_entity.dart';
 part 'feed_service.g.dart';
 
 /// The number of posts to fetch at a time.
-const pageSize = 20;
+const pageSize = 10;
 
 /// Provide the values of a feed.
 @riverpod
