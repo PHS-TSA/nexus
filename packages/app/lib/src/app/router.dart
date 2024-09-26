@@ -57,14 +57,22 @@ class AppRouter extends RootStackRouter {
             ),
           ],
           guards: [
+            /* 
+            How this guard works:
+            1. The guard contacts the authRepositoryProvider to check if the user is logged in. If they it allows them to go to the requested page
+            2. Else send user to login page with and save the page the user wanted to go to in the onResult function.
+            3. Once the user successfully logs in in the login_page the didLogIN value is set to true and onResult function is ran sending them to their requested page
+            */
             AutoRouteGuard.simple((resolver, router) async {
               if (await ref.read(authRepositoryProvider).checkUserAuth()) {
                 resolver.next();
               } else {
                 await resolver.redirect(
                   LoginRoute(
-                    onResult: ({required didLogIn}) => resolver.next(
-                      didLogIn,
+                    // AutoRoute is buggy here, this is actually required.
+                    // ignore: avoid_types_on_closure_parameters
+                    onResult: ({bool? didLogIn}) => resolver.next(
+                      didLogIn ?? false,
                     ),
                   ),
                 ); //The parameter brings them back to the page they were before

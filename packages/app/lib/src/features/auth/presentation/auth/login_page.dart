@@ -105,9 +105,8 @@ class LoginPage extends HookConsumerWidget {
 
                             if (didLogIn) {
                               //navigate to the page the user wanted to go
-                              onResult(
-                                didLogIn: didLogIn,
-                              ); //Runs the function passed in guard and brings user back to previous page
+                              //Runs the function passed in guard and brings user back to previous page
+                              onResult(didLogIn: didLogIn);
                             } else {
                               //Keeps the user on the login page
                               ScaffoldMessenger.of(context).showSnackBar(

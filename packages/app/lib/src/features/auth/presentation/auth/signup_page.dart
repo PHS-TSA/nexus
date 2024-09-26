@@ -11,7 +11,7 @@ import '../../data/auth_repository.dart';
 class SignupPage extends HookConsumerWidget {
   const SignupPage({required this.onResult, super.key});
 
-  final void Function({required bool didLogIn}) onResult;
+  final void Function({bool didLogIn}) onResult;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
