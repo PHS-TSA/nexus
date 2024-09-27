@@ -8,13 +8,13 @@ import '../../../../app/router.gr.dart';
 import '../../data/auth_repository.dart';
 
 //Allows us to make this private so we can run
-typedef LoginCallback = void Function({bool didLogIn});
 
 @RoutePage()
 class LoginPage extends HookConsumerWidget {
-  const LoginPage({LoginCallback? onResult, super.key}) : _onResult = onResult;
+  const LoginPage({void Function({bool didLogIn})? onResult, super.key})
+      : _onResult = onResult;
 
-  final LoginCallback? _onResult;
+  final void Function({bool didLogIn})? _onResult;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

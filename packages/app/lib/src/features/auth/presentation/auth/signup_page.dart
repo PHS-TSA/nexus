@@ -5,13 +5,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
 import '../../data/auth_repository.dart';
-import 'login_page.dart';
 
 @RoutePage()
 class SignupPage extends HookConsumerWidget {
-  const SignupPage({LoginCallback? onResult, super.key}) : _onResult = onResult;
+  const SignupPage({void Function({bool didLogIn})? onResult, super.key})
+      : _onResult = onResult;
 
-  final LoginCallback? _onResult;
+  final void Function({bool didLogIn})? _onResult;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

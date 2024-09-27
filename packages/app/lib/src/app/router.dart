@@ -22,7 +22,7 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
         AutoRoute(
           page: WrapperRoute.page,
-          path: '/home/',
+          path: '/',
           children: [
             AutoRoute(
               page: SampleItemsListRoute.page,
@@ -56,29 +56,6 @@ class AppRouter extends RootStackRouter {
               ],
             ),
           ],
-          guards: [
-            /* 
-            How this guard works:
-            1. The guard contacts the authRepositoryProvider to check if the user is logged in. If they it allows them to go to the requested page
-            2. Else send user to login page with and save the page the user wanted to go to in the onResult function.
-            3. Once the user successfully logs in in the login_page the didLogIN value is set to true and onResult function is ran sending them to their requested page
-            */
-            AutoRouteGuard.simple((resolver, router) async {
-              if (await ref.read(authRepositoryProvider).checkUserAuth()) {
-                resolver.next();
-              } else {
-                await resolver.redirect(
-                  LoginRoute(
-                    // AutoRoute is buggy here, this is actually required.
-                    // ignore: avoid_types_on_closure_parameters
-                    onResult: ({bool? didLogIn}) => resolver.next(
-                      didLogIn ?? false,
-                    ),
-                  ),
-                ); //The parameter brings them back to the page they were before
-              }
-            }),
-          ],
         ),
         AutoRoute(
           page: LoginRoute.page,
@@ -91,11 +68,36 @@ class AppRouter extends RootStackRouter {
           path: '/sign_up',
           title: (context, data) => 'Sign Up',
         ),
-        // AutoRoute(
-        //   page: CheckUserAuthRoute.page,
-        //   path: '/',
-        //   title: (context, data) => 'Login',
-        // ),
         RedirectRoute(path: '/*', redirectTo: '/'),
+      ];
+
+  @override
+  List<AutoRouteGuard> get guards => [
+        /* 
+          How this guard works:
+          1. The guard contacts the authRepositoryProvider to check if the user is logged in. If they it allows them to go to the requested page
+          2. Else send user to login page with and save the page the user wanted to go to in the onResult function.
+          3. Once the user successfully logs in in the login_page the didLogIN value is set to true and onResult function is ran sending them to their requested page
+          */
+        AutoRouteGuard.simple((resolver, router) async {
+          final authenticated =
+              await ref.read(authRepositoryProvider).checkUserAuth();
+          if (authenticated ||
+              resolver.routeName == LoginRoute.name ||
+              resolver.routeName == SignupRoute.name) {
+            //Add in support for
+            resolver.next();
+          } else {
+            await resolver.redirect(
+              LoginRoute(
+                // AutoRoute is buggy here, this is actually required.
+                // ignore: avoid_types_on_closure_parameters
+                onResult: ({bool? didLogIn}) => resolver.next(
+                  didLogIn ?? false,
+                ),
+              ),
+            ); //The parameter brings them back to the page they were before
+          }
+        }),
       ];
 }
