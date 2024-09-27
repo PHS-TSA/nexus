@@ -196,7 +196,7 @@ jobs:
       - name: 🕵️ Analyze project source
         run: melos analyze --fatal-infos
       - name: Clean Flutter generated files
-        # Works around invertase/dart_custom_lint#268
+        # Works around invertase/dart_custom_lint#271
         run: melos run clean
       - name: 🕵️ Run Custom Lint Rules
         run: melos run custom_lint

@@ -454,10 +454,10 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_checks
-      sha256: d31fea8435871fb13fe038eae0e2484530d76d6eb1898def793b71651a6c42a0
+      sha256: b0a40b15d38436b7c08b83353e74b0569c1ec687bd81c9556091fbb8807c1b99
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0"
+    version: "0.1.1"
   flutter_gen_core:
     dependency: transitive
     description:
@@ -520,18 +520,18 @@ packages:
     dependency: "direct overridden"
     description:
       name: flutter_web_auth_2
-      sha256: e12eb041997703ad4fa23490a9a93fd1390a9d8b2329a6f69a1f98f8ec61430d
+      sha256: "366b7cb97ee3e6c64d59ba6d59f28d88ecff22cd4e21abd7f989d304869fb3aa"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.0-alpha.8"
+    version: "4.0.0"
   flutter_web_auth_2_platform_interface:
     dependency: transitive
     description:
       name: flutter_web_auth_2_platform_interface
-      sha256: "49c6d660f632d181102d4eeca7b72ea88124d7f4526fd0117f98c4261e9e72b0"
+      sha256: f9c2d9ccf07327c8d2cc9db2b7625577f5e3efb78a2a91fb5d5b858b948c368b
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.0-alpha.1"
+    version: "4.0.0"
   flutter_web_plugins:
     dependency: "direct main"
     description: flutter
@@ -1487,7 +1487,7 @@ packages:
     source: hosted
     version: "0.1.6"
   web_socket_channel:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: web_socket_channel
       sha256: "9f187088ed104edd8662ca07af4b124465893caf063ba29758f97af57e61da8f"
@@ -1514,10 +1514,10 @@ packages:
     dependency: transitive
     description:
       name: win32_registry
-      sha256: "723b7f851e5724c55409bb3d5a32b203b3afe8587eaf5dafb93a5fed8ecda0d6"
+      sha256: "21ec76dfc731550fd3e2ce7a33a9ea90b828fdf19a5c3bcf556fa992cfa99852"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.4"
+    version: "1.1.5"
   window_to_front:
     dependency: transitive
     description:
