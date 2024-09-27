@@ -99,32 +99,55 @@ class LoginPage extends HookConsumerWidget {
                           onPressed: () async {
                             // May need to do cool async things here
                             //login the user
-                            final didLogIn =
-                                await ref.read(authServiceProvider).loginUser(
-                                      emailcontroller.text,
-                                      passwordcontroller.text,
-                                    );
 
+                            await ref
+                                .read(authServiceProvider.notifier)
+                                .loginUser(
+                                  emailcontroller.text,
+                                  passwordcontroller.text,
+                                );
+
+                            // check that the widget still exists after the async operation
                             if (!context.mounted) return;
 
-                            if (didLogIn) {
-                              //navigate to the page the user wanted to go
-                              //Runs the function passed in guard and brings user back to previous page
-
-                              if (_onResult != null) {
+                            switch (ref.read(authServiceProvider)) {
+                              //May need changes. We need to discuss some things on monday.
+                              case AsyncData():
                                 _onResult(didLogIn: didLogIn);
-                              } else {
-                                await context.router
-                                    .push(const LocalFeedRoute());
-                              }
-                            } else {
-                              //Keeps the user on the login page
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Invalid email/password'),
-                                ),
-                              );
+                              case AsyncError(:final error):
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(error.toString()),
+                                  ), //Change to theme color
+                                );
                             }
+
+                            // final didLogIn =
+                            //     await ref.read(authServiceProvider).loginUser(
+                            //           emailcontroller.text,
+                            //           passwordcontroller.text,
+                            //         );
+
+                            // if (!context.mounted) return;
+
+                            // if (didLogIn) {
+                            //   //navigate to the page the user wanted to go
+                            //   //Runs the function passed in guard and brings user back to previous page
+
+                            //   if (_onResult != null) {
+                            //     _onResult(didLogIn: didLogIn);
+                            //   } else {
+                            //     await context.router
+                            //         .push(const LocalFeedRoute());
+                            //   }
+                            // } else {
+                            //   //Keeps the user on the login page
+                            //   ScaffoldMessenger.of(context).showSnackBar(
+                            //     const SnackBar(
+                            //       content: Text('Invalid email/password'),
+                            //     ),
+                            //   );
+                            // }
                           },
                           child: const Text('Login'),
                         ),

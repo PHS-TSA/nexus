@@ -82,7 +82,7 @@ class AppRouter extends RootStackRouter {
         AutoRouteGuard.simple((resolver, router) async {
           final authenticated =
               await ref.read(authRepositoryProvider).checkUserAuth();
-          if (authenticated ||
+          if (authenticated != null || //TODO check implementation
               resolver.routeName == LoginRoute.name ||
               resolver.routeName == SignupRoute.name) {
             //Add in support for

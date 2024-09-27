@@ -8,7 +8,7 @@ part 'auth_repository.g.dart';
 
 abstract interface class AuthRepository {
   Future<String> createUser(String name, String email, String password);
-  Future<bool> loginUser(String email, String password);
+  Future<String> loginUser(String email, String password);
   Future<void> logoutUser();
   Future<User?> checkUserAuth();
 }
@@ -50,7 +50,7 @@ class _AppwriteAuthRepository implements AuthRepository {
       return 'success';
     } catch (e) {
       print(e);
-      return;
+      return 'fail';
     }
   }
 
