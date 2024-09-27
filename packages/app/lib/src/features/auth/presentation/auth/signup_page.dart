@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
-import '../../data/auth_repository.dart';
+import '../../application/auth_service.dart';
 
 @RoutePage()
 class SignupPage extends HookConsumerWidget {
@@ -109,26 +109,28 @@ class SignupPage extends HookConsumerWidget {
                           onPressed: () async {
                             // May need to do cool async things here
                             await ref
-                                .read(authRepositoryProvider)
+                                .read(authServiceProvider.notifier)
                                 .createUser(
                                   namecontroller.text,
                                   emailcontroller.text,
                                   passwordcontroller.text,
-                                )
-                                .then((value) {
-                              if (value == 'success') {
-                                //TODO Fix routing
-                                context.router
+                                );
+
+                            // check that the widget still exists after the async operation
+                            if (!context.mounted) return;
+
+                            switch (ref.read(authServiceProvider)) {
+                              case AsyncData():
+                                // navigate to the homepage
+                                await context.router
                                     .push(LoginRoute(onResult: _onResult));
-                              } else {
+                              case AsyncError(:final error):
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text(value),
+                                    content: Text(error.toString()),
                                   ), //Change to theme color
                                 );
-                              }
-                            });
-                            // navigate to the homepage
+                            }
                           },
                           child: const Text('Sign Up'),
                         ),

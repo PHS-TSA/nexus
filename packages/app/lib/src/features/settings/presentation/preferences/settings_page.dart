@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
-import '../../../auth/data/auth_repository.dart';
+import '../../../auth/application/auth_service.dart';
 import '../../application/settings_service.dart';
 
 /// {@template our_democracy.features.settings.presentation.preferences}
@@ -78,7 +78,7 @@ class SettingsPage extends ConsumerWidget {
             alignment: Alignment.topLeft,
             child: FilledButton(
               onPressed: () async {
-                await ref.read(authRepositoryProvider).logoutUser();
+                await ref.read(authServiceProvider.notifier).logoutUser();
                 await context.router.push(LoginRoute());
               } //Add log out method
               ,

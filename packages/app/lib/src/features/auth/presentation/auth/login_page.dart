@@ -5,7 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
-import '../../data/auth_repository.dart';
+import '../../application/auth_service.dart';
 
 //Allows us to make this private so we can run
 
@@ -99,12 +99,11 @@ class LoginPage extends HookConsumerWidget {
                           onPressed: () async {
                             // May need to do cool async things here
                             //login the user
-                            final didLogIn = await ref
-                                .read(authRepositoryProvider)
-                                .loginUser(
-                                  emailcontroller.text,
-                                  passwordcontroller.text,
-                                );
+                            final didLogIn =
+                                await ref.read(authServiceProvider).loginUser(
+                                      emailcontroller.text,
+                                      passwordcontroller.text,
+                                    );
 
                             if (!context.mounted) return;
 

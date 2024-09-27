@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../utils/api.dart';
@@ -9,7 +10,7 @@ abstract interface class AuthRepository {
   Future<String> createUser(String name, String email, String password);
   Future<bool> loginUser(String email, String password);
   Future<void> logoutUser();
-  Future<bool> checkUserAuth();
+  Future<User?> checkUserAuth();
 }
 
 //Create a user account
@@ -39,17 +40,17 @@ class _AppwriteAuthRepository implements AuthRepository {
 // Login the User
 
   @override
-  Future<bool> loginUser(String email, String password) async {
+  Future<String> loginUser(String email, String password) async {
     try {
       final user = await account.createEmailPasswordSession(
         email: email,
         password: password,
       );
       print('User logged in');
-      return true;
+      return 'success';
     } catch (e) {
       print(e);
-      return false;
+      return;
     }
   }
 
@@ -61,16 +62,16 @@ class _AppwriteAuthRepository implements AuthRepository {
 
   // check User is authenticated or not
   @override
-  Future<bool> checkUserAuth() async {
+  Future<User?> checkUserAuth() async {
     try {
       print('Trying to checkUserAuth func');
       //Checks if session exist or not
-      await account.getSession(sessionId: 'current');
+      final user = await account.get();
       //If exist return true
-      return true;
+      return user;
     } on AppwriteException catch (e) {
       print(e);
-      return false;
+      return null;
     }
   }
 }
