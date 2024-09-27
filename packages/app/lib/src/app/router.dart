@@ -36,6 +36,17 @@ class AppRouter extends RootStackRouter {
               title: (context, data) => 'Item Details',
             ),
             AutoRoute(
+              page: MapRoute.page,
+              path: '',
+              title: (context, data) => 'Map',
+              initial: true,
+            ),
+            AutoRoute(
+              page: MapInfoRoute.page,
+              path: 'info',
+              title: (context, data) => 'Location Details',
+            ),
+            AutoRoute(
               page: SettingsRoute.page,
               path: 'settings',
               title: (context, data) => 'Settings',

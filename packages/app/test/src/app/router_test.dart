@@ -67,6 +67,30 @@ void main() {
             tested.routes[0].children?.routes.toList()[1];
         check(sampleItemDetailsRoute?.path).equals('sample-item');
       });
+      test('should be correct for MapRoute.', () {
+        final container = createContainer();
+        final routerSubscription = container.listen(
+          routerProvider,
+          (_, __) {},
+        );
+        final tested = routerSubscription.read();
+
+        final sampleItemListRoute =
+            tested.routes[0].children?.routes.toList()[2];
+        check(sampleItemListRoute?.path).equals('');
+      });
+      test('should be correct for MapInfoRoute.', () {
+        final container = createContainer();
+        final routerSubscription = container.listen(
+          routerProvider,
+          (_, __) {},
+        );
+        final tested = routerSubscription.read();
+
+        final sampleItemDetailsRoute =
+            tested.routes[0].children?.routes.toList()[3];
+        check(sampleItemDetailsRoute?.path).equals('info');
+      });
       test('should be correct for SettingsRoute.', () {
         final container = createContainer();
         final routerSubscription = container.listen(
@@ -75,7 +99,7 @@ void main() {
         );
         final tested = routerSubscription.read();
 
-        final settingsRoute = tested.routes[0].children?.routes.toList()[2];
+        final settingsRoute = tested.routes[0].children?.routes.toList()[4];
         check(settingsRoute?.path).equals('settings');
       });
       test("should be correct for ShellRoute('Feed')", () {
@@ -87,7 +111,7 @@ void main() {
         final tested = routerSubscription.read();
 
         final sampleItemDetailsRoute =
-            tested.routes[0].children?.routes.toList()[3];
+            tested.routes[0].children?.routes.toList()[5];
         check(sampleItemDetailsRoute?.path)
             // Home
             .equals('');
