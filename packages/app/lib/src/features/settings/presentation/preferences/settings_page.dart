@@ -78,7 +78,8 @@ class SettingsPage extends ConsumerWidget {
             alignment: Alignment.topLeft,
             child: FilledButton(
               onPressed: () async {
-                await ref.read(authServiceProvider.notifier).logoutUser();
+                await ref.read(authServiceProvider.notifier).logOutUser();
+                if (!context.mounted) return;
                 await context.router.push(LoginRoute());
               } //Add log out method
               ,

@@ -15,43 +15,46 @@ class SignupPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final namecontroller = useTextEditingController();
-    final emailcontroller = useTextEditingController();
-    final passwordcontroller = useTextEditingController();
+    final nameController = useTextEditingController();
+    final emailController = useTextEditingController();
+    final passwordController = useTextEditingController();
 
-    final currentWidth = MediaQuery.of(context).size.width;
-
+    // TODO(lishaduck): Figure out how to remove nested scaffolds.
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/pictures/login_image.png'),
-            fit: BoxFit.fill, // Need to find a better image or move photo down
+            // TODO(MattsAttack): I need to find a better image or move the photo down.
+            fit: BoxFit.fill,
           ),
         ),
         child: Padding(
           padding: EdgeInsets.only(
-            left: currentWidth / 4,
-            right: currentWidth / 4,
+            // `MediaQuery`s shouldn't be cached, it makes them potentially less responsive.
+            left: MediaQuery.sizeOf(context).width / 4,
+            right: MediaQuery.sizeOf(context).width / 4,
             top: 35,
             bottom: 40,
           ),
           child: Container(
             decoration: BoxDecoration(
+              // TODO(MattsAttack): Find a better color for this (use Theme.of(context).someColor).
               color: const Color.fromARGB(
                 255,
                 34,
                 29,
                 43,
-              ), //TODO better color for this
+              ),
               borderRadius: BorderRadius.circular(15),
             ),
             child: Padding(
               padding: const EdgeInsets.all(16),
+              // TODO(lishaduck): This should be a `Form`, and support validation.
               child: Column(
                 children: [
                   const DecoratedBox(
-                    //TODO Redesign this was for testing
+                    // TODO(MattsAttack): Redesign this, it was for testing.
                     decoration: BoxDecoration(
                         // color: Colors.white,
                         // border: Border.all(color: Colors.white),
@@ -65,62 +68,55 @@ class SignupPage extends HookConsumerWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 32,
-                  ),
+                  const SizedBox(height: 32),
                   TextFormField(
-                    controller: namecontroller,
+                    controller: nameController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Name',
                     ),
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  const SizedBox(height: 16),
                   TextFormField(
-                    controller: emailcontroller,
+                    controller: emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Email',
                     ),
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  const SizedBox(height: 16),
+                  // TODO(lishaduck): Maybe add a password reverification field.
                   TextFormField(
-                    controller: passwordcontroller,
+                    controller: passwordController,
                     obscureText: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password',
                     ),
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  const SizedBox(height: 16),
                   Row(
                     children: [
                       Expanded(
                         child: ElevatedButton(
-                          //Don't love button color
+                          // TODO(MattsAttack): I don't don't love the button color, it could be improved.
                           onPressed: () async {
-                            // May need to do cool async things here
                             await ref
                                 .read(authServiceProvider.notifier)
                                 .createUser(
-                                  namecontroller.text,
-                                  emailcontroller.text,
-                                  passwordcontroller.text,
+                                  nameController.text,
+                                  emailController.text,
+                                  passwordController.text,
                                 );
 
-                            // check that the widget still exists after the async operation
+                            // Check that the widget still exists after the async operation.
                             if (!context.mounted) return;
-
                             switch (ref.read(authServiceProvider)) {
-                              case AsyncData():
+                              case AsyncData(:final value) when value != null:
                                 // navigate to the homepage
                                 await context.router
                                     .push(LoginRoute(onResult: _onResult));
@@ -137,14 +133,13 @@ class SignupPage extends HookConsumerWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    width: 20,
-                  ),
+                  const SizedBox(width: 20),
                   Padding(
                     padding: const EdgeInsets.only(top: 16),
                     child: TextButton(
-                      onPressed: () {
-                        context.router.push(LoginRoute(onResult: _onResult));
+                      onPressed: () async {
+                        await context.router
+                            .push(LoginRoute(onResult: _onResult));
                       },
                       child: const Text('Back to login'),
                     ),

@@ -1,13 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../../gen/assets.gen.dart';
 import '../../../../app/router.gr.dart';
 import '../../application/auth_service.dart';
-
-//Allows us to make this private so we can run
 
 @RoutePage()
 class LoginPage extends HookConsumerWidget {
@@ -18,16 +16,16 @@ class LoginPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final emailcontroller = useTextEditingController();
-    final passwordcontroller = useTextEditingController();
+    final emailController = useTextEditingController();
+    final passwordController = useTextEditingController();
 
     final currentWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/pictures/login_image.png'),
+            image: Assets.pictures.loginImage.provider(),
             fit: BoxFit.fill, // Need to find a better image or move photo down
           ),
         ),
@@ -71,7 +69,7 @@ class LoginPage extends HookConsumerWidget {
                     height: 32,
                   ),
                   TextFormField(
-                    controller: emailcontroller,
+                    controller: emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -82,7 +80,7 @@ class LoginPage extends HookConsumerWidget {
                     height: 16,
                   ),
                   TextFormField(
-                    controller: passwordcontroller,
+                    controller: passwordController,
                     obscureText: true,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -97,57 +95,35 @@ class LoginPage extends HookConsumerWidget {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () async {
-                            // May need to do cool async things here
-                            //login the user
-
+                            // Log in the user.
                             await ref
                                 .read(authServiceProvider.notifier)
-                                .loginUser(
-                                  emailcontroller.text,
-                                  passwordcontroller.text,
+                                .logInUser(
+                                  emailController.text,
+                                  passwordController.text,
                                 );
 
-                            // check that the widget still exists after the async operation
+                            // Check that the widget still exists after the async operation.
                             if (!context.mounted) return;
 
                             switch (ref.read(authServiceProvider)) {
-                              //May need changes. We need to discuss some things on monday.
-                              case AsyncData():
-                                _onResult(didLogIn: didLogIn);
+                              // May need changes. We need to discuss some things on Monday.
+                              case AsyncData(:final value)
+                                  when value != null && _onResult != null:
+                                // Navigate to the page the user wanted to go.
+                                // Runs the function passed in by the guard and brings user back to previous page.
+                                _onResult(didLogIn: true);
+
                               case AsyncError(:final error):
+                                //Keeps the user on the login page
+                                // TODO(lishaduck): Move this to the guard.
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(error.toString()),
                                   ), //Change to theme color
                                 );
+                              // Do nothing if loading or if onResult is null.
                             }
-
-                            // final didLogIn =
-                            //     await ref.read(authServiceProvider).loginUser(
-                            //           emailcontroller.text,
-                            //           passwordcontroller.text,
-                            //         );
-
-                            // if (!context.mounted) return;
-
-                            // if (didLogIn) {
-                            //   //navigate to the page the user wanted to go
-                            //   //Runs the function passed in guard and brings user back to previous page
-
-                            //   if (_onResult != null) {
-                            //     _onResult(didLogIn: didLogIn);
-                            //   } else {
-                            //     await context.router
-                            //         .push(const LocalFeedRoute());
-                            //   }
-                            // } else {
-                            //   //Keeps the user on the login page
-                            //   ScaffoldMessenger.of(context).showSnackBar(
-                            //     const SnackBar(
-                            //       content: Text('Invalid email/password'),
-                            //     ),
-                            //   );
-                            // }
                           },
                           child: const Text('Login'),
                         ),
@@ -172,17 +148,6 @@ class LoginPage extends HookConsumerWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(
-      ObjectFlagProperty<void Function({required bool didLogIn})>.has(
-        'onResult',
-        _onResult,
       ),
     );
   }

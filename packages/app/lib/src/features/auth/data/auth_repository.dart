@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -6,76 +8,77 @@ import '../../../utils/api.dart';
 
 part 'auth_repository.g.dart';
 
+/// A repository for authentication.
 abstract interface class AuthRepository {
-  Future<String> createUser(String name, String email, String password);
-  Future<String> loginUser(String email, String password);
-  Future<void> logoutUser();
+  /// Register the user (sign them up).
+  /// Only needed once.
+  Future<User?> createUser(String name, String email, String password);
+
+  /// Log the user in.
+  Future<Session?> logInUser(String email, String password);
+
+  /// Log the user out.
+  Future<void> logOutUser();
+
+  /// Check whether or not the user is authenticated.
   Future<User?> checkUserAuth();
 }
 
-//Create a user account
-class _AppwriteAuthRepository implements AuthRepository {
+///
+final class _AppwriteAuthRepository implements AuthRepository {
   const _AppwriteAuthRepository(this.account);
 
   final Account account;
 
-// Register the user(Sign up)
   @override
-  Future<String> createUser(String name, String email, String password) async {
+  Future<User?> createUser(String name, String email, String password) async {
     try {
-      final user = await account.create(
+      return await account.create(
         userId: ID.unique(),
         email: email,
         password: password,
         name: name,
       );
-      print('New user created!');
-      return 'success';
     } on AppwriteException catch (e) {
-      return e.message.toString();
-      print(e);
+      log(e.toString());
+      return null;
     }
   }
 
-// Login the User
-
   @override
-  Future<String> loginUser(String email, String password) async {
+  Future<Session?> logInUser(String email, String password) async {
     try {
       final user = await account.createEmailPasswordSession(
         email: email,
         password: password,
       );
-      print('User logged in');
-      return 'success';
-    } catch (e) {
-      print(e);
-      return 'fail';
+      log('User logged in');
+      return user;
+    } on AppwriteException catch (e) {
+      log(e.toString());
+      return null;
     }
   }
 
   @override
-  Future<void> logoutUser() async {
+  Future<void> logOutUser() async {
     await account.deleteSession(sessionId: 'current');
-    print('User Logged out');
   }
 
-  // check User is authenticated or not
   @override
   Future<User?> checkUserAuth() async {
     try {
-      print('Trying to checkUserAuth func');
-      //Checks if session exist or not
-      final user = await account.get();
-      //If exist return true
-      return user;
+      // Checks if a session exists or not.
+      // If it exists, return it.
+      return await account.get();
     } on AppwriteException catch (e) {
-      print(e);
+      log(e.toString());
       return null;
     }
   }
 }
 
+/// Get the authentication repository.
 @riverpod
 AuthRepository authRepository(AuthRepositoryRef ref) {
   final accountService = ref.watch(accountsProvider);

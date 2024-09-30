@@ -11,6 +11,7 @@ part 'auth_service.g.dart';
 /// Provides method a user?
 @riverpod
 base class AuthService extends _$AuthService {
+  // TODO(lishaduck): Ideally, this wouldn't be async, just nullable.
   @override
   FutureOr<User?> build() async {
     final authRepo = ref.watch(authRepositoryProvider);
@@ -19,32 +20,34 @@ base class AuthService extends _$AuthService {
   }
 
   // Methods on notifiers should be small wrappers around a repo that cache the current values.
+
   // Use this createUser method instead of the method in auth_repository as this one saves it to the provider
-
-  // @lishaduck does this set the current user to the user created in the createUser method? It shouldn't unless we change the implementation to have sign up auto log them in
+  // @MattsAttack> @lishaduck, does this set the current user to the user created in the createUser method? It shouldn't unless we change the implementation to have sign up auto log them in
+  // @lishaduck> @MattsAttack, Appwrite does auto-login. This syncs that. However, you're not guarding the login page, so it doesn't break your setup. I'd probably get it to auto-login as well, but that's separate.
   Future<void> createUser(String name, String email, String password) async {
-    await ref.read(authRepositoryProvider).createUser(name, email, password);
+    // Set the state to loading.
+    state = const AsyncValue.loading();
 
+    // Try to create the user. If it fails, set the state to error.
+    // Note that expected errors are already converted to null.
+    state = await AsyncValue.guard(
+      () async => await ref
+          .read(authRepositoryProvider)
+          .createUser(name, email, password),
+    );
+  }
+
+  Future<void> logInUser(String email, String password) async {
+    await ref.read(authRepositoryProvider).logInUser(email, password);
+
+    // Invalidates the current state and awaits the rebuild.
     ref.invalidateSelf();
-
-    // Awaits the rebuild.
     await future;
   }
 
-  //TODO create other functions for auth_service that relate to auth_repository like above
+  Future<void> logOutUser() async {
+    await ref.read(authRepositoryProvider).logOutUser();
 
-  Future<void> loginUser(String email, String password) async {
-    await ref.read(authRepositoryProvider).loginUser(email, password);
-
-    ref.invalidateSelf();
-
-    // Awaits the rebuild.
-    await future;
+    state = const AsyncValue.data(null);
   }
-
-  //   Future<void> logoutUser() async {
-  //   authRepo.
-  //   await account.deleteSession(sessionId: 'current');
-  //   print('User Logged out');
-  // }
 }
