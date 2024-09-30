@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -173,7 +171,6 @@ class SignupPage extends HookConsumerWidget {
                     child: ElevatedButton(
                       // TODO(MattsAttack): I don't don't love the button color, it could be improved.
                       onPressed: () async {
-                        log('dummy');
                         await handleSubmit();
                       },
                       child: const Text('Sign Up'),
