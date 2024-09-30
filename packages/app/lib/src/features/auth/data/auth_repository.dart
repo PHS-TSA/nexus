@@ -72,14 +72,14 @@ final class _AppwriteAuthRepository implements AuthRepository {
       // If it exists, return it.
       return await account.get();
     } on AppwriteException catch (e) {
-      log(e.toString());
+      log('$e');
       return null;
     }
   }
 }
 
 /// Get the authentication repository.
-@riverpod
+@Riverpod(keepAlive: true)
 AuthRepository authRepository(AuthRepositoryRef ref) {
   final accountService = ref.watch(accountsProvider);
 

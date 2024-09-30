@@ -2,6 +2,8 @@
 library;
 
 import 'package:appwrite/models.dart';
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/auth_repository.dart';
@@ -9,7 +11,7 @@ import '../data/auth_repository.dart';
 part 'auth_service.g.dart';
 
 /// Provides method a user?
-@riverpod
+@Riverpod(keepAlive: true)
 base class AuthService extends _$AuthService {
   // TODO(lishaduck): Ideally, this wouldn't be async, just nullable.
   @override
@@ -50,4 +52,18 @@ base class AuthService extends _$AuthService {
 
     state = const AsyncValue.data(null);
   }
+}
+
+// How to get values from service provider
+// ref.watch(authServiceProvider).valueOrNull?.name;
+
+Object a(Ref ref) {
+  final authState = ref.watch(authServiceProvider);
+  return switch (authState) {
+    AsyncData(:final value) when value != null => value.name,
+    AsyncError(:final error, :final stackTrace) => (error, stackTrace),
+    // that's loading, wait for riverpod 3
+    // _ is loading. return a loading indicator
+    _ => const CircularProgressIndicator(),
+  };
 }

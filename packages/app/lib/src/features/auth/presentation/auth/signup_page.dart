@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -11,8 +13,10 @@ import '../../application/auth_service.dart';
 // TODO(lishaduck): Rename to `SignUpPage`.
 @RoutePage(deferredLoading: true)
 class SignupPage extends HookConsumerWidget {
-  const SignupPage({void Function({bool didLogIn})? onResult, super.key})
-      : _onResult = onResult;
+  const SignupPage({
+    void Function({bool didLogIn})? onResult,
+    super.key,
+  }) : _onResult = onResult;
 
   final void Function({bool didLogIn})? _onResult;
 
@@ -35,10 +39,22 @@ class SignupPage extends HookConsumerWidget {
 
           // Check that the widget still exists after the async operation.
           if (!context.mounted) return;
+
           switch (ref.read(authServiceProvider)) {
-            case AsyncData(:final value) when value != null:
-              // Navigate to the log in page.
-              await context.router.push(LoginRoute(onResult: _onResult));
+            case AsyncData(:final value)
+                when _onResult != null && value != null:
+              // Navigate the page the user wanted to go to.
+
+              _onResult(didLogIn: true);
+
+            case AsyncData(): // Value is null!
+              // TODO(lishaduck): Move this to the guard.
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Invalid username and password'),
+                ),
+              );
+
             case AsyncError(:final error):
               // TODO(lishaduck): Move this to the guard.
               ScaffoldMessenger.of(context).showSnackBar(
@@ -47,7 +63,7 @@ class SignupPage extends HookConsumerWidget {
                 ),
               );
 
-            // Do nothing if loading or if onResult is null.
+            // Do nothing if loading.
           }
         }
       },
@@ -84,6 +100,7 @@ class SignupPage extends HookConsumerWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           child: Form(
+            key: formKey,
             child: Column(
               children: [
                 const DecoratedBox(
@@ -155,7 +172,10 @@ class SignupPage extends HookConsumerWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       // TODO(MattsAttack): I don't don't love the button color, it could be improved.
-                      onPressed: handleSubmit,
+                      onPressed: () async {
+                        log('dummy');
+                        await handleSubmit();
+                      },
                       child: const Text('Sign Up'),
                     ),
                   ),
