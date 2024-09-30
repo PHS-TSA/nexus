@@ -1,6 +1,8 @@
 /// This library
 library;
 
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -78,8 +80,11 @@ class SettingsPage extends ConsumerWidget {
             alignment: Alignment.topLeft,
             child: FilledButton(
               onPressed: () async {
+                log('button pressed');
                 await ref.read(authServiceProvider.notifier).logOutUser();
+                log('method ran');
                 if (!context.mounted) return;
+                log('about to route');
                 await context.router.push(LoginRoute());
               } //Add log out method
               ,

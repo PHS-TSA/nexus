@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -18,20 +20,28 @@ class LoginPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(GlobalKey<FormState>.new);
+    log('creating form key');
+    log(formKey.toString());
 
     final email = useState('');
     final password = useState('');
 
     final handleSubmit = useCallback(
       () async {
+        log('trying to log in');
+        // log(formKey.currentState!.validate().toString());
         if (formKey.currentState?.validate() ?? false) {
+          // @lishaduck stops running here at the conditional
+          log('test');
           formKey.currentState?.save();
 
           // Log in the user.
+          log('about to contact appwrite');
           await ref
               .read(authServiceProvider.notifier)
               .logInUser(email.value, password.value);
 
+          log('appwrite contacted?');
           // Check that the widget still exists after the async operation.
           if (!context.mounted) return;
 
@@ -41,7 +51,10 @@ class LoginPage extends HookConsumerWidget {
                 when value != null && _onResult != null:
               // Navigate to the page the user wanted to go.
               // Runs the function passed in by the guard and brings user back to previous page.
+              log('about to run _onResult');
               _onResult(didLogIn: true);
+
+            //Maybe implement signUp changes here to (AsyncData():)
 
             case AsyncError(:final error):
               // Keeps the user on the login page.
@@ -145,7 +158,9 @@ class LoginPage extends HookConsumerWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       // TODO(MattsAttack): I don't don't love the button color, it could be improved.
-                      onPressed: handleSubmit,
+                      onPressed: () async {
+                        await handleSubmit();
+                      },
                       child: const Text('Log in'),
                     ),
                   ),

@@ -1,6 +1,8 @@
 /// This library provides a service to handle user authentication.
 library;
 
+import 'dart:developer';
+
 import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -48,8 +50,9 @@ base class AuthService extends _$AuthService {
   }
 
   Future<void> logOutUser() async {
+    log('running log out');
     await ref.read(authRepositoryProvider).logOutUser();
-
+    log('ran log out');
     state = const AsyncValue.data(null);
   }
 }
