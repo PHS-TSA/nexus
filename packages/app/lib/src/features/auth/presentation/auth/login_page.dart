@@ -7,7 +7,8 @@ import '../../../../../gen/assets.gen.dart';
 import '../../../../app/router.gr.dart';
 import '../../application/auth_service.dart';
 
-@RoutePage()
+// TODO(lishaduck): Rename to `LogInPage`.
+@RoutePage(deferredLoading: true)
 class LoginPage extends HookConsumerWidget {
   const LoginPage({void Function({bool didLogIn})? onResult, super.key})
       : _onResult = onResult;
@@ -19,31 +20,33 @@ class LoginPage extends HookConsumerWidget {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
 
-    final currentWidth = MediaQuery.of(context).size.width;
-
+    // TODO(lishaduck): Figure out how to remove nested scaffolds.
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: Assets.pictures.loginImage.provider(),
-            fit: BoxFit.fill, // Need to find a better image or move photo down
+            // TODO(MattsAttack): I need to find a better image or move the photo down.
+            fit: BoxFit.fill,
           ),
         ),
         child: Padding(
           padding: EdgeInsets.only(
-            left: currentWidth / 4,
-            right: currentWidth / 4,
+            // `MediaQuery`s shouldn't be cached, it makes them potentially less responsive.
+            left: MediaQuery.sizeOf(context).width / 4,
+            right: MediaQuery.sizeOf(context).width / 4,
             top: 35,
             bottom: 40,
           ),
           child: Container(
             decoration: BoxDecoration(
+              // TODO(MattsAttack): Find a better color for this (use `Theme.of(context).<someColor>`).
               color: const Color.fromARGB(
                 255,
                 34,
                 29,
                 43,
-              ), //TODO better color for this
+              ),
               borderRadius: BorderRadius.circular(15),
             ),
             child: Padding(
@@ -51,7 +54,7 @@ class LoginPage extends HookConsumerWidget {
               child: Column(
                 children: [
                   const DecoratedBox(
-                    //TODO Redesign this was for testing
+                    // TODO(MattsAttack): Redesign this, it was for testing.
                     decoration: BoxDecoration(
                         // color: Colors.white,
                         // border: Border.all(color: Colors.white),
@@ -61,13 +64,12 @@ class LoginPage extends HookConsumerWidget {
                       'Welcome to Nexus!',
                       style: TextStyle(
                         fontSize: 28,
+                        // TODO(MattsAttack): Use `Theme.of(context).<someColor>`.
                         color: Color.fromARGB(255, 221, 168, 230),
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 32,
-                  ),
+                  const SizedBox(height: 32),
                   TextFormField(
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -76,24 +78,23 @@ class LoginPage extends HookConsumerWidget {
                       labelText: 'Email',
                     ),
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  const SizedBox(height: 16),
                   TextFormField(
                     controller: passwordController,
                     obscureText: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password',
                     ),
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  const SizedBox(height: 16),
                   Row(
                     children: [
                       Expanded(
                         child: ElevatedButton(
+                          // TODO(MattsAttack): I don't don't love the button color, it could be improved.
                           onPressed: () async {
                             // Log in the user.
                             await ref
@@ -115,24 +116,23 @@ class LoginPage extends HookConsumerWidget {
                                 _onResult(didLogIn: true);
 
                               case AsyncError(:final error):
-                                //Keeps the user on the login page
+                                // Keeps the user on the login page.
                                 // TODO(lishaduck): Move this to the guard.
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(error.toString()),
-                                  ), //Change to theme color
+                                  ),
                                 );
+
                               // Do nothing if loading or if onResult is null.
                             }
                           },
-                          child: const Text('Login'),
+                          child: const Text('Log in'),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    width: 20,
-                  ),
+                  const SizedBox(width: 20),
                   Padding(
                     padding: const EdgeInsets.only(top: 16),
                     child: TextButton(

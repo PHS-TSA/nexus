@@ -10,7 +10,7 @@ import 'router.gr.dart';
 /// {@template our_democracy.app.wrapper_page}
 /// Wrap the pages in a Material Design scaffold.
 /// {@endtemplate}
-@RoutePage()
+@RoutePage(deferredLoading: true)
 class WrapperPage extends ConsumerWidget {
   /// {@macro our_democracy.app.wrapper_page}
   ///

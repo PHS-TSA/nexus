@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../../gen/assets.gen.dart';
 import '../../../../app/router.gr.dart';
 import '../../application/auth_service.dart';
 
-@RoutePage()
+// TODO(lishaduck): Rename to `SignUpPage`.
+@RoutePage(deferredLoading: true)
 class SignupPage extends HookConsumerWidget {
   const SignupPage({void Function({bool didLogIn})? onResult, super.key})
       : _onResult = onResult;
@@ -22,9 +24,9 @@ class SignupPage extends HookConsumerWidget {
     // TODO(lishaduck): Figure out how to remove nested scaffolds.
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/pictures/login_image.png'),
+            image: Assets.pictures.loginImage.provider(),
             // TODO(MattsAttack): I need to find a better image or move the photo down.
             fit: BoxFit.fill,
           ),
@@ -39,7 +41,7 @@ class SignupPage extends HookConsumerWidget {
           ),
           child: Container(
             decoration: BoxDecoration(
-              // TODO(MattsAttack): Find a better color for this (use Theme.of(context).someColor).
+              // TODO(MattsAttack): Find a better color for this (use `Theme.of(context).<someColor>`).
               color: const Color.fromARGB(
                 255,
                 34,
@@ -64,6 +66,7 @@ class SignupPage extends HookConsumerWidget {
                       'Welcome to Nexus!',
                       style: TextStyle(
                         fontSize: 28,
+                        // TODO(MattsAttack): Use `Theme.of(context).<someColor>`.
                         color: Color.fromARGB(255, 221, 168, 230),
                       ),
                     ),
@@ -117,15 +120,18 @@ class SignupPage extends HookConsumerWidget {
                             if (!context.mounted) return;
                             switch (ref.read(authServiceProvider)) {
                               case AsyncData(:final value) when value != null:
-                                // navigate to the homepage
+                                // Navigate to the log in page.
                                 await context.router
                                     .push(LoginRoute(onResult: _onResult));
                               case AsyncError(:final error):
+                                // TODO(lishaduck): Move this to the guard.
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(error.toString()),
-                                  ), //Change to theme color
+                                  ),
                                 );
+
+                              // Do nothing if loading or if onResult is null.
                             }
                           },
                           child: const Text('Sign Up'),

@@ -10,7 +10,7 @@ import 'feed.dart';
 /// {@template our_democracy.features.home.presentation.home.world_feed_page}
 /// A page that displays a feed of posts from around the world.
 /// {@endtemplate}
-@RoutePage()
+@RoutePage(deferredLoading: true)
 class WorldFeedPage extends StatelessWidget {
   /// {@macro our_democracy.features.home.presentation.home.world_feed_page}
   ///

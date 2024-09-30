@@ -12,7 +12,7 @@ import '../../application/sample_items_service.dart';
 /// {@template our_democracy.features.sample.presentation.items.sample_items_list_page}
 /// Displays a list of SampleItems.
 /// {@endtemplate}
-@RoutePage()
+@RoutePage(deferredLoading: true)
 class SampleItemsListPage extends ConsumerWidget {
   /// {@macro our_democracy.features.sample.presentation.items.sample_items_list_page}
   ///
