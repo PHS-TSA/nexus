@@ -38,33 +38,21 @@ class SignupPage extends HookConsumerWidget {
           // Check that the widget still exists after the async operation.
           if (!context.mounted) return;
 
-          switch (ref.read(authServiceProvider)) {
-            case AsyncData(:final value) when value != null:
-              if (_onResult != null) {
-                // Navigate the page the user wanted to go to.
-                // Runs the function passed in by the guard and brings user back to previous page.
-                _onResult(didLogIn: true);
-              } else {
-                await context.router.push(const LocalFeedRoute());
-              }
-
-            case AsyncData(): // Value is null!
-              // TODO(lishaduck): Move this to the guard.
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Invalid username or password'),
-                ),
-              );
-
-            case AsyncError(:final error):
-              // TODO(lishaduck): Move this to the guard.
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(error.toString()),
-                ),
-              );
-
-            // Do nothing if loading.
+          if (ref.read(authServiceProvider).requireValue != null) {
+            if (_onResult != null) {
+              // Navigate the page the user wanted to go to.
+              // Runs the function passed in by the guard and brings user back to previous page.
+              _onResult(didLogIn: true);
+            } else {
+              await context.router.push(const LocalFeedRoute());
+            }
+          } else {
+            // TODO(lishaduck): Move this to the guard.
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Invalid username or password'),
+              ),
+            );
           }
         }
       },

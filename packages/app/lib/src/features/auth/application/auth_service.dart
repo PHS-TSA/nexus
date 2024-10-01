@@ -54,12 +54,5 @@ base class AuthService extends _$AuthService {
 
 // How to get values from service provider:
 // ```dart
-// final authState = ref.watch(authServiceProvider);
-// return authState.valueOrNull?.name; // Option 1
-// return switch (authState) { // Option 2
-//   AsyncData(:final value) when value != null => value.name, // Don't usually need the null check, but this service is wonky.
-//   AsyncError(:final error, :final stackTrace) => (error, stackTrace),
-//   // _ is loading until Riverpod 3. Return a loading indicator.
-//   _ => const CircularProgressIndicator(),
-// };
+// return ref.watch(authServiceProvider).requireValue;
 // ```

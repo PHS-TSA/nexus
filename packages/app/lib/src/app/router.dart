@@ -82,7 +82,7 @@ class AppRouter extends RootStackRouter {
           3. Once the user successfully logs in in the login_page the didLogIn value is set to true and onResult function is ran sending them to their requested page
           */
         AutoRouteGuard.simple((resolver, router) async {
-          final authenticated = ref.read(authServiceProvider).valueOrNull;
+          final authenticated = ref.read(authServiceProvider).requireValue;
 
           if (
               // TODO(MattsAttack): check implementation, is this right?

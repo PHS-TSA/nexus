@@ -1,8 +1,6 @@
 /// This library
 library;
 
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -33,10 +31,10 @@ class SettingsPage extends ConsumerWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(16),
-          // Glue the SettingsController to the theme selection DropdownButton.
+          // Glue the `settingsServiceProvider` to the theme selection `DropdownMenu`.
           //
           // When a user selects a theme from the dropdown list, the
-          // SettingsController is updated, which rebuilds the MaterialApp.
+          // `settingsServiceProvider` is updated, which rebuilds the `MaterialApp`.
           child: Container(
             alignment: Alignment.topLeft,
             child: DropdownMenu(
@@ -73,19 +71,12 @@ class SettingsPage extends ConsumerWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(16),
-          // Glue the SettingsController to the theme selection DropdownButton.
-          //
-          // When a user selects a theme from the dropdown list, the
-          // SettingsController is updated, which rebuilds the MaterialApp.
           child: Container(
             alignment: Alignment.topLeft,
             child: FilledButton(
               onPressed: () async {
-                log('button pressed');
                 await ref.read(authServiceProvider.notifier).logOutUser();
-                log('method ran');
                 if (!context.mounted) return;
-                log('about to route');
                 await context.router.push(LoginRoute());
               },
               style: ButtonStyle(
