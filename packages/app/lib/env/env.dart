@@ -5,7 +5,7 @@ part 'env.g.dart';
 // Envied needs a class with only static members.
 // ignore: avoid_classes_with_only_static_members
 /// Environment variables.
-@Envied(useConstantCase: true, requireEnvFile: true, obfuscate: true)
+@Envied(useConstantCase: true, obfuscate: true)
 abstract class Env {
   /// Appwrite project ID
   @EnviedField(defaultValue: 'nexus-staging')
