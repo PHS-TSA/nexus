@@ -10,48 +10,49 @@ part 'auth_repository.g.dart';
 abstract interface class AuthRepository {
   /// Register the user (sign them up).
   /// Only needed once.
-  Future<User?> createUser(String name, String email, String password);
+  ///
+  /// Throws an [AppwriteException] if
+  /// - the user already exists, or
+  /// - the password is too weak.
+  Future<User> createUser(String name, String email, String password);
 
   /// Log the user in.
+  ///
+  /// Throws an [AppwriteException] if
+  /// - the email or password is incorrect.
   Future<Session?> logInUser(String email, String password);
 
   /// Log the user out.
   Future<void> logOutUser();
 
   /// Check whether or not the user is authenticated.
+  ///
+  /// Returns the user if there is an existing session,
+  /// otherwise it returns null.
   Future<User?> checkUserAuth();
 }
 
-///
 final class _AppwriteAuthRepository implements AuthRepository {
   const _AppwriteAuthRepository(this.account);
 
   final Account account;
 
   @override
-  Future<User?> createUser(String name, String email, String password) async {
-    try {
-      return await account.create(
-        userId: ID.unique(),
-        email: email,
-        password: password,
-        name: name,
-      );
-    } on AppwriteException {
-      return null;
-    }
+  Future<User> createUser(String name, String email, String password) async {
+    return await account.create(
+      userId: ID.unique(),
+      email: email,
+      password: password,
+      name: name,
+    );
   }
 
   @override
   Future<Session?> logInUser(String email, String password) async {
-    try {
-      return await account.createEmailPasswordSession(
-        email: email,
-        password: password,
-      );
-    } on AppwriteException {
-      return null;
-    }
+    return await account.createEmailPasswordSession(
+      email: email,
+      password: password,
+    );
   }
 
   @override
