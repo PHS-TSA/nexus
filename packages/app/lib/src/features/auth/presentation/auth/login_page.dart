@@ -10,8 +10,10 @@ import '../../application/auth_service.dart';
 // TODO(lishaduck): Rename to `LogInPage`.
 @RoutePage(deferredLoading: true)
 class LoginPage extends HookConsumerWidget {
-  const LoginPage({void Function({bool didLogIn})? onResult, super.key})
-      : _onResult = onResult;
+  const LoginPage({
+    void Function({bool didLogIn})? onResult,
+    super.key,
+  }) : _onResult = onResult;
 
   final void Function({bool didLogIn})? _onResult;
 
@@ -41,8 +43,13 @@ class LoginPage extends HookConsumerWidget {
               // Navigate to the page the user wanted to go.
               // Runs the function passed in by the guard and brings user back to previous page.
               _onResult(didLogIn: true);
-
-            //Maybe implement signUp changes here to (AsyncData():)
+            case AsyncData(): // Value is null!
+              // TODO(lishaduck): Move this to the guard.
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Invalid username and password'),
+                ),
+              );
 
             case AsyncError(:final error):
               // Keeps the user on the login page.
@@ -53,7 +60,7 @@ class LoginPage extends HookConsumerWidget {
                 ),
               );
 
-            // Do nothing if loading or if onResult is null.
+            // Do nothing if loading.
           }
         }
       },
@@ -90,6 +97,7 @@ class LoginPage extends HookConsumerWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           child: Form(
+            key: formKey,
             child: Column(
               children: [
                 const DecoratedBox(

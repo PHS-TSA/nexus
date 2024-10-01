@@ -49,7 +49,7 @@ class SignupPage extends HookConsumerWidget {
               // TODO(lishaduck): Move this to the guard.
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Invalid username and password'),
+                  content: Text('Invalid username or password'),
                 ),
               );
 
