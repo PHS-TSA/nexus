@@ -13,6 +13,7 @@ class AppRouter extends RootStackRouter {
   /// Instantiate a new instance of [AppRouter].
   AppRouter(this.ref); //creates a ref so we can use riverpod
 
+  /// Used in the guard to get the [authServiceProvider].
   Ref ref;
 
   @override

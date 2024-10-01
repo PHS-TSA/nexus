@@ -9,8 +9,14 @@ import '../../application/auth_service.dart';
 
 // TODO(lishaduck): Extract most of this out to a widget that can be shared with the log in page.
 // TODO(lishaduck): Rename to `SignUpPage`.
+/// {@template our_democracy.features.auth.presentation.auth.signup_page}
+/// A page that displays an interface for signing up new users.
+/// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class SignupPage extends HookConsumerWidget {
+  /// {@macro our_democracy.features.auth.presentation.auth.signup_page}
+  ///
+  /// Construct a new [SignupPage] widget.
   const SignupPage({
     void Function({bool didLogIn})? onResult,
     super.key,

@@ -21,9 +21,7 @@ base class AuthService extends _$AuthService {
 
   // Methods on notifiers should be small wrappers around a repo that cache the current values.
 
-  // Use this createUser method instead of the method in auth_repository as this one saves it to the provider
-  // @MattsAttack> @lishaduck, does this set the current user to the user created in the createUser method? It shouldn't unless we change the implementation to have sign up auto log them in
-  // @lishaduck> @MattsAttack, Appwrite does auto-login. This syncs that. However, you're not guarding the login page, so it doesn't break your setup. I'd probably get it to auto-login as well, but that's separate.
+  /// Creates a new user in the Appwrite database.
   Future<void> createUser(String name, String email, String password) async {
     // Set the state to loading.
     state = const AsyncValue.loading();
@@ -37,6 +35,7 @@ base class AuthService extends _$AuthService {
     );
   }
 
+  /// Logs in the user
   Future<void> logInUser(String email, String password) async {
     await ref.read(authRepositoryProvider).logInUser(email, password);
 
@@ -45,6 +44,7 @@ base class AuthService extends _$AuthService {
     await future;
   }
 
+  /// Log outs the user
   Future<void> logOutUser() async {
     await ref.read(authRepositoryProvider).logOutUser();
 

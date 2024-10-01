@@ -8,8 +8,14 @@ import '../../../../app/router.gr.dart';
 import '../../application/auth_service.dart';
 
 // TODO(lishaduck): Rename to `LogInPage`.
+/// {@template our_democracy.features.auth.presentation.auth.login_page}
+/// A page that displays an interface for signing in users.
+/// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class LoginPage extends HookConsumerWidget {
+  /// {@macro our_democracy.features.auth.presentation.auth.login_page}
+  ///
+  /// Construct a new [LoginPage] widget.
   const LoginPage({
     void Function({bool didLogIn})? onResult,
     super.key,
