@@ -48,6 +48,7 @@ dependencies:
   flutter_hooks: ^0.20.5
   flutter_localizations: # Required to enable localization
     sdk: flutter
+  flutter_native_splash: ^2.4.1
   flutter_web_plugins:
     sdk: flutter
   freezed_annotation: ^2.4.4
@@ -69,7 +70,6 @@ dev_dependencies:
   flutter_checks: ^0.1.1
   flutter_gen_runner: ^5.7.0
   flutter_launcher_icons: ^0.13.1
-  flutter_native_splash: ^2.4.1
   flutter_test: # Required for a Flutter project that includes tests
     sdk: flutter
   freezed: ^2.5.7
