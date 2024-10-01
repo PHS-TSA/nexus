@@ -39,20 +39,27 @@ final class _AppwriteAuthRepository implements AuthRepository {
 
   @override
   Future<User> createUser(String name, String email, String password) async {
-    return await account.create(
+    final user = await account.create(
       userId: ID.unique(),
       email: email,
       password: password,
       name: name,
     );
+    await logInUser(email, password);
+
+    return user;
   }
 
   @override
   Future<Session?> logInUser(String email, String password) async {
-    return await account.createEmailPasswordSession(
-      email: email,
-      password: password,
-    );
+    try {
+      return await account.createEmailPasswordSession(
+        email: email,
+        password: password,
+      );
+    } on AppwriteException {
+      return null;
+    }
   }
 
   @override
