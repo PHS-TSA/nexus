@@ -39,11 +39,14 @@ class SignupPage extends HookConsumerWidget {
           if (!context.mounted) return;
 
           switch (ref.read(authServiceProvider)) {
-            case AsyncData(:final value)
-                when _onResult != null && value != null:
-              // Navigate the page the user wanted to go to.
-
-              _onResult(didLogIn: true);
+            case AsyncData(:final value) when value != null:
+              if (_onResult != null) {
+                // Navigate the page the user wanted to go to.
+                // Runs the function passed in by the guard and brings user back to previous page.
+                _onResult(didLogIn: true);
+              } else {
+                await context.router.push(const LocalFeedRoute());
+              }
 
             case AsyncData(): // Value is null!
               // TODO(lishaduck): Move this to the guard.
