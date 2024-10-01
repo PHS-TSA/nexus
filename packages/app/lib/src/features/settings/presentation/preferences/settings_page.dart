@@ -87,8 +87,7 @@ class SettingsPage extends ConsumerWidget {
                 if (!context.mounted) return;
                 log('about to route');
                 await context.router.push(LoginRoute());
-              } //Add log out method
-              ,
+              },
               style: ButtonStyle(
                 shape: WidgetStateProperty.all(
                   RoundedRectangleBorder(

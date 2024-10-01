@@ -170,9 +170,7 @@ class SignupPage extends HookConsumerWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       // TODO(MattsAttack): I don't don't love the button color, it could be improved.
-                      onPressed: () async {
-                        await handleSubmit();
-                      },
+                      onPressed: handleSubmit,
                       child: const Text('Sign Up'),
                     ),
                   ),

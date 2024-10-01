@@ -1,11 +1,7 @@
 /// This library provides a service to handle user authentication.
 library;
 
-import 'dart:developer';
-
 import 'package:appwrite/models.dart';
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/auth_repository.dart';
@@ -50,23 +46,20 @@ base class AuthService extends _$AuthService {
   }
 
   Future<void> logOutUser() async {
-    log('running log out');
     await ref.read(authRepositoryProvider).logOutUser();
-    log('ran log out');
+
     state = const AsyncValue.data(null);
   }
 }
 
-// How to get values from service provider
-// ref.watch(authServiceProvider).valueOrNull?.name;
-
-Object a(Ref ref) {
-  final authState = ref.watch(authServiceProvider);
-  return switch (authState) {
-    AsyncData(:final value) when value != null => value.name,
-    AsyncError(:final error, :final stackTrace) => (error, stackTrace),
-    // that's loading, wait for riverpod 3
-    // _ is loading. return a loading indicator
-    _ => const CircularProgressIndicator(),
-  };
-}
+// How to get values from service provider:
+// ```dart
+// final authState = ref.watch(authServiceProvider);
+// return authState.valueOrNull?.name; // Option 1
+// return switch (authState) { // Option 2
+//   AsyncData(:final value) when value != null => value.name, // Don't usually need the null check, but this service is wonky.
+//   AsyncError(:final error, :final stackTrace) => (error, stackTrace),
+//   // _ is loading until Riverpod 3. Return a loading indicator.
+//   _ => const CircularProgressIndicator(),
+// };
+// ```

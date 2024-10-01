@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -39,8 +37,7 @@ final class _AppwriteAuthRepository implements AuthRepository {
         password: password,
         name: name,
       );
-    } on AppwriteException catch (e) {
-      log(e.toString());
+    } on AppwriteException {
       return null;
     }
   }
@@ -48,14 +45,11 @@ final class _AppwriteAuthRepository implements AuthRepository {
   @override
   Future<Session?> logInUser(String email, String password) async {
     try {
-      final user = await account.createEmailPasswordSession(
+      return await account.createEmailPasswordSession(
         email: email,
         password: password,
       );
-      log('User logged in');
-      return user;
-    } on AppwriteException catch (e) {
-      log(e.toString());
+    } on AppwriteException {
       return null;
     }
   }
@@ -71,8 +65,7 @@ final class _AppwriteAuthRepository implements AuthRepository {
       // Checks if a session exists or not.
       // If it exists, return it.
       return await account.get();
-    } on AppwriteException catch (e) {
-      log('$e');
+    } on AppwriteException {
       return null;
     }
   }
