@@ -10,7 +10,10 @@
       "type": "dart",
       "program": "packages/app/lib/main.dart",
       "flutterMode": "debug",
-      "args": ["--dart-define=FLUTTER_WEB_DEBUG_SHOW_SEMANTICS=true"]
+      "toolArgs": [
+        "--dart-define=FLUTTER_WEB_DEBUG_SHOW_SEMANTICS=true",
+        "--wasm"
+      ]
     }
   ]
 }
