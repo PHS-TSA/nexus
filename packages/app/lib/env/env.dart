@@ -2,18 +2,20 @@ import 'package:envied/envied.dart';
 
 part 'env.g.dart';
 
+// Envied needs a class with only static members.
+// ignore: avoid_classes_with_only_static_members
 /// Environment variables.
-@Envied(useConstantCase: true)
+@Envied(useConstantCase: true, requireEnvFile: true, obfuscate: true)
 abstract class Env {
   /// Appwrite project ID
   @EnviedField(defaultValue: 'nexus-staging')
-  static const String projectId = _Env.projectId;
+  static final String projectId = _Env.projectId;
 
   /// Appwrite API endpoint
   @EnviedField(defaultValue: 'http://localhost:80/v1')
-  static const String apiEndpoint = _Env.apiEndpoint;
+  static final String apiEndpoint = _Env.apiEndpoint;
 
   /// If the Appwrite Server uses self-signed certificates.
   @EnviedField(defaultValue: false)
-  static const bool selfSigned = _Env.selfSigned;
+  static final bool selfSigned = _Env.selfSigned;
 }

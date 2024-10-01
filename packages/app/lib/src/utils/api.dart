@@ -40,7 +40,7 @@ abstract interface class ApiRepository {
 }
 
 /// The Appwrite API information, gotten via passed in environment variables.
-const ApiRepository apiInfo = Api(
+final ApiRepository apiInfo = Api(
   projectId: Env.projectId,
   url: Env.apiEndpoint,
   isSelfSigned: Env.selfSigned,
