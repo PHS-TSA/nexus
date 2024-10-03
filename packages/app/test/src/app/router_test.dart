@@ -27,7 +27,7 @@ void main() {
         );
         final tested = routerSubscription.read();
 
-        check(tested.routes.length).equals(2);
+        check(tested.routes.length).equals(4);
       });
     });
 
@@ -92,7 +92,7 @@ void main() {
             // Home
             .equals('');
       });
-      test('should redirect on 404', () {
+      test('should allow logging in', () {
         final container = createContainer();
         final routerSubscription = container.listen(
           routerProvider,
@@ -101,6 +101,28 @@ void main() {
         final tested = routerSubscription.read();
 
         final redirectRoute = tested.routes[1];
+        check(redirectRoute.path).equals('/log-in');
+      });
+      test('should allow signing up', () {
+        final container = createContainer();
+        final routerSubscription = container.listen(
+          routerProvider,
+          (_, __) {},
+        );
+        final tested = routerSubscription.read();
+
+        final redirectRoute = tested.routes[2];
+        check(redirectRoute.path).equals('/sign-up');
+      });
+      test('should redirect on 404', () {
+        final container = createContainer();
+        final routerSubscription = container.listen(
+          routerProvider,
+          (_, __) {},
+        );
+        final tested = routerSubscription.read();
+
+        final redirectRoute = tested.routes[3];
         check(redirectRoute.path).equals('/*');
       });
     });

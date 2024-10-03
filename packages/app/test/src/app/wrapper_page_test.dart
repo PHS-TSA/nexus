@@ -3,21 +3,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_checks/flutter_checks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:nexus/src/app/router.gr.dart';
 import 'package:nexus/src/app/wrapper_page.dart';
+import 'package:nexus/src/features/auth/application/auth_service.dart';
+import 'package:nexus/src/features/auth/data/auth_repository.dart';
 import 'package:nexus/src/l10n/l10n.dart';
 import 'package:nexus/src/utils/design.dart';
 import 'package:nexus/src/utils/router.dart';
 
+import '../../helpers/mocks.dart';
 import '../../helpers/riverpod.dart';
 
 extension _WidgetTesterX on WidgetTester {
   Future<void> pumpWidgetPage() async {
+    final mockAuthRepository = MockAuthRepository();
+    when(mockAuthRepository.checkUserAuth)
+        .thenAnswer((_) => Future.value(fakeUser));
+
     final container = createContainer(
-      overrides: [],
+      overrides: [
+        authRepositoryProvider.overrideWithValue(mockAuthRepository),
+      ],
     );
     final routerSubscription = container.listen(routerProvider, (_, __) {});
     final router = routerSubscription.read();
+    container.read(authServiceProvider);
 
     await pumpWidget(
       UncontrolledProviderScope(

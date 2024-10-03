@@ -95,7 +95,11 @@ class _EagerInitialization extends ConsumerWidget {
       child: Center(
         child: switch (user) {
           AsyncData() => child,
-          AsyncError(:final error) => Text('Error: $error'),
+          AsyncError(:final error) => Directionality(
+              // This is necessary because it's not wrapped in a `MaterialApp`.
+              textDirection: TextDirection.ltr,
+              child: Text('Error: $error'),
+            ),
           _ => const CircularProgressIndicator(),
         },
       ),

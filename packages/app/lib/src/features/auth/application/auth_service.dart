@@ -11,7 +11,6 @@ part 'auth_service.g.dart';
 /// Provides method a user?
 @Riverpod(keepAlive: true)
 base class AuthService extends _$AuthService {
-  // TODO(lishaduck): Ideally, this wouldn't be async, just nullable.
   @override
   FutureOr<User?> build() async {
     final authRepo = ref.watch(authRepositoryProvider);
