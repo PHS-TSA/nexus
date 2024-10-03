@@ -10,7 +10,7 @@ import 'feed.dart';
 /// {@template our_democracy.features.home.presentation.home.local_feed_page}
 /// A page that displays a feed of posts from the area nearby the user.
 /// {@endtemplate}
-@RoutePage()
+@RoutePage(deferredLoading: true)
 class LocalFeedPage extends StatelessWidget {
   /// {@macro our_democracy.features.home.presentation.home.local_feed_page}
   ///

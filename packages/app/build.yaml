@@ -53,3 +53,9 @@ targets:
         # configs for the packageVersion generator...
         options:
           output: lib/gen/version.gen.dart
+      envied_generator:envied:
+        # configs for the @Envied generator
+        generate_for:
+          - lib/env/env.dart
+        options:
+          output: lib/gen/env.g.dart

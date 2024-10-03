@@ -6,6 +6,7 @@ library;
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,18 +45,19 @@ mixin Bootstrap implements Widget {
     // Don't use hash style routes.
     usePathUrlStrategy();
 
-    // Reset notification bar on Android.
-    WidgetsFlutterBinding.ensureInitialized();
-    await SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual,
-      overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
-    );
-
     // Load the user's preferences.
     final prefs = await getSharedPreferences(
       cacheOptions: const SharedPreferencesWithCacheOptions(),
     );
     final initialSettings = await loadSettings(prefs);
+
+    // Reset splash screen.
+    WidgetsFlutterBinding.ensureInitialized();
+    FlutterNativeSplash.remove();
+    await SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top],
+    );
 
     // Run the app.
     runApp(

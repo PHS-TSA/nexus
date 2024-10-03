@@ -10,5 +10,5 @@ part 'router.g.dart';
 /// Get the app's router.
 @Riverpod(keepAlive: true)
 Raw<AppRouter> router(RouterRef ref) {
-  return AppRouter();
+  return AppRouter(ref);
 }

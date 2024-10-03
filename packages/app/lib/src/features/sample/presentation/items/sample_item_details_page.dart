@@ -9,7 +9,7 @@ import '../../domain/sample_item_entity.dart';
 /// {@template our_democracy.features.sample.presentation.items.sample_items_details_page}
 /// Displays detailed information about a SampleItem.
 /// {@endtemplate}
-@RoutePage()
+@RoutePage(deferredLoading: true)
 class SampleItemDetailsPage extends StatelessWidget {
   /// {@macro our_democracy.features.sample.presentation.items.sample_items_details_page}
   ///

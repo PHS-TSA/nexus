@@ -10,7 +10,7 @@ import 'router.gr.dart';
 /// {@template our_democracy.app.wrapper_page}
 /// Wrap the pages in a Material Design scaffold.
 /// {@endtemplate}
-@RoutePage()
+@RoutePage(deferredLoading: true)
 class WrapperPage extends ConsumerWidget {
   /// {@macro our_democracy.app.wrapper_page}
   ///
@@ -37,7 +37,8 @@ class WrapperPage extends ConsumerWidget {
       appBarBuilder: (context, autoRouter) {
         return AppBar(
           title: Text(autoRouter.current.title(context)),
-          leading: const AutoLeadingButton(),
+          automaticallyImplyLeading: false,
+          // leading: const AutoLeadingButton(), // @lishaduck we should discuss this back button. personally i'm for disablling it since it leads to new bugs
           actions: switch (autoRouter.current.path) {
             '' => [
                 Builder(

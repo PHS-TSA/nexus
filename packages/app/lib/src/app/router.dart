@@ -2,14 +2,19 @@
 library;
 
 import 'package:auto_route/auto_route.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../features/auth/application/auth_service.dart';
 import 'router.gr.dart';
 
 /// The router for the application.
 @AutoRouterConfig(replaceInRouteName: 'Page,Route', deferredLoading: true)
 class AppRouter extends RootStackRouter {
   /// Instantiate a new instance of [AppRouter].
-  AppRouter();
+  AppRouter(this.ref); //creates a ref so we can use riverpod
+
+  /// Used in the guard to get the [authServiceProvider].
+  Ref ref;
 
   @override
   final defaultRouteType = const RouteType.material();
@@ -53,6 +58,54 @@ class AppRouter extends RootStackRouter {
             ),
           ],
         ),
+        AutoRoute(
+// TODO(lishaduck): Add a guard to prevent logged in users from accessing this page.
+          page: LoginRoute.page,
+          path: '/log-in',
+          title: (context, data) => 'Login',
+          keepHistory: false,
+        ),
+        AutoRoute(
+// TODO(lishaduck): Add a guard to prevent logged in users from accessing this page.
+          page: SignupRoute.page,
+          path: '/sign-up',
+          title: (context, data) => 'Sign Up',
+        ),
         RedirectRoute(path: '/*', redirectTo: '/'),
+      ];
+
+  @override
+  List<AutoRouteGuard> get guards => [
+        /*
+          How this guard works:
+          1. The guard contacts the `authRepositoryProvider` to check if the user is logged in. If they it allows them to go to the requested page
+          2. Else send user to login page with and save the page the user wanted to go to in the onResult function.
+          3. Once the user successfully logs in in the login_page the didLogIn value is set to true and onResult function is ran sending them to their requested page
+          */
+        AutoRouteGuard.simple((resolver, router) async {
+          final authenticated = ref.read(authServiceProvider).requireValue;
+
+          if (
+              // TODO(MattsAttack): check implementation, is this right?
+              authenticated != null ||
+                  // If the user is trying to log in or sign up, let them through.
+                  resolver.routeName == LoginRoute.name ||
+                  resolver.routeName == SignupRoute.name) {
+            // TODO(MattsAttack): Add in support for... something.
+            resolver.next();
+          } else {
+            await resolver.redirect(
+              LoginRoute(
+                // The parameter brings them back to the page they were trying to access.
+                onResult: ({
+                  // AutoRoute is buggy here, this is actually required.
+                  // ignore: avoid_types_on_closure_parameters
+                  bool? didLogIn,
+                }) =>
+                    resolver.next(didLogIn ?? false),
+              ),
+            );
+          }
+        }),
       ];
 }
