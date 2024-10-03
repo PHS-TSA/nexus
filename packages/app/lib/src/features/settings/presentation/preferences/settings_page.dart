@@ -37,33 +37,32 @@ class SettingsPage extends ConsumerWidget {
           // `settingsServiceProvider` is updated, which rebuilds the `MaterialApp`.
           child: Container(
             alignment: Alignment.topLeft,
-            child: DropdownMenu(
+            child: DropdownButton(
               // Read the selected themeMode from the controller
-              initialSelection: themeMode,
+              value: themeMode,
               // Call the updateThemeMode method any time the user selects a theme.
-              onSelected: (theme) async {
+              onChanged: (theme) async {
                 final newTheme = theme ?? settingsService.themeMode;
 
                 await ref
                     .read(settingsServiceProvider.notifier)
                     .updateThemeMode(newTheme);
               },
-              label: const Text('Theme'),
-              dropdownMenuEntries: const [
-                DropdownMenuEntry(
+              items: const [
+                DropdownMenuItem(
+                  key: ValueKey(ThemeMode.system),
                   value: ThemeMode.system,
-                  label: 'System Theme',
-                  leadingIcon: Icon(Icons.brightness_medium),
+                  child: Text('System Theme'),
                 ),
-                DropdownMenuEntry(
+                DropdownMenuItem(
+                  key: ValueKey(ThemeMode.light),
                   value: ThemeMode.light,
-                  label: 'Light Theme',
-                  leadingIcon: Icon(Icons.brightness_5),
+                  child: Text('Light Theme'),
                 ),
-                DropdownMenuEntry(
+                DropdownMenuItem(
+                  key: ValueKey(ThemeMode.dark),
                   value: ThemeMode.dark,
-                  label: 'Dark Theme',
-                  leadingIcon: Icon(Icons.brightness_3),
+                  child: Text('Dark Theme'),
                 ),
               ],
             ),
