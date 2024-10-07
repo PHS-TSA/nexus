@@ -18,4 +18,12 @@ abstract class Env {
   /// If the Appwrite Server uses self-signed certificates.
   @EnviedField(defaultValue: false)
   static final bool selfSigned = _Env.selfSigned;
+
+  /// Nexus database ID
+  @EnviedField(defaultValue: 'database-id')
+  static final String databaseId = _Env.databaseId;
+
+  /// Nexus posts collection ID
+  @EnviedField(defaultValue: 'post-coolection-id')
+  static final String postsCollectionId = _Env.postsCollectionId;
 }
