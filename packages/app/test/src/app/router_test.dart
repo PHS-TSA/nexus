@@ -10,23 +10,18 @@ void main() {
     group('config', () {
       test('uses Material transitions.', () {
         final container = createContainer();
-        final routerSubscription = container.listen(
-          routerProvider,
-          (_, __) {},
-        );
+        final routerSubscription = container.listen(routerProvider, (_, __) {});
         final tested = routerSubscription.read();
 
         check(tested.defaultRouteType).isA<MaterialRouteType>();
       });
 
-      test('should contain the correct number of routes.', () {
+      test('should contain the correct number of top level routes.', () {
         final container = createContainer();
-        final routerSubscription = container.listen(
-          routerProvider,
-          (_, __) {},
-        );
+        final routerSubscription = container.listen(routerProvider, (_, __) {});
         final tested = routerSubscription.read();
 
+        // Wrapper, log in, sign up, and 404 redirect.
         check(tested.routes.length).equals(4);
       });
     });
@@ -34,33 +29,24 @@ void main() {
     group('path', () {
       test('should be correct for WrapperRoute.', () {
         final container = createContainer();
-        final routerSubscription = container.listen(
-          routerProvider,
-          (_, __) {},
-        );
+        final routerSubscription = container.listen(routerProvider, (_, __) {});
         final tested = routerSubscription.read();
 
         final wrapperRoute = tested.routes[0];
         check(wrapperRoute.path).equals('/');
       });
-      test('should be correct for SampleItemListRoute.', () {
+      test('should be correct for SampleItemsListRoute.', () {
         final container = createContainer();
-        final routerSubscription = container.listen(
-          routerProvider,
-          (_, __) {},
-        );
+        final routerSubscription = container.listen(routerProvider, (_, __) {});
         final tested = routerSubscription.read();
 
-        final sampleItemListRoute =
+        final sampleItemDetailsRoute =
             tested.routes[0].children?.routes.toList()[0];
-        check(sampleItemListRoute?.path).equals('sample');
+        check(sampleItemDetailsRoute?.path).equals('sample');
       });
       test('should be correct for SampleItemDetailsRoute.', () {
         final container = createContainer();
-        final routerSubscription = container.listen(
-          routerProvider,
-          (_, __) {},
-        );
+        final routerSubscription = container.listen(routerProvider, (_, __) {});
         final tested = routerSubscription.read();
 
         final sampleItemDetailsRoute =
@@ -69,10 +55,7 @@ void main() {
       });
       test('should be correct for SettingsRoute.', () {
         final container = createContainer();
-        final routerSubscription = container.listen(
-          routerProvider,
-          (_, __) {},
-        );
+        final routerSubscription = container.listen(routerProvider, (_, __) {});
         final tested = routerSubscription.read();
 
         final settingsRoute = tested.routes[0].children?.routes.toList()[2];
@@ -80,10 +63,7 @@ void main() {
       });
       test("should be correct for ShellRoute('Feed')", () {
         final container = createContainer();
-        final routerSubscription = container.listen(
-          routerProvider,
-          (_, __) {},
-        );
+        final routerSubscription = container.listen(routerProvider, (_, __) {});
         final tested = routerSubscription.read();
 
         final sampleItemDetailsRoute =
@@ -94,10 +74,7 @@ void main() {
       });
       test('should allow logging in', () {
         final container = createContainer();
-        final routerSubscription = container.listen(
-          routerProvider,
-          (_, __) {},
-        );
+        final routerSubscription = container.listen(routerProvider, (_, __) {});
         final tested = routerSubscription.read();
 
         final redirectRoute = tested.routes[1];
@@ -105,10 +82,7 @@ void main() {
       });
       test('should allow signing up', () {
         final container = createContainer();
-        final routerSubscription = container.listen(
-          routerProvider,
-          (_, __) {},
-        );
+        final routerSubscription = container.listen(routerProvider, (_, __) {});
         final tested = routerSubscription.read();
 
         final redirectRoute = tested.routes[2];
@@ -116,10 +90,7 @@ void main() {
       });
       test('should redirect on 404', () {
         final container = createContainer();
-        final routerSubscription = container.listen(
-          routerProvider,
-          (_, __) {},
-        );
+        final routerSubscription = container.listen(routerProvider, (_, __) {});
         final tested = routerSubscription.read();
 
         final redirectRoute = tested.routes[3];
