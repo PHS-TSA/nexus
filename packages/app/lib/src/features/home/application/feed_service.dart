@@ -1,6 +1,7 @@
 /// This library provides a service to stream posts in DB to the UI.
 library;
 
+import 'package:latlong2/latlong.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../gen/assets.gen.dart';
@@ -28,6 +29,10 @@ base class FeedService extends _$FeedService {
             // If the feed is a LocalFeed or WorldFeed, use the appropriate image.
             LocalFeed _ || WorldFeed _ => Assets.pictures.kid.provider(),
           },
+          headline: 'awesome title',
+          timestamp: DateTime.now(),
+          author: const UserId('12345'),
+          location: const LatLng(0, 0), //add in users location here
           // Use the index to generate a unique body for each post.
           body: 'This works (#${(page - 1) * pageSize + index + 1})',
         ),
