@@ -145,7 +145,7 @@ jobs:
           flutter build ${{ matrix.target }} ${{ matrix.flutter-flags }}
         working-directory: packages/app/
       - name: ⚙️ Upload build
-        if: matrix.target == 'web'
+        if: ${{ matrix.target == 'web' }}
         uses: actions/upload-artifact@604373da6381bf24206979c74d06a550515601b9 # v4.4.1
         with:
           name: app-${{ matrix.target }}-build
@@ -248,10 +248,11 @@ jobs:
       - name: 🧪 Run tests
         run: melos run test
       - name: 📊 Upload code coverage
+        if: ${{ !cancelled() }}
         uses: codecov/codecov-action@b9fd7d16f6d7d1b5d2bec1a2887e65ceed900238 # v4.6.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: packages/*/coverage/lcov.info
+          files: packages/app/coverage/lcov.info
           fail_ci_if_error: true
           verbose: true
 

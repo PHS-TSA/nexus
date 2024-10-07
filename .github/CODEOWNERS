@@ -7,7 +7,13 @@
 *             @PHS-TSA/nexus
 
 **.dart          @PHS-TSA/nexus
-/.github/        @PHS-TSA/nexus
+/.github/     @lishaduck
+codecov.yaml  @lishaduck
+tests/        @PHS-TSA/nexus
+pubspec.*     @PHS-TSA/nexus
+
+/packages/analysis_options/  @lishaduck
+/packages/app/               @PHS-TSA/nexus
+
 /packages/*/assets/  @PHS-TSA/nexus
-tests/           @PHS-TSA/nexus
-pubspec.*        @PHS-TSA/nexus
+/packages/*/tests/   @lishaduck
