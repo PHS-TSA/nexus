@@ -34,7 +34,7 @@ base class FeedService extends _$FeedService {
           author: const UserId('12345'),
           location: const LatLng(0, 0), //add in users location here
           // Use the index to generate a unique body for each post.
-          body: 'This works (#${(page - 1) * pageSize + index + 1})',
+          description: 'This works (#${(page - 1) * pageSize + index + 1})',
         ),
       ),
       // TODO(lishaduck): Set the cursor position to the last post.

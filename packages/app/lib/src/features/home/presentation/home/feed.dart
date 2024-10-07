@@ -33,7 +33,7 @@ class Feed extends ConsumerWidget {
         prototypeItem: _Post(
           post: PostEntity(
             headline: '',
-            body: '',
+            description: '',
             image: null,
             location: const LatLng(0, 0),
             timestamp: DateTime.fromMicrosecondsSinceEpoch(0, isUtc: true),
@@ -57,7 +57,7 @@ class Feed extends ConsumerWidget {
             AsyncError(:final error) => _Post(
                 post: PostEntity(
                   headline: 'Error',
-                  body: error.toString(),
+                  description: error.toString(),
                   image: null,
                   author: const UserId(''),
                   location: const LatLng(0, 0),
@@ -101,7 +101,7 @@ class _Post extends StatelessWidget {
           null => null,
         },
         title: Text(post.headline),
-        subtitle: switch (post.body) {
+        subtitle: switch (post.description) {
           // If the body is not null, use it as the content.
           final String body => Text(body),
           // Else, return null.

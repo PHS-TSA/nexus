@@ -29,7 +29,7 @@ void main() {
         pageSize, //@lishaduck implemented a fix here but you may want to review
         (index) => PostEntity(
           image: null,
-          body: 'body',
+          description: 'body',
           headline: 'headline',
           author: const UserId('1234'),
           location: const LatLng(0, 0),
