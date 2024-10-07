@@ -8,6 +8,8 @@ import '../data/auth_repository.dart';
 
 part 'auth_service.g.dart';
 
+// Service files are used to cache data to reduce api calls and make the software faster
+
 /// Provides method a user?
 @Riverpod(keepAlive: true)
 base class AuthService extends _$AuthService {
