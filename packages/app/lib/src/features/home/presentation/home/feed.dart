@@ -23,32 +23,38 @@ class Feed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListView.builder(
-      prototypeItem: const _Post(post: PostEntity(body: '', image: null)),
-      itemBuilder: (context, index) {
-        // Calculate the page and index in the page.
-        final page = index ~/ pageSize + 1;
-        final indexInPage = index % pageSize;
+    // Maybe change to scaffold with floating action button and list view as child
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+      ),
+      body: ListView.builder(
+        prototypeItem: const _Post(post: PostEntity(body: '', image: null)),
+        itemBuilder: (context, index) {
+          // Calculate the page and index in the page.
+          final page = index ~/ pageSize + 1;
+          final indexInPage = index % pageSize;
 
-        final response = ref.watch(feedServiceProvider(feed, page));
+          final response = ref.watch(feedServiceProvider(feed, page));
 
-        return switch (response) {
-          AsyncData(:final value) => indexInPage >= value.posts.length
-              // If we run out of items, return null.
-              ? null
-              // Otherwise, return the post.
-              : _Post(post: value.posts[indexInPage]),
-          // If there's an error, display it as another post.
-          AsyncError(:final error) => _Post(
-              post: PostEntity(
-                body: error.toString(),
-                image: null,
+          return switch (response) {
+            AsyncData(:final value) => indexInPage >= value.posts.length
+                // If we run out of items, return null.
+                ? null
+                // Otherwise, return the post.
+                : _Post(post: value.posts[indexInPage]),
+            // If there's an error, display it as another post.
+            AsyncError(:final error) => _Post(
+                post: PostEntity(
+                  body: error.toString(),
+                  image: null,
+                ),
               ),
-            ),
-          // If we're loading, display a loading indicator.
-          _ => const CircularProgressIndicator(),
-        };
-      },
+            // If we're loading, display a loading indicator.
+            _ => const CircularProgressIndicator(),
+          };
+        },
+      ),
     );
   }
 
