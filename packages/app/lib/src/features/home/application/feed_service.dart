@@ -11,7 +11,7 @@ import '../domain/post_entity.dart';
 part 'feed_service.g.dart';
 
 /// The number of posts to fetch at a time.
-const pageSize = 20;
+const pageSize = 10;
 
 /// Provide the values of a feed.
 @riverpod
@@ -38,7 +38,7 @@ base class FeedService extends _$FeedService {
   }
 
   /// Replace the current posts with newly generated posts.
-  Future<void> replacePosts(List<PostEntity> newPosts) async {
+  Future<void> addPosts(List<PostEntity> newPosts) async {
     // You can only change a Notifier's `state` by adding methods that assign a new value.
     // You can't mutate the state directly, nor can you change it outside of a method.
     if (state case AsyncData<FeedModel>(:final value)) {

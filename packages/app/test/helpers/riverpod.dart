@@ -1,7 +1,8 @@
 /// This library contains utilities for testing with Riverpod.
 library;
 
-import 'package:flutter_test/flutter_test.dart';
+import 'package:checks/checks.dart';
+import 'package:flutter_test/flutter_test.dart' hide isA;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 typedef Overrides = List<Override>;
@@ -24,4 +25,11 @@ ProviderContainer createContainer({
   addTearDown(container.dispose);
 
   return container;
+}
+
+extension AsyncValueChecks<T> on Subject<AsyncValue<T>> {
+  Subject<T> isData() => isA<AsyncData<T>>().has((i) => i.value, 'value');
+  Subject<Object> isError() =>
+      isA<AsyncError<T>>().has((i) => i.error, 'error');
+  void isLoading() => isA<AsyncLoading<T>>();
 }
