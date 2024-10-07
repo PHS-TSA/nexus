@@ -36,6 +36,17 @@ class AppRouter extends RootStackRouter {
               title: (context, data) => 'Item Details',
             ),
             AutoRoute(
+              page: MapRoute.page,
+              path: '',
+              title: (context, data) => 'Map',
+              initial: true,
+            ),
+            AutoRoute(
+              page: MapInfoRoute.page,
+              path: 'info',
+              title: (context, data) => 'Location Details',
+            ),
+            AutoRoute(
               page: SettingsRoute.page,
               path: 'settings',
               title: (context, data) => 'Settings',
@@ -59,14 +70,14 @@ class AppRouter extends RootStackRouter {
           ],
         ),
         AutoRoute(
-// TODO(lishaduck): Add a guard to prevent logged in users from accessing this page.
+          // TODO(lishaduck): Add a guard to prevent logged in users from accessing this page.
           page: LoginRoute.page,
           path: '/log-in',
           title: (context, data) => 'Login',
           keepHistory: false,
         ),
         AutoRoute(
-// TODO(lishaduck): Add a guard to prevent logged in users from accessing this page.
+          // TODO(lishaduck): Add a guard to prevent logged in users from accessing this page.
           page: SignupRoute.page,
           path: '/sign-up',
           title: (context, data) => 'Sign Up',

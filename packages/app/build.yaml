@@ -3,6 +3,7 @@ targets:
     sources:
       include:
         - lib/**.dart
+        - test/helpers/accessibility.dart
         # required
         - pubspec.*
         ## synthetic files
@@ -30,6 +31,7 @@ targets:
           - lib/src/utils/**.dart
           - lib/src/features/*/domain/*_model.dart
           - lib/src/features/*/domain/*_entity.dart
+          - test/helpers/accessibility.dart
         options:
           map: false
           when: false

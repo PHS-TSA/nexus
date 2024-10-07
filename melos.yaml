@@ -44,7 +44,13 @@ scripts:
         - build_runner
   gen:watch:
     description: watch build_runner
-    exec: dart run build_runner watch
+    exec: dart run build_runner watch --delete-conflicting-outputs
+    packageFilters:
+      dependsOn:
+        - build_runner
+  gen:clean:
+    description: clean build_runner
+    exec: dart run build_runner clean
     packageFilters:
       dependsOn:
         - build_runner
