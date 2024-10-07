@@ -45,6 +45,9 @@ mixin Bootstrap implements Widget {
     // Don't use hash style routes.
     usePathUrlStrategy();
 
+    // Bind Flutter to the native platform.
+    WidgetsFlutterBinding.ensureInitialized();
+
     // Load the user's preferences.
     final prefs = await getSharedPreferences(
       cacheOptions: const SharedPreferencesWithCacheOptions(),
@@ -52,7 +55,6 @@ mixin Bootstrap implements Widget {
     final initialSettings = await loadSettings(prefs);
 
     // Reset splash screen.
-    WidgetsFlutterBinding.ensureInitialized();
     FlutterNativeSplash.remove();
     await SystemChrome.setEnabledSystemUIMode(
       SystemUiMode.manual,
