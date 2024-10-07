@@ -39,25 +39,25 @@ class WrapperPage extends ConsumerWidget {
           title: Text(autoRouter.current.title(context)),
           automaticallyImplyLeading: false,
           // leading: const AutoLeadingButton(), // @lishaduck we should discuss this back button. personally i'm for disablling it since it leads to new bugs
-          actions: switch (autoRouter.current.path) {
-            '' => [
-                Builder(
-                  builder: (context) => IconButton(
-                    icon: const Icon(
-                      Icons.settings,
-                      semanticLabel: 'Settings',
-                    ),
-                    onPressed: () async {
-                      // Navigate to the settings page. If the user leaves and returns
-                      // to the app after it has been killed while running in the
-                      // background, the navigation stack is restored.
-                      await context.router.push(const SettingsRoute());
-                    },
-                  ),
-                ),
-              ],
-            _ => [],
-          },
+          // actions: switch (autoRouter.current.path) {
+          //   '' => [
+          //       Builder(
+          //         builder: (context) => IconButton(
+          //           icon: const Icon(
+          //             Icons.settings,
+          //             semanticLabel: 'Settings',
+          //           ),
+          //           onPressed: () async {
+          //             // Navigate to the settings page. If the user leaves and returns
+          //             // to the app after it has been killed while running in the
+          //             // background, the navigation stack is restored.
+          //             await context.router.push(const SettingsRoute());
+          //           },
+          //         ),
+          //       ),
+          //     ],
+          //   _ => [],
+          // },
           bottom: switch (autoRouter.current.path) {
             // FIXME(lishaduck): This needs some work.
             '/' => TabBar(
