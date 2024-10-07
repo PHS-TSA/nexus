@@ -20,7 +20,7 @@ sealed class PostEntity with _$PostEntity {
   /// Create a new, immutable instance of [PostEntity].
   const factory PostEntity({
     /// The textual content of the post.
-    required String body,
+    required String description,
 
     /// The title of the post.
     required String headline,
@@ -36,5 +36,7 @@ sealed class PostEntity with _$PostEntity {
 
     /// An optional media to display alongside the post.
     required ImageProvider? image,
+
+    //TODO when implementing likes add numberOfLikes here
   }) = _PostEntity;
 }
