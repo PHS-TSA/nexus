@@ -31,7 +31,7 @@ class WrapperPage extends ConsumerWidget {
         //   ],
         // ),
         LocalFeedRoute(),
-        SampleItemsListRoute(),
+        MapRoute(),
         SettingsRoute(),
       ],
       appBarBuilder: (context, autoRouter) {
