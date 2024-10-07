@@ -70,14 +70,14 @@ class AppRouter extends RootStackRouter {
           ],
         ),
         AutoRoute(
-// TODO(lishaduck): Add a guard to prevent logged in users from accessing this page.
+          // TODO(lishaduck): Add a guard to prevent logged in users from accessing this page.
           page: LoginRoute.page,
           path: '/log-in',
           title: (context, data) => 'Login',
           keepHistory: false,
         ),
         AutoRoute(
-// TODO(lishaduck): Add a guard to prevent logged in users from accessing this page.
+          // TODO(lishaduck): Add a guard to prevent logged in users from accessing this page.
           page: SignupRoute.page,
           path: '/sign-up',
           title: (context, data) => 'Sign Up',
