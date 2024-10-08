@@ -67,8 +67,13 @@ final class _AppwritePostRepository implements PostRepository {
 
   //Create a new Todo
 
-  Future createNewPost(String? headline, String? description, UserId author,
-      LatLng location, ImageProvider? image,) async {
+  Future createNewPost(
+    String? headline,
+    String? description,
+    UserId author,
+    LatLng location,
+    ImageProvider? image,
+  ) async {
     // Maybe change to no author param and getting value in here. Whatever's more efficient
     //TODO get current users email or user ID (talk to eli about which one)
 
@@ -87,7 +92,7 @@ final class _AppwritePostRepository implements PostRepository {
       },
     );
     print('new post created');
-  } s
+  }
 }
 
 @riverpod
