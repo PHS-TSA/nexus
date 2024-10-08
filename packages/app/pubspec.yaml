@@ -73,7 +73,7 @@ dev_dependencies:
   envied_generator: ^0.5.4+1
   flutter_checks: ^0.1.1
   flutter_gen_runner: ^5.8.0
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.1
   flutter_test: # Required for a Flutter project that includes tests
     sdk: flutter
   freezed: ^2.5.7
