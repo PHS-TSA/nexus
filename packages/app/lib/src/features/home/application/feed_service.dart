@@ -1,10 +1,13 @@
 /// This library provides a service to stream posts in DB to the UI.
 library;
 
+import 'dart:developer';
+
 import 'package:latlong2/latlong.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../gen/assets.gen.dart';
+import '../data/post_repository.dart';
 import '../domain/feed_entity.dart';
 import '../domain/feed_model.dart';
 import '../domain/post_entity.dart';
@@ -14,11 +17,18 @@ part 'feed_service.g.dart';
 /// The number of posts to fetch at a time.
 const pageSize = 10;
 
+//Load in the posts repository here as a func
+
 /// Provide the values of a feed.
 @riverpod
 base class FeedService extends _$FeedService {
   @override
-  FutureOr<FeedModel> build(FeedEntity feed, int page) {
+  FutureOr<FeedModel> build(FeedEntity feed, int page) async {
+    log('im running');
+    final postRepo = ref.watch(postRepositoryProvider);
+    log('im still running');
+    final posts = postRepo.allPosts;
+    log('im still still running');
     return FeedModel(
       // Generate a list containing [pageSize] number of dummy posts.
       posts: List.generate(
@@ -37,6 +47,7 @@ base class FeedService extends _$FeedService {
           description: 'This works (#${(page - 1) * pageSize + index + 1})',
         ),
       ),
+
       // TODO(lishaduck): Set the cursor position to the last post.
       cursorPos: '',
     );
