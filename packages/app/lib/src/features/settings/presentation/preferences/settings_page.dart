@@ -27,69 +27,70 @@ class SettingsPage extends ConsumerWidget {
     final settingsService = ref.watch(settingsServiceProvider);
     final themeMode = settingsService.themeMode;
 
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          // Glue the `settingsServiceProvider` to the theme selection `DropdownMenu`.
-          //
-          // When a user selects a theme from the dropdown list, the
-          // `settingsServiceProvider` is updated, which rebuilds the `MaterialApp`.
-          child: Container(
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        // Glue the `settingsServiceProvider` to the theme selection `DropdownMenu`.
+        //
+        // When a user selects a theme from the dropdown list, the
+        // `settingsServiceProvider` is updated, which rebuilds the `MaterialApp`.
+        children: [
+          Container(
             alignment: Alignment.topLeft,
-            child: DropdownButton(
+            child: DropdownMenu(
               // Read the selected themeMode from the controller
-              value: themeMode,
+              initialSelection: themeMode,
               // Call the updateThemeMode method any time the user selects a theme.
-              onChanged: (theme) async {
+              onSelected: (theme) async {
                 final newTheme = theme ?? settingsService.themeMode;
 
                 await ref
                     .read(settingsServiceProvider.notifier)
                     .updateThemeMode(newTheme);
               },
-              items: const [
-                DropdownMenuItem(
-                  key: ValueKey(ThemeMode.system),
+              label: const Text('Theme'),
+              dropdownMenuEntries: const [
+                DropdownMenuEntry(
                   value: ThemeMode.system,
-                  child: Text('System Theme'),
+                  label: 'System Theme',
+                  leadingIcon: Icon(Icons.brightness_medium),
                 ),
-                DropdownMenuItem(
-                  key: ValueKey(ThemeMode.light),
+                DropdownMenuEntry(
                   value: ThemeMode.light,
-                  child: Text('Light Theme'),
+                  label: 'Light Theme',
+                  leadingIcon: Icon(Icons.brightness_5),
                 ),
-                DropdownMenuItem(
-                  key: ValueKey(ThemeMode.dark),
+                DropdownMenuEntry(
                   value: ThemeMode.dark,
-                  child: Text('Dark Theme'),
+                  label: 'Dark Theme',
+                  leadingIcon: Icon(Icons.brightness_3),
                 ),
               ],
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Container(
-            alignment: Alignment.topLeft,
-            child: FilledButton(
-              onPressed: () async {
-                await ref.read(authServiceProvider.notifier).logOutUser();
-                if (!context.mounted) return;
-                await context.router.replace(LoginRoute());
-              },
-              style: ButtonStyle(
-                shape: WidgetStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Container(
+              alignment: Alignment.topLeft,
+              child: FilledButton(
+                onPressed: () async {
+                  await ref.read(authServiceProvider.notifier).logOutUser();
+                  if (!context.mounted) return;
+                  await context.router.replace(LoginRoute());
+                },
+                style: ButtonStyle(
+                  shape: WidgetStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                   ),
                 ),
+                child: const Text('Log Out'),
               ),
-              child: const Text('Log Out'),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
