@@ -68,7 +68,7 @@ dev_dependencies:
   auto_route_generator: ^9.0.0
   build_runner: ^2.4.13
   build_web_compilers: ^4.0.11
-  custom_lint: ^0.6.4
+  custom_lint: ^0.6.8
   dhttpd: ^4.1.0
   envied_generator: ^0.5.4+1
   flutter_checks: ^0.1.1
