@@ -24,6 +24,13 @@ Have flutter access user location
 
 abstract interface class PostRepository {
   //Have funcs in heres
+
+  // TODOadd in get funcs
+
+  final List<Document> _posts = [];
+
+  //get all todos func for other classes
+  List<Document> get allPosts => _posts;
 }
 
 final class _AppwritePostRepository implements PostRepository {
@@ -32,21 +39,24 @@ final class _AppwritePostRepository implements PostRepository {
 
   final Databases database = Databases(client as Client);
 
+  @override
   List<Document> _posts = [];
 
   //get all todos func for other classes
+  @override
   List<Document> get allPosts => _posts;
 
-  bool _isLoading = false;
+  // bool _isLoading = false;
 
   //check if loading
 
-  bool get checkLoading => _isLoading;
+  // bool get checkLoading => _isLoading;
 
   // Read all the todos
 
   Future readPosts() async {
-    var isLoading = true;
+    // Have one func or param for local and one for global
+    // var isLoading = true;
     try {
       final data = await database.listDocuments(
         databaseId: databaseId,
@@ -56,10 +66,10 @@ final class _AppwritePostRepository implements PostRepository {
         // ],
       ); // Only returns data with these attributes
       _posts = data.documents;
-      isLoading = false;
+      // isLoading = false;
       // notifyListeners();
     } catch (e) {
-      _isLoading = false;
+      // _isLoading = false;
       // notifyListeners();
       print(e);
     }
@@ -68,6 +78,7 @@ final class _AppwritePostRepository implements PostRepository {
   //Create a new Todo
 
   Future createNewPost(
+    // Call this in feeds.dart. Dont need to service things
     String? headline,
     String? description,
     UserId author,
