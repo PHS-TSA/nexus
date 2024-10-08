@@ -5,8 +5,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../../gen/assets.gen.dart';
 import '../../../../app/router.gr.dart';
+import '../../../../gen/assets.gen.dart';
 import '../../application/sample_items_service.dart';
 
 /// {@template our_democracy.features.sample.presentation.items.sample_items_list_page}

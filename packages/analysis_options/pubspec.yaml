@@ -13,4 +13,4 @@ dependencies:
   very_good_analysis: ^6.0.0
 
 dev_dependencies:
-  custom_lint: ^0.6.5
+  custom_lint: ^0.6.8

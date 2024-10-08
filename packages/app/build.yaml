@@ -54,10 +54,13 @@ targets:
       build_version:
         # configs for the packageVersion generator...
         options:
-          output: lib/gen/version.gen.dart
+          output: lib/src/gen/version.gen.dart
       envied_generator:envied:
         # configs for the @Envied generator
         generate_for:
           - lib/env/env.dart
         options:
-          output: lib/gen/env.g.dart
+          output: lib/src/env.g.dart
+      flutter_gen:
+        options:
+          output: lib/src/gen/
