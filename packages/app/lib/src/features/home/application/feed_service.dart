@@ -3,7 +3,7 @@ library;
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../gen/assets.gen.dart';
+import '../../../gen/assets.gen.dart';
 import '../domain/feed_entity.dart';
 import '../domain/feed_model.dart';
 import '../domain/post_entity.dart';

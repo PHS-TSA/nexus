@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../../gen/assets.gen.dart';
 import '../../../../app/router.gr.dart';
+import '../../../../gen/assets.gen.dart';
 import '../../application/auth_service.dart';
 
 // TODO(lishaduck): Extract most of this out to a widget that can be shared with the log in page.
