@@ -1,8 +1,6 @@
 /// This library provides a service to stream posts in DB to the UI.
 library;
 
-import 'dart:developer';
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/post_repository.dart';
@@ -22,11 +20,11 @@ const pageSize = 10;
 base class FeedService extends _$FeedService {
   @override
   FutureOr<FeedModel> build(FeedEntity feed, int page) async {
-    log('im running');
-    final postRepo = ref.watch(postRepositoryProvider(const UserId('0'), feed));
-    log('im still running');
+    final postRepo = ref.watch(
+      postRepositoryProvider(const UserId('0'), feed),
+    ); // Add user id here
     final posts = await postRepo.readPosts();
-    log('im still still running');
+    print(posts);
     return FeedModel(
       posts: posts,
       // TODO(lishaduck): Set the cursor position to the last post.

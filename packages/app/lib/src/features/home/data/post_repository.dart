@@ -61,6 +61,7 @@ final class _AppwritePostRepository implements PostRepository {
   Future<List<PostEntity>> readPosts() async {
     // Have one func or param for local and one for global
 
+    print('reading posts');
     final documentList = await database.listDocuments(
       databaseId: databaseId,
       collectionId: collectionId,
@@ -70,6 +71,16 @@ final class _AppwritePostRepository implements PostRepository {
       //   Query.equal('createdBy', email),
       // ],
     );
+
+    print('returning docs');
+    print(documentList.documents[1].data);
+    // print(
+    //   documentList.documents
+    //       .map((document) => PostEntity.fromJson(document.data))
+    //       .toList(),
+    // );
+
+    // @lishaduck after some debugging, I'm pretty sure there's an issue with the json mapping to PostEntitys. Its getting the documents but it seems like its just not mapping the values correctly
 
     return documentList.documents
         .map((document) => PostEntity.fromJson(document.data))
@@ -81,7 +92,6 @@ final class _AppwritePostRepository implements PostRepository {
     String? headline,
     String? description,
     LatLng location,
-    // Question marks means it can be null.
     BucketFile? image,
   ) async {
     final document = await database.createDocument(

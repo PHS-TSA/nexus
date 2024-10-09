@@ -1,11 +1,13 @@
 /// This library contains a widget that displays a feed of posts.
 library;
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../../../../app/router.gr.dart';
 import '../../application/feed_service.dart';
 import '../../domain/feed_entity.dart';
 import '../../domain/post_entity.dart';
@@ -27,7 +29,9 @@ class Feed extends ConsumerWidget {
     // Maybe change to scaffold with floating action button and list view as child
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          await context.router.push(const CreatePostRoute());
+        },
       ),
       body: ListView.builder(
         prototypeItem: _Post(
@@ -47,7 +51,7 @@ class Feed extends ConsumerWidget {
 
           final response = ref.watch(feedServiceProvider(feed, page));
 
-          print(response.error);
+          // print(response.error);
           return switch (response) {
             AsyncData(:final value) => indexInPage >= value.posts.length
                 // If we run out of items, return null.
