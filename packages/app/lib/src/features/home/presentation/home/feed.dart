@@ -96,18 +96,19 @@ class _Post extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: switch (post.image) {
-          // If the image is an ImageProvider, use the image.
-          final ImageProvider image => Image(image: image),
+          // If the image is an BucketFile, figure out how to get the image from the API.
+          // Will need to be cached in Riverpod. Probably store it in the entity.
+          // But, deserialization shouldn't need to know about the API.
+          // This'll be tricky. For now, I think we make a dummy image.
+          final BucketFile _ => Image.network(
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png',
+            ),
+          // final BucketFile image => Image.memory(image),
           // Else, return null.
           null => null,
         },
         title: Text(post.headline),
-        subtitle: switch (post.description) {
-          // If the body is not null, use it as the content.
-          final String body => Text(body),
-          // Else, return null.
-          null => null,
-        },
+        subtitle: Text(post.description),
       ),
     );
   }

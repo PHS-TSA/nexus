@@ -1,11 +1,10 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
-import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../env/env.dart';
 import '../../../utils/api.dart';
+import '../domain/feed_entity.dart';
 import '../domain/post_entity.dart';
 
 part 'post_repository.g.dart';
@@ -27,82 +26,65 @@ abstract interface class PostRepository {
 
   // TODOadd in get funcs
 
-  final List<Document> _posts = [];
+  /// Read all the posts.
+  Future<List<PostEntity>> readPosts();
 
-  //get all posts func for other classes
-  List<Document> get allPosts => _posts;
-
-  Future<void> readPosts();
-  Future<void> createNewPost(
-    // Call this in feeds.dart. Dont need to service things
+  /// Create a new post.
+  ///
+  /// Returns the created post.
+  Future<PostEntity> createNewPost(
     String? headline,
     String? description,
-    UserId author,
     LatLng location,
-    ImageProvider? image,
+    BucketFile? image,
   );
 }
 
 final class _AppwritePostRepository implements PostRepository {
-  String databaseId = Env.databaseId;
-  String collectionId = Env.postsCollectionId;
+  const _AppwritePostRepository({
+    required this.database,
+    required this.databaseId,
+    required this.collectionId,
+    required this.author,
+    required this.feed,
+  });
 
-  final Databases database = Databases(client as Client);
+  final Databases database;
 
-  @override
-  List<Document> _posts = [];
+  final String databaseId;
+  final String collectionId;
 
-  //get all posts func for other classes
-  @override
-  List<Document> get allPosts => _posts;
-
-  // bool _isLoading = false;
-
-  //check if loading
-
-  // bool get checkLoading => _isLoading;
-
-  // Read all the posts
+  final UserId author;
+  final FeedEntity feed;
 
   @override
-  Future<void> readPosts() async {
-    //Maybe change to return the list of documents
+  Future<List<PostEntity>> readPosts() async {
     // Have one func or param for local and one for global
-    // var isLoading = true;
-    try {
-      final data = await database.listDocuments(
-        databaseId: databaseId,
-        collectionId: collectionId,
-        // queries: [
-        //   Query.equal('createdBy', email),
-        // ],
-      ); // Only returns data with these attributes
-      _posts = data.documents;
-      // isLoading = false;
-      // notifyListeners();
-    } catch (e) {
-      // _isLoading = false;
-      // notifyListeners();
-      print(e);
-    }
+
+    final documentList = await database.listDocuments(
+      databaseId: databaseId,
+      collectionId: collectionId,
+      // TODO(MattsAttack): For local vs world sorting have a conditional to determine sorting method.
+      // queries: [
+      //   // Only returns data with these attributes
+      //   Query.equal('createdBy', email),
+      // ],
+    );
+
+    return documentList.documents
+        .map((document) => PostEntity.fromJson(document.data))
+        .toList();
   }
 
-  //Create a new post
-
   @override
-  Future<void> createNewPost(
-    // Call this in feeds.dart. Dont need to service things
+  Future<PostEntity> createNewPost(
     String? headline,
     String? description,
-    UserId author,
     LatLng location,
-    ImageProvider? image,
+    // Question marks means it can be null.
+    BucketFile? image,
   ) async {
-    // Maybe change to no author param and getting value in here. Whatever's more efficient
-    //TODO get current users email or user ID (talk to eli about which one)
-
-    //Question marks means it can be null
-    final collection = await database.createDocument(
+    final document = await database.createDocument(
       databaseId: databaseId,
       collectionId: collectionId,
       documentId: ID.unique(),
@@ -115,11 +97,24 @@ final class _AppwritePostRepository implements PostRepository {
         //TODO add images
       },
     );
-    print('new post created');
+
+    return PostEntity.fromJson(document.data);
   }
 }
 
 @riverpod
-PostRepository postRepository(PostRepositoryRef ref) {
-  return _AppwritePostRepository();
+PostRepository postRepository(
+  PostRepositoryRef ref,
+  UserId author,
+  FeedEntity feed,
+) {
+  final database = ref.read(databasesProvider);
+
+  return _AppwritePostRepository(
+    author: author,
+    feed: feed,
+    database: database,
+    databaseId: Env.databaseId,
+    collectionId: Env.postsCollectionId,
+  );
 }

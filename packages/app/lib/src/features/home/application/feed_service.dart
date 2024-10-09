@@ -3,10 +3,8 @@ library;
 
 import 'dart:developer';
 
-import 'package:latlong2/latlong.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../gen/assets.gen.dart';
 import '../data/post_repository.dart';
 import '../domain/feed_entity.dart';
 import '../domain/feed_model.dart';
@@ -25,30 +23,12 @@ base class FeedService extends _$FeedService {
   @override
   FutureOr<FeedModel> build(FeedEntity feed, int page) async {
     log('im running');
-    final postRepo = ref.watch(postRepositoryProvider);
+    final postRepo = ref.watch(postRepositoryProvider(const UserId('0'), feed));
     log('im still running');
-    final posts = postRepo.allPosts;
+    final posts = await postRepo.readPosts();
     log('im still still running');
     return FeedModel(
-      // Generate a list containing [pageSize] number of dummy posts.
-      posts: List.generate(
-        pageSize,
-        // TODO(MattsAttack): For local vs world sorting have a conditional to determine sorting method.
-        (index) => PostEntity(
-          image: switch (feed) {
-            // If the feed is a LocalFeed or WorldFeed, use the appropriate image.
-            LocalFeed _ || WorldFeed _ => Assets.pictures.kid.provider(),
-          },
-          headline: 'awesome title',
-          timestamp: DateTime.now(),
-          author: const UserId('12345'),
-          location: const LatLng(0, 0), //add in users location here
-          // Use the index to generate a unique body for each post.
-          description:
-              'This works (#${(page - 1) * pageSize + index + 1})', // Use similar code for getting posts from data base. Maybe use sort posts list to most local or something
-        ),
-      ),
-
+      posts: posts,
       // TODO(lishaduck): Set the cursor position to the last post.
       cursorPos: '',
     );
