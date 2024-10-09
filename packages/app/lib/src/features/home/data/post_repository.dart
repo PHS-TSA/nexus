@@ -29,8 +29,18 @@ abstract interface class PostRepository {
 
   final List<Document> _posts = [];
 
-  //get all todos func for other classes
+  //get all posts func for other classes
   List<Document> get allPosts => _posts;
+
+  Future<void> readPosts();
+  Future<void> createNewPost(
+    // Call this in feeds.dart. Dont need to service things
+    String? headline,
+    String? description,
+    UserId author,
+    LatLng location,
+    ImageProvider? image,
+  );
 }
 
 final class _AppwritePostRepository implements PostRepository {
@@ -42,7 +52,7 @@ final class _AppwritePostRepository implements PostRepository {
   @override
   List<Document> _posts = [];
 
-  //get all todos func for other classes
+  //get all posts func for other classes
   @override
   List<Document> get allPosts => _posts;
 
@@ -52,9 +62,11 @@ final class _AppwritePostRepository implements PostRepository {
 
   // bool get checkLoading => _isLoading;
 
-  // Read all the todos
+  // Read all the posts
 
-  Future readPosts() async {
+  @override
+  Future<void> readPosts() async {
+    //Maybe change to return the list of documents
     // Have one func or param for local and one for global
     // var isLoading = true;
     try {
@@ -75,9 +87,10 @@ final class _AppwritePostRepository implements PostRepository {
     }
   }
 
-  //Create a new Todo
+  //Create a new post
 
-  Future createNewPost(
+  @override
+  Future<void> createNewPost(
     // Call this in feeds.dart. Dont need to service things
     String? headline,
     String? description,
