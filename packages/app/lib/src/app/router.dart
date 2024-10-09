@@ -67,6 +67,10 @@ class AppRouter extends RootStackRouter {
                 ),
               ],
             ),
+            AutoRoute(
+                page: CreatePostRoute.page,
+                path: 'create-post',
+                title: (context, data) => 'Create Post'),
           ],
         ),
         AutoRoute(
