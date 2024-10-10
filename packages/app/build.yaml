@@ -41,6 +41,8 @@ targets:
           - lib/src/utils/**.dart
           - lib/src/features/*/domain/*_model.dart
           - lib/src/features/*/domain/*_entity.dart
+        options:
+          checked: true
       riverpod_generator:
         # configs for the @riverpod generator
         generate_for:
