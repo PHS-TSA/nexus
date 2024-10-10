@@ -39,10 +39,10 @@ void main() {
         ],
       );
 
-      await tester.tap(find.byType(DropdownButton<ThemeMode>));
+      await tester.tap(find.byType(DropdownMenu<ThemeMode>));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(const ValueKey(ThemeMode.dark)));
+      await tester.tap(find.byIcon(Icons.brightness_3));
       await tester.pumpAndSettle();
 
       check(find.text('Dark Theme')).findsOne();
