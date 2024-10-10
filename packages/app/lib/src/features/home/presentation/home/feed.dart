@@ -5,7 +5,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:latlong2/latlong.dart';
 
 import '../../../../app/router.gr.dart';
 import '../../application/feed_service.dart';
@@ -39,7 +38,8 @@ class Feed extends ConsumerWidget {
             headline: '',
             description: '',
             image: null,
-            location: const LatLng(0, 0),
+            lat: 0,
+            lng: 0,
             timestamp: DateTime.fromMicrosecondsSinceEpoch(0, isUtc: true),
             author: const UserId(''),
           ),
@@ -51,7 +51,6 @@ class Feed extends ConsumerWidget {
 
           final response = ref.watch(feedServiceProvider(feed, page));
 
-          // print(response.error);
           return switch (response) {
             AsyncData(:final value) => indexInPage >= value.posts.length
                 // If we run out of items, return null.
@@ -65,7 +64,8 @@ class Feed extends ConsumerWidget {
                   description: error.toString(),
                   image: null,
                   author: const UserId(''),
-                  location: const LatLng(0, 0),
+                  lat: 0,
+                  lng: 0,
                   timestamp: DateTime.now(),
                 ),
               ),
