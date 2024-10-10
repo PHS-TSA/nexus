@@ -3,9 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_checks/flutter_checks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'pump_app.dart';
+import 'riverpod.dart';
 
 part 'accessibility.freezed.dart';
 
@@ -25,7 +25,7 @@ String expectedFailureMessage({required bool expectedToFail}) {
 
 void testAccessibilityGuidelines(
   Widget widget, {
-  List<Override> overrides = const [],
+  Overrides overrides = const [],
   ExpectedFailures expectedFailures = const ExpectedFailures(),
 }) {
   group('is accessible', () {

@@ -1,4 +1,5 @@
 import 'package:checks/checks.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nexus/src/features/home/application/feed_service.dart';
 import 'package:nexus/src/features/home/domain/feed_entity.dart';
@@ -30,7 +31,7 @@ void main() {
           image: null,
           body: 'body',
         ),
-      );
+      ).lock;
 
       await container
           .read(feedServiceProvider(const FeedEntity.world(), 1).notifier)
