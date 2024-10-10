@@ -24,7 +24,7 @@ base class FeedService extends _$FeedService {
       postRepositoryProvider(const UserId('0'), feed),
     ); // Add user id here
     final posts = await postRepo.readPosts();
-    print(posts);
+
     return FeedModel(
       posts: posts,
       // TODO(lishaduck): Set the cursor position to the last post.

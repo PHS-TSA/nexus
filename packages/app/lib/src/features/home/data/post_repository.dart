@@ -1,5 +1,4 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../env/env.dart';
@@ -35,7 +34,8 @@ abstract interface class PostRepository {
   Future<PostEntity> createNewPost(
     String? headline,
     String? description,
-    LatLng location,
+    double lat,
+    double lng,
     BucketFile? image,
   );
 }
@@ -60,8 +60,8 @@ final class _AppwritePostRepository implements PostRepository {
   @override
   Future<List<PostEntity>> readPosts() async {
     // Have one func or param for local and one for global
+    print('1');
 
-    print('reading posts');
     final documentList = await database.listDocuments(
       databaseId: databaseId,
       collectionId: collectionId,
@@ -72,26 +72,27 @@ final class _AppwritePostRepository implements PostRepository {
       // ],
     );
 
-    print('returning docs');
-    print(documentList.documents[1].data);
-    // print(
-    //   documentList.documents
-    //       .map((document) => PostEntity.fromJson(document.data))
-    //       .toList(),
-    // );
+    print(
+      documentList.documents
+              .map((document) => PostEntity.fromJson(document.data))
+              .toList() is List
+          ? 'yeah!'
+          : 'na',
+    );
 
     // @lishaduck after some debugging, I'm pretty sure there's an issue with the json mapping to PostEntitys. Its getting the documents but it seems like its just not mapping the values correctly
 
-    return documentList.documents
-        .map((document) => PostEntity.fromJson(document.data))
-        .toList();
+    return documentList.documents.map((document) {
+      return PostEntity.fromJson(document.data);
+    }).toList();
   }
 
   @override
   Future<PostEntity> createNewPost(
     String? headline,
     String? description,
-    LatLng location,
+    double lat,
+    double lng,
     BucketFile? image,
   ) async {
     final document = await database.createDocument(
@@ -102,7 +103,8 @@ final class _AppwritePostRepository implements PostRepository {
         'headline': headline,
         'description': description,
         'author': author,
-        'location': location,
+        'lat': lat,
+        'lng': lng,
         'timestamp': DateTime.now,
         //TODO add images
       },

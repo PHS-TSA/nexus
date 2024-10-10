@@ -1,7 +1,6 @@
 /// This library contains a data class representing a singular post.
 library;
 
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -40,7 +39,10 @@ sealed class PostEntity with _$PostEntity {
     required UserId author,
 
     ///
-    required LatLng location,
+    required double lat,
+
+    ///
+    required double lng,
 
     ///
     required DateTime timestamp,
