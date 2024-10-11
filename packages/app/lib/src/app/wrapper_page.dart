@@ -5,6 +5,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../features/home/data/post_repository.dart';
+import '../features/home/domain/post_entity.dart';
 import 'router.gr.dart';
 
 /// {@template our_democracy.app.wrapper_page}
@@ -104,15 +106,19 @@ class WrapperPage extends ConsumerWidget {
     );
   }
 
-  Future<void> _dialogBuilder(BuildContext context) {
+  Future<void> _dialogBuilder(BuildContext context, WidgetRef ref) {
     // final formKey = useMemoized(GlobalKey<FormState>.new);
 
     // final headline = useState('');
     // final description = useState('');
     // TODOadd images
 
-    TextEditingController titleController = TextEditingController();
-    TextEditingController descriptionController = TextEditingController();
+    final titleController = TextEditingController();
+    final descriptionController = TextEditingController();
+
+    final postRepo = ref.watch(
+      postRepositoryProvider(const UserId('0')),
+    ); // Add user id here
 
     return showDialog<void>(
       context: context,
@@ -137,7 +143,8 @@ class WrapperPage extends ConsumerWidget {
                     // provider.createNewTodo(
                     //     titleController.text, descriptionController.text,);
                     ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Todo Added')));
+                      const SnackBar(content: Text('Todo Added')),
+                    );
                     Navigator.pop(context);
                   },
                   child: const Text('Create Todo'),
