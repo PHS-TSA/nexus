@@ -34,7 +34,7 @@ class MapInfoPage extends StatelessWidget {
         TextButton(
           child: const Text('Back'),
           onPressed: () async {
-            await context.router.push(const MapRoute());
+            await context.router.navigate(const MapRoute());
           },
         ),
       ],
