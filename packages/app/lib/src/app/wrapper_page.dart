@@ -36,7 +36,7 @@ class WrapperPage extends ConsumerWidget {
       ],
       floatingActionButton: FloatingActionButton(
         onPressed: () async => _dialogBuilder(context),
-        child: const Text('Open Dialog'),
+        child: const Icon(Icons.create),
       ),
       appBarBuilder: (context, autoRouter) {
         return AppBar(
@@ -105,39 +105,90 @@ class WrapperPage extends ConsumerWidget {
   }
 
   Future<void> _dialogBuilder(BuildContext context) {
+    // final formKey = useMemoized(GlobalKey<FormState>.new);
+
+    // final headline = useState('');
+    // final description = useState('');
+    // TODOadd images
+
+    TextEditingController titleController = TextEditingController();
+    TextEditingController descriptionController = TextEditingController();
+
     return showDialog<void>(
       context: context,
       builder: (context) {
         return Dialog.fullscreen(
-          child: AlertDialog(
-            title: const Text('Basic dialog title'),
-            content: const Text(
-              'A dialog is a type of modal window that\n'
-              'appears in front of app content to\n'
-              'provide critical information, or prompt\n'
-              'for a decision to be made.',
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text('Add New Todo'),
             ),
-            actions: <Widget>[
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: Theme.of(context).textTheme.labelLarge,
+            body: Column(
+              children: [
+                TextFormField(
+                  controller: titleController,
+                  decoration: const InputDecoration(label: Text('Title')),
                 ),
-                child: const Text('Disable'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: Theme.of(context).textTheme.labelLarge,
+                TextFormField(
+                  controller: descriptionController,
+                  decoration: const InputDecoration(label: Text('Description')),
                 ),
-                child: const Text('Enable'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
+                ElevatedButton(
+                  onPressed: () {
+                    // provider.createNewTodo(
+                    //     titleController.text, descriptionController.text,);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Todo Added')));
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Create Todo'),
+                ),
+              ],
+            ),
           ),
+          // child: Scaffold(
+          //   appBar: AppBar(
+          //     title: const Text('Add New Todo'),
+          //   ),
+          //   body: Form( // Maybe change structure to be closer to login page (container)
+          //     key: formKey,
+          //     child: Column(
+          //       children: [
+          //         TextFormField(
+          //           initialValue: headline.value,
+          //           onSaved: (value) {
+          //             if (value == null) return;
+
+          //             headline.value = value;
+          //           },
+          //           decoration: const InputDecoration(label: Text('Title')),
+          //         ),
+          //         TextFormField(
+          //           initialValue: description.value,
+          //           onSaved: (value) {
+          //             if (value == null) return;
+
+          //             description.value = value;
+          //           },
+          //           decoration:
+          //               const InputDecoration(label: Text('Description')),
+          //         ),
+          //         ElevatedButton(
+          //           onPressed: () {
+          //             // provider.createNewTodo(
+          //             //   titleController.text,
+          //             //   descriptionController.text,
+          //             // );
+          //             ScaffoldMessenger.of(context).showSnackBar(
+          //               const SnackBar(content: Text('Post Created!')),
+          //             );
+          //             Navigator.of(context).pop();
+          //           },
+          //           child: const Text('Create Post'),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
         );
       },
     );
