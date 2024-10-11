@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
 import '../../../../gen/assets.gen.dart';
+import '../../../../utils/toast.dart';
 import '../../application/auth_service.dart';
 
 // TODO(lishaduck): Extract most of this out to a widget that can be shared with the log in page.
@@ -54,10 +55,8 @@ class SignupPage extends HookConsumerWidget {
             }
           } else {
             // TODO(lishaduck): Move this to the guard.
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Invalid username or password'),
-              ),
+            context.showSnackBar(
+              content: const Text('Invalid username or password'),
             );
           }
         }
