@@ -1,6 +1,5 @@
 import 'package:checks/checks.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:nexus/src/features/home/application/feed_service.dart';
 import 'package:nexus/src/features/home/domain/feed_entity.dart';
 import 'package:nexus/src/features/home/domain/post_entity.dart';
@@ -32,7 +31,8 @@ void main() {
           description: 'body',
           headline: 'headline',
           author: const UserId('1234'),
-          location: const LatLng(0, 0),
+          lat: 0,
+          lng: 0,
           timestamp: DateTime(2024, 10, 7, 13, 53),
         ),
       );

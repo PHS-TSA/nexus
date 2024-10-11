@@ -50,7 +50,7 @@ class SignupPage extends HookConsumerWidget {
               // Runs the function passed in by the guard and brings user back to previous page.
               _onResult(didLogIn: true);
             } else {
-              await context.router.push(const LocalFeedRoute());
+              await context.router.replace(const LocalFeedRoute());
             }
           } else {
             // TODO(lishaduck): Move this to the guard.

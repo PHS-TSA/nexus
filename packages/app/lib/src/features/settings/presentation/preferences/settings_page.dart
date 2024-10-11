@@ -76,7 +76,7 @@ class SettingsPage extends ConsumerWidget {
               onPressed: () async {
                 await ref.read(authServiceProvider.notifier).logOutUser();
                 if (!context.mounted) return;
-                await context.router.push(LoginRoute());
+                await context.router.replace(LoginRoute());
               },
               style: ButtonStyle(
                 shape: WidgetStateProperty.all(
