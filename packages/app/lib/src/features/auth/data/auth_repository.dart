@@ -14,7 +14,7 @@ abstract interface class AuthRepository {
   /// Throws an [AppwriteException] if
   /// - the user already exists, or
   /// - the password is too weak.
-  Future<User> createUser(String name, String email, String password);
+  Future<User?> createUser(String name, String email, String password);
 
   /// Log the user in.
   ///
@@ -38,16 +38,20 @@ final class _AppwriteAuthRepository implements AuthRepository {
   final Account account;
 
   @override
-  Future<User> createUser(String name, String email, String password) async {
-    final user = await account.create(
-      userId: ID.unique(),
-      email: email,
-      password: password,
-      name: name,
-    );
-    await logInUser(email, password);
+  Future<User?> createUser(String name, String email, String password) async {
+    try {
+      final user = await account.create(
+        userId: ID.unique(),
+        email: email,
+        password: password,
+        name: name,
+      );
+      await logInUser(email, password);
 
-    return user;
+      return user;
+    } on AppwriteException {
+      return null;
+    }
   }
 
   @override
