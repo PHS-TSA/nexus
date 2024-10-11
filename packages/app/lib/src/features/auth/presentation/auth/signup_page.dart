@@ -85,33 +85,18 @@ class SignupPage extends HookConsumerWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            // TODO(MattsAttack): Find a better color for this (use `Theme.of(context).<someColor>`).
-            color: const Color.fromARGB(
-              255,
-              34,
-              29,
-              43,
-            ),
+            color: Theme.of(context).colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(15),
           ),
           child: Form(
             key: formKey,
             child: Column(
               children: [
-                const DecoratedBox(
-                  // TODO(MattsAttack): Redesign this, it was for testing.
-                  decoration: BoxDecoration(
-                      // color: Colors.white,
-                      // border: Border.all(color: Colors.white),
-                      // borderRadius: BorderRadius.circular(5),
-                      ),
-                  child: Text(
-                    'Welcome to Nexus!',
-                    style: TextStyle(
-                      fontSize: 28,
-                      // TODO(MattsAttack): Use `Theme.of(context).<someColor>`.
-                      color: Color.fromARGB(255, 221, 168, 230),
-                    ),
+                Text(
+                  'Welcome to Nexus!',
+                  style: TextStyle(
+                    fontSize: 28,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
                 ),
                 const SizedBox(height: 32),
