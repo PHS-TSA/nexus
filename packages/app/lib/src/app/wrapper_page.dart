@@ -3,6 +3,7 @@ library;
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../features/home/data/post_repository.dart';
@@ -37,7 +38,10 @@ class WrapperPage extends ConsumerWidget {
         SettingsRoute(),
       ],
       floatingActionButton: FloatingActionButton(
-        onPressed: () async => _dialogBuilder(context, ref),
+        onPressed: () async => showDialog<void>(
+          context: context,
+          builder: (context) => const _Dialog(),
+        ),
         child: const Icon(Icons.create),
       ),
       appBarBuilder: (context, autoRouter) {
@@ -105,107 +109,108 @@ class WrapperPage extends ConsumerWidget {
       },
     );
   }
+}
 
-  Future<void> _dialogBuilder(BuildContext context, WidgetRef ref) {
-    // final formKey = useMemoized(GlobalKey<FormState>.new);
+class _Dialog extends HookConsumerWidget {
+  const _Dialog({
+    // Temporary ignore, see <dart-lang/sdk#49025>.
+    // ignore: unused_element
+    super.key,
+  });
 
-    // final headline = useState('');
-    // final description = useState('');
-    // TODOadd images
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final titleController = useTextEditingController();
+    final descriptionController = useTextEditingController();
 
-    final titleController = TextEditingController();
-    final descriptionController = TextEditingController();
-
-    final postRepo = ref.watch(
-      postRepositoryProvider(const UserId('0'), null),
-    ); // Add user id here
-
-    return showDialog<void>(
-      context: context,
-      builder: (context) {
-        return Dialog.fullscreen(
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text('Create a New Post'),
+    return Dialog.fullscreen(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Create a New Post'),
+        ),
+        body: Column(
+          children: [
+            TextFormField(
+              controller: titleController,
+              decoration: const InputDecoration(label: Text('Title')),
             ),
-            body: Column(
-              children: [
-                TextFormField(
-                  controller: titleController,
-                  decoration: const InputDecoration(label: Text('Title')),
-                ),
-                TextFormField(
-                  controller: descriptionController,
-                  decoration: const InputDecoration(label: Text('Description')),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    print('im running fr');
-                    postRepo.createNewPost(
+            TextFormField(
+              controller: descriptionController,
+              decoration: const InputDecoration(label: Text('Description')),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                print('im running fr');
+                ref
+                    .watch(
+                      postRepositoryProvider(
+                        const UserId('0'),
+                        null,
+                      ),
+                    )
+                    .createNewPost(
                       titleController.text,
                       descriptionController.text,
                       0,
                       0,
                       null,
                     );
-                    Navigator.pop(context);
-                    // provider.createNewTodo(
-                    //     titleController.text, descriptionController.text,);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Post Created!')),
-                    );
-                  },
-                  child: const Text('Create Post'),
-                ),
-              ],
+                Navigator.pop(context);
+                // provider.createNewTodo(
+                //     titleController.text, descriptionController.text,);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Post Created!')),
+                );
+              },
+              child: const Text('Create Post'),
             ),
-          ),
-          // child: Scaffold(
-          //   appBar: AppBar(
-          //     title: const Text('Add New Todo'),
-          //   ),
-          //   body: Form( // Maybe change structure to be closer to login page (container)
-          //     key: formKey,
-          //     child: Column(
-          //       children: [
-          //         TextFormField(
-          //           initialValue: headline.value,
-          //           onSaved: (value) {
-          //             if (value == null) return;
+          ],
+        ),
+      ),
+      // child: Scaffold(
+      //   appBar: AppBar(
+      //     title: const Text('Add New Todo'),
+      //   ),
+      //   body: Form( // Maybe change structure to be closer to login page (container)
+      //     key: formKey,
+      //     child: Column(
+      //       children: [
+      //         TextFormField(
+      //           initialValue: headline.value,
+      //           onSaved: (value) {
+      //             if (value == null) return;
 
-          //             headline.value = value;
-          //           },
-          //           decoration: const InputDecoration(label: Text('Title')),
-          //         ),
-          //         TextFormField(
-          //           initialValue: description.value,
-          //           onSaved: (value) {
-          //             if (value == null) return;
+      //             headline.value = value;
+      //           },
+      //           decoration: const InputDecoration(label: Text('Title')),
+      //         ),
+      //         TextFormField(
+      //           initialValue: description.value,
+      //           onSaved: (value) {
+      //             if (value == null) return;
 
-          //             description.value = value;
-          //           },
-          //           decoration:
-          //               const InputDecoration(label: Text('Description')),
-          //         ),
-          //         ElevatedButton(
-          //           onPressed: () {
-          //             // provider.createNewTodo(
-          //             //   titleController.text,
-          //             //   descriptionController.text,
-          //             // );
-          //             ScaffoldMessenger.of(context).showSnackBar(
-          //               const SnackBar(content: Text('Post Created!')),
-          //             );
-          //             Navigator.of(context).pop();
-          //           },
-          //           child: const Text('Create Post'),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-        );
-      },
+      //             description.value = value;
+      //           },
+      //           decoration:
+      //               const InputDecoration(label: Text('Description')),
+      //         ),
+      //         ElevatedButton(
+      //           onPressed: () {
+      //             // provider.createNewTodo(
+      //             //   titleController.text,
+      //             //   descriptionController.text,
+      //             // );
+      //             ScaffoldMessenger.of(context).showSnackBar(
+      //               const SnackBar(content: Text('Post Created!')),
+      //             );
+      //             Navigator.of(context).pop();
+      //           },
+      //           child: const Text('Create Post'),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
