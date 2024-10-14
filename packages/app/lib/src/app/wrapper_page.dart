@@ -126,7 +126,7 @@ class WrapperPage extends ConsumerWidget {
         return Dialog.fullscreen(
           child: Scaffold(
             appBar: AppBar(
-              title: const Text('Add New Todo'),
+              title: const Text('Create a New Post'),
             ),
             body: Column(
               children: [
