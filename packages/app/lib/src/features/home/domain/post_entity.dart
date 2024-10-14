@@ -2,7 +2,6 @@
 library;
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:latlong2/latlong.dart';
 
 part 'post_entity.freezed.dart';
 part 'post_entity.g.dart';
@@ -48,7 +47,7 @@ sealed class PostEntity with _$PostEntity {
     required DateTime timestamp,
 
     /// An optional media to display alongside the post.
-    required BucketFile? image,
+    BucketFile? image,
 
     //TODO when implementing likes add numberOfLikes here
   }) = _PostEntity;
