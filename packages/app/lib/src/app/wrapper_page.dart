@@ -120,93 +120,72 @@ class _Dialog extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final titleController = useTextEditingController();
-    final descriptionController = useTextEditingController();
+    final formKey = useMemoized(GlobalKey<FormState>.new);
+    final title = useState('');
+    final description = useState('');
+
+    final handleSubmit = useCallback(
+      () async {
+        if (!(formKey.currentState?.validate() ?? false)) return;
+
+        formKey.currentState?.save();
+
+        await ref
+            .watch(postRepositoryProvider(const UserId('0'), null))
+            .createNewPost(
+              title.value,
+              description.value,
+              0,
+              0,
+              null,
+            );
+
+        if (!context.mounted) return;
+        await context.router.maybePop();
+
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Post Created!')),
+        );
+      },
+      [formKey],
+    );
 
     return Dialog.fullscreen(
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Create a New Post'),
         ),
-        body: Column(
-          children: [
-            TextFormField(
-              controller: titleController,
-              decoration: const InputDecoration(label: Text('Title')),
-            ),
-            TextFormField(
-              controller: descriptionController,
-              decoration: const InputDecoration(label: Text('Description')),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                await ref
-                    .watch(postRepositoryProvider(const UserId('0'), null))
-                    .createNewPost(
-                      titleController.text,
-                      descriptionController.text,
-                      0,
-                      0,
-                      null,
-                    );
+        body: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                initialValue: title.value,
+                onSaved: (value) {
+                  if (value == null) return;
 
-                if (!context.mounted) return;
-                await context.router.maybePop();
+                  title.value = value;
+                },
+                decoration: const InputDecoration(label: Text('Title')),
+              ),
+              TextFormField(
+                initialValue: description.value,
+                onSaved: (value) {
+                  if (value == null) return;
 
-                if (!context.mounted) return;
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Post Created!')),
-                );
-              },
-              child: const Text('Create Post'),
-            ),
-          ],
+                  description.value = value;
+                },
+                decoration: const InputDecoration(label: Text('Description')),
+              ),
+              ElevatedButton(
+                onPressed: handleSubmit,
+                child: const Text('Create Post'),
+              ),
+            ],
+          ),
         ),
       ),
-      // child: Scaffold(
-      //   appBar: AppBar(
-      //     title: const Text('Add New Todo'),
-      //   ),
-      //   body: Form( // Maybe change structure to be closer to login page (container)
-      //     key: formKey,
-      //     child: Column(
-      //       children: [
-      //         TextFormField(
-      //           initialValue: headline.value,
-      //           onSaved: (value) {
-      //             if (value == null) return;
-
-      //             headline.value = value;
-      //           },
-      //           decoration: const InputDecoration(label: Text('Title')),
-      //         ),
-      //         TextFormField(
-      //           initialValue: description.value,
-      //           onSaved: (value) {
-      //             if (value == null) return;
-
-      //             description.value = value;
-      //           },
-      //           decoration:
-      //               const InputDecoration(label: Text('Description')),
-      //         ),
-      //         ElevatedButton(
-      //           onPressed: () {
-      //             // provider.createNewTodo(
-      //             //   titleController.text,
-      //             //   descriptionController.text,
-      //             // );
-      //             ScaffoldMessenger.of(context).showSnackBar(
-      //               const SnackBar(content: Text('Post Created!')),
-      //             );
-      //             Navigator.of(context).pop();
-      //           },
-      //           child: const Text('Create Post'),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 }
