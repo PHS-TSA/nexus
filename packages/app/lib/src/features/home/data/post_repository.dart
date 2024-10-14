@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:intl/intl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../env/env.dart';
@@ -108,7 +109,7 @@ final class _AppwritePostRepository implements PostRepository {
           'author': author,
           'lat': lat,
           'lng': lng,
-          'timestamp': DateTime.timestamp(),
+          'timestamp': DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()),
           //TODO add images
         },
       );

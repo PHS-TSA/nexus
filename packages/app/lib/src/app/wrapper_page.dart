@@ -148,14 +148,14 @@ class WrapperPage extends ConsumerWidget {
                       0,
                       null,
                     );
-
+                    Navigator.pop(context);
                     // provider.createNewTodo(
                     //     titleController.text, descriptionController.text,);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Todo Added')),
+                      const SnackBar(content: Text('Post Created!')),
                     );
                   },
-                  child: const Text('Create Todo'),
+                  child: const Text('Create Post'),
                 ),
               ],
             ),
