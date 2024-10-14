@@ -139,15 +139,9 @@ class _Dialog extends HookConsumerWidget {
               decoration: const InputDecoration(label: Text('Description')),
             ),
             ElevatedButton(
-              onPressed: () {
-                print('im running fr');
-                ref
-                    .watch(
-                      postRepositoryProvider(
-                        const UserId('0'),
-                        null,
-                      ),
-                    )
+              onPressed: () async {
+                await ref
+                    .watch(postRepositoryProvider(const UserId('0'), null))
                     .createNewPost(
                       titleController.text,
                       descriptionController.text,
@@ -155,9 +149,11 @@ class _Dialog extends HookConsumerWidget {
                       0,
                       null,
                     );
-                Navigator.pop(context);
-                // provider.createNewTodo(
-                //     titleController.text, descriptionController.text,);
+
+                if (!context.mounted) return;
+                await context.router.maybePop();
+
+                if (!context.mounted) return;
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Post Created!')),
                 );
