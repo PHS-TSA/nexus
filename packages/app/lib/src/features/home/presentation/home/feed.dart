@@ -29,7 +29,6 @@ class Feed extends ConsumerWidget {
         post: PostEntity(
           headline: '',
           description: '',
-          image: null,
           lat: 0,
           lng: 0,
           timestamp: DateTime.fromMicrosecondsSinceEpoch(0, isUtc: true),
@@ -54,7 +53,6 @@ class Feed extends ConsumerWidget {
               post: PostEntity(
                 headline: 'Error',
                 description: error.toString(),
-                image: null,
                 author: const UserId(''),
                 lat: 0,
                 lng: 0,
@@ -104,6 +102,9 @@ class _Post extends StatelessWidget {
         },
         title: Text(post.headline),
         subtitle: Text(post.description),
+        // isThreeLine: true,
+        // minVerticalPadding: 100,
+        // TODOadd in on tap functionality to click on post
       ),
     );
   }
