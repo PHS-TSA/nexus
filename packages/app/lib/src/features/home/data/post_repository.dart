@@ -31,7 +31,7 @@ abstract interface class PostRepository {
   /// Create a new post.
   ///
   /// Returns the created post.
-  Future<PostEntity> createNewPost(
+  Future<void> createNewPost(
     String? headline,
     String? description,
     double lat,
@@ -46,6 +46,7 @@ final class _AppwritePostRepository implements PostRepository {
     required this.databaseId,
     required this.collectionId,
     required this.author,
+    // required this.feed,
     required this.feed,
   });
 
@@ -55,7 +56,7 @@ final class _AppwritePostRepository implements PostRepository {
   final String collectionId;
 
   final UserId author;
-  final FeedEntity feed;
+  final FeedEntity? feed;
 
   @override
   Future<List<PostEntity>> readPosts() async {
@@ -72,13 +73,13 @@ final class _AppwritePostRepository implements PostRepository {
       // ],
     );
 
-    print(
-      documentList.documents
-              .map((document) => PostEntity.fromJson(document.data))
-              .toList() is List
-          ? 'yeah!'
-          : 'na',
-    );
+    // print(
+    //   documentList.documents
+    //           .map((document) => PostEntity.fromJson(document.data))
+    //           .toList() is List
+    //       ? 'yeah!'
+    //       : 'na',
+    // );
 
     // @lishaduck after some debugging, I'm pretty sure there's an issue with the json mapping to PostEntitys. Its getting the documents but it seems like its just not mapping the values correctly
 
@@ -88,29 +89,34 @@ final class _AppwritePostRepository implements PostRepository {
   }
 
   @override
-  Future<PostEntity> createNewPost(
+  Future<void> createNewPost(
     String? headline,
     String? description,
     double lat,
     double lng,
     BucketFile? image,
   ) async {
-    final document = await database.createDocument(
-      databaseId: databaseId,
-      collectionId: collectionId,
-      documentId: ID.unique(),
-      data: {
-        'headline': headline,
-        'description': description,
-        'author': author,
-        'lat': lat,
-        'lng': lng,
-        'timestamp': DateTime.now,
-        //TODO add images
-      },
-    );
-
-    return PostEntity.fromJson(document.data);
+    print('creating doc');
+    try {
+      await database.createDocument(
+        databaseId: databaseId,
+        collectionId: collectionId,
+        documentId: ID.unique(),
+        data: {
+          'headline': headline,
+          'description': description,
+          'author': author,
+          'lat': lat,
+          'lng': lng,
+          'timestamp': DateTime.timestamp(),
+          //TODO add images
+        },
+      );
+    } catch (e) {
+      print(e);
+    }
+    print('success');
+    // return PostEntity.fromJson(document.data);
   }
 }
 
@@ -118,7 +124,7 @@ final class _AppwritePostRepository implements PostRepository {
 PostRepository postRepository(
   PostRepositoryRef ref,
   UserId author,
-  FeedEntity feed,
+  FeedEntity? feed,
 ) {
   final database = ref.read(databasesProvider);
 

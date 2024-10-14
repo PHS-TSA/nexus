@@ -37,7 +37,7 @@ class WrapperPage extends ConsumerWidget {
         SettingsRoute(),
       ],
       floatingActionButton: FloatingActionButton(
-        onPressed: () async => _dialogBuilder(context),
+        onPressed: () async => _dialogBuilder(context, ref),
         child: const Icon(Icons.create),
       ),
       appBarBuilder: (context, autoRouter) {
@@ -117,7 +117,7 @@ class WrapperPage extends ConsumerWidget {
     final descriptionController = TextEditingController();
 
     final postRepo = ref.watch(
-      postRepositoryProvider(const UserId('0')),
+      postRepositoryProvider(const UserId('0'), null),
     ); // Add user id here
 
     return showDialog<void>(
@@ -140,12 +140,20 @@ class WrapperPage extends ConsumerWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
+                    print('im running fr');
+                    postRepo.createNewPost(
+                      titleController.text,
+                      descriptionController.text,
+                      0,
+                      0,
+                      null,
+                    );
+
                     // provider.createNewTodo(
                     //     titleController.text, descriptionController.text,);
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Todo Added')),
                     );
-                    Navigator.pop(context);
                   },
                   child: const Text('Create Todo'),
                 ),
