@@ -4,29 +4,27 @@ library;
 // `riverpod_lint` doesn't recognize that this is the root of the app.
 // ignore_for_file: scoped_providers_should_specify_dependencies
 
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../features/settings/application/settings_service.dart';
 import '../features/settings/data/preferences_repository.dart';
+import '../utils/api.dart';
 
 /// The signature of [runApp].
 typedef RunApp = void Function(Widget app);
 
-/// The signature of [SharedPreferencesWithCache.create].
-typedef GetSharedPreferences = Future<SharedPreferencesWithCache> Function({
-  required SharedPreferencesWithCacheOptions cacheOptions,
-  Map<String, Object?>? cache,
-});
+/// The signature of [createClient]
+typedef CreateClient = Client Function();
 
 /// The environment needed to bootstrap the app.
 typedef BootstrapEnv = ({
   RunApp runApp,
-  GetSharedPreferences getSharedPreferences,
+  CreateClient createClient,
 });
 
 /// Turn any widget into a flow-blown app.
@@ -40,7 +38,7 @@ mixin Bootstrap implements Widget {
   /// - initializing riverpod's [ProviderScope], and
   /// - running the app with [runApp].
   Future<void> bootstrap(BootstrapEnv env) async {
-    final (:runApp, :getSharedPreferences) = env;
+    final (:runApp, :createClient) = env;
 
     // Don't use hash style routes.
     usePathUrlStrategy();
@@ -49,10 +47,9 @@ mixin Bootstrap implements Widget {
     WidgetsFlutterBinding.ensureInitialized();
 
     // Load the user's preferences.
-    final prefs = await getSharedPreferences(
-      cacheOptions: const SharedPreferencesWithCacheOptions(),
-    );
-    final initialSettings = await loadSettings(prefs);
+    final client = createClient();
+    final account = Account(client);
+    final initialSettings = await loadSettings(account);
 
     // Reset splash screen.
     FlutterNativeSplash.remove();
@@ -65,7 +62,8 @@ mixin Bootstrap implements Widget {
     runApp(
       ProviderScope(
         overrides: [
-          sharedPreferencesProvider.overrideWithValue(prefs),
+          clientProvider.overrideWithValue(client),
+          accountsProvider.overrideWithValue(account),
           initialSettingsProvider.overrideWithValue(initialSettings),
         ],
         child: RestorationScope(

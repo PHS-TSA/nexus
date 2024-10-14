@@ -14,7 +14,6 @@ import '../../helpers/mocks.dart';
 
 extension _WidgetTesterX on WidgetTester {
   Future<void> pumpWidgetPage() async {
-    final mockSharedPreferences = MockSharedPreferences();
     final mockAuthRepository = MockAuthRepository();
     when(mockAuthRepository.checkUserAuth).thenAnswer((_) => Future.value());
 
@@ -22,7 +21,6 @@ extension _WidgetTesterX on WidgetTester {
       ProviderScope(
         overrides: [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
-          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
           initialSettingsProvider.overrideWithValue(defaultSettings),
         ],
         child: const App(),
