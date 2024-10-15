@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../features/auth/application/auth_service.dart';
 import '../features/home/data/post_repository.dart';
 import '../features/home/domain/post_entity.dart';
 import 'router.gr.dart';
@@ -126,6 +127,9 @@ class _Dialog extends HookConsumerWidget {
     final title = useState('');
     final description = useState('');
 
+    final authRepo = ref.read(authServiceProvider); // Maybe need a watch here
+    final id = authRepo.asData?.value?.$id;
+
     final handleSubmit = useCallback(
       () async {
         if (!(formKey.currentState?.validate() ?? false)) return;
@@ -133,7 +137,8 @@ class _Dialog extends HookConsumerWidget {
         formKey.currentState?.save();
 
         await ref
-            .watch(postRepositoryProvider(const UserId('0'), null))
+            .watch(postRepositoryProvider(
+                UserId(id!), null)) // TODObetter way to remove !
             .createNewPost(
               title.value,
               description.value,

@@ -3,6 +3,7 @@ library;
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../auth/application/auth_service.dart';
 import '../data/post_repository.dart';
 import '../domain/feed_entity.dart';
 import '../domain/feed_model.dart';
@@ -20,8 +21,10 @@ const pageSize = 10;
 base class FeedService extends _$FeedService {
   @override
   FutureOr<FeedModel> build(FeedEntity feed, int page) async {
+    final authRepo = ref.read(authServiceProvider);
+    final id = authRepo.asData?.value?.$id;
     final postRepo = ref.watch(
-      postRepositoryProvider(const UserId('0'), feed),
+      postRepositoryProvider(UserId(id!), feed), // TODObetter way to remove !
     ); // Add user id here
     final posts = await postRepo.readPosts();
 
