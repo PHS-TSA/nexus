@@ -3,9 +3,12 @@
 
 library;
 
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../features/auth/application/auth_service.dart';
@@ -133,6 +136,20 @@ class _Dialog extends HookConsumerWidget {
 
     final handleSubmit = useCallback(
       () async {
+        final random = Random();
+        final location = await determinePosition();
+        var lat = location.latitude.roundToDouble();
+        var lng = location.longitude.roundToDouble();
+
+        if (lat < 179) {
+          lat += random.nextDouble();
+        }
+
+        if (lng < 179) {
+          // cords can't be greater than 180
+          lng += random.nextDouble();
+        }
+
         if (!(formKey.currentState?.validate() ?? false)) return;
 
         formKey.currentState?.save();
@@ -147,11 +164,10 @@ class _Dialog extends HookConsumerWidget {
             .createNewPost(
               title.value,
               description.value,
-              0,
-              0,
+              lat,
+              lng,
               null,
             );
-
         if (!context.mounted) return;
         await context.router.maybePop();
 
@@ -162,6 +178,7 @@ class _Dialog extends HookConsumerWidget {
       },
       [formKey],
     );
+
     return Dialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 64, vertical: 32),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -203,5 +220,43 @@ class _Dialog extends HookConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<Position> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.',
+      );
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return Geolocator.getCurrentPosition();
   }
 }
