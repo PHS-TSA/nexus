@@ -6,3 +6,6 @@ environment:
 
 dev_dependencies:
   melos: ^6.2.0
+
+dependencies:
+  geolocator: ^13.0.1
