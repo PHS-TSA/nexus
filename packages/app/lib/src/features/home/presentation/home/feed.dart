@@ -25,6 +25,7 @@ class Feed extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Maybe change to scaffold with floating action button and list view as child
     return ListView.builder(
+      shrinkWrap: true,
       prototypeItem: _Post(
         post: PostEntity(
           headline: '',
