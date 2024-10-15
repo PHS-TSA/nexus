@@ -1,4 +1,6 @@
 /// This library wraps the application in a shared scaffold.
+// ignore_for_file: prefer_expression_function_bodies
+
 library;
 
 import 'package:auto_route/auto_route.dart';
@@ -150,39 +152,43 @@ class _Dialog extends HookConsumerWidget {
       },
       [formKey],
     );
-
-    return Dialog.fullscreen(
+    return Dialog(
+      insetPadding: const EdgeInsets.symmetric(horizontal: 64, vertical: 32),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Create a New Post'),
         ),
         body: Form(
           key: formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                initialValue: title.value,
-                onSaved: (value) {
-                  if (value == null) return;
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                TextFormField(
+                  initialValue: title.value,
+                  onSaved: (value) {
+                    if (value == null) return;
 
-                  title.value = value;
-                },
-                decoration: const InputDecoration(label: Text('Title')),
-              ),
-              TextFormField(
-                initialValue: description.value,
-                onSaved: (value) {
-                  if (value == null) return;
+                    title.value = value;
+                  },
+                  decoration: const InputDecoration(label: Text('Title')),
+                ),
+                TextFormField(
+                  initialValue: description.value,
+                  onSaved: (value) {
+                    if (value == null) return;
 
-                  description.value = value;
-                },
-                decoration: const InputDecoration(label: Text('Description')),
-              ),
-              ElevatedButton(
-                onPressed: handleSubmit,
-                child: const Text('Create Post'),
-              ),
-            ],
+                    description.value = value;
+                  },
+                  decoration: const InputDecoration(label: Text('Description')),
+                ),
+                ElevatedButton(
+                  onPressed: handleSubmit,
+                  child: const Text('Create Post'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
