@@ -114,6 +114,7 @@ class WrapperPage extends ConsumerWidget {
   }
 }
 
+// May want to separate to a different file
 class _Dialog extends HookConsumerWidget {
   const _Dialog({
     // Temporary ignore, see <dart-lang/sdk#49025>.
@@ -137,8 +138,12 @@ class _Dialog extends HookConsumerWidget {
         formKey.currentState?.save();
 
         await ref
-            .watch(postRepositoryProvider(
-                UserId(id!), null)) // TODObetter way to remove !
+            .watch(
+              postRepositoryProvider(
+                UserId(id!),
+                null,
+              ),
+            ) // TODObetter way to remove !
             .createNewPost(
               title.value,
               description.value,
