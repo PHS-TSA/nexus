@@ -25,6 +25,8 @@ class Feed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    print(feed);
+
     // Maybe change to scaffold with floating action button and list view as child
     return ListView.builder(
       shrinkWrap: true,
@@ -39,7 +41,15 @@ class Feed extends ConsumerWidget {
         ),
       ),
       itemBuilder: (context, index) {
-        final response = ref.watch(singlePostProvider(feed, index));
+        final response = ref.watch(
+          singlePostProvider(
+            feed,
+            index,
+            // Change params to lat lng
+            0,
+            0,
+          ),
+        );
 
         return switch (response) {
           AsyncData(:final value) when value != null => _Post(post: value),

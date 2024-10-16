@@ -25,7 +25,7 @@ base class FeedService extends _$FeedService {
   /// Fetch the next post in the feed.
   /// Handles pagination automatically.
   /// Returns null if there are no more posts.
-  Future<PostEntity?> fetch(int postIndex) async {
+  Future<PostEntity?> fetch(int postIndex, double lat, double lng) async {
     final id = ref.watch(authServiceProvider).requireValue?.$id;
     final postRepo = ref.watch(postRepositoryProvider(id, feed));
 
@@ -49,7 +49,7 @@ base class FeedService extends _$FeedService {
     );
 
     final post = state.posts.elementAtOrNull(postIndex);
-    return post ?? await fetch(postIndex + 1);
+    return post ?? await fetch(postIndex + 1, lat, lng);
   }
 }
 
@@ -59,13 +59,19 @@ FutureOr<PostEntity?> singlePost(
   SinglePostRef ref,
   FeedEntity feed,
   int postIndex,
+  double lat,
+  double lng,
 ) async {
   // Keep previous posts in cache to make scrolling up possible.
   // Otherwise, `ListView` freaks out.
-  if (postIndex != 0) ref.watch(singlePostProvider(feed, postIndex - 1));
+  if (postIndex != 0) {
+    ref.watch(
+      singlePostProvider(feed, postIndex - 1, lat, lng),
+    );
+  }
 
   final feedNotifier = ref.watch(feedServiceProvider(feed).notifier);
-  final post = await feedNotifier.fetch(postIndex);
+  final post = await feedNotifier.fetch(postIndex, lat, lng);
 
   return post;
 }
