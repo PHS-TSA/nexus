@@ -122,7 +122,7 @@ PostRepository postRepository(
   UserId? author,
   FeedEntity feed,
 ) {
-  final database = ref.read(databasesProvider);
+  final database = ref.watch(databasesProvider);
 
   return _AppwritePostRepository(
     author: author,
