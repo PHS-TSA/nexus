@@ -153,7 +153,7 @@ class _Dialog extends HookConsumerWidget {
         formKey.currentState?.save();
 
         await ref
-            .watch(
+            .read(
               postRepositoryProvider(
                 UserId(id!),
                 null,
@@ -166,6 +166,7 @@ class _Dialog extends HookConsumerWidget {
               lng,
               null,
             );
+
         if (!context.mounted) return;
         await context.router.maybePop();
 
