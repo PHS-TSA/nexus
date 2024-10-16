@@ -36,6 +36,7 @@ base class FeedService extends _$FeedService {
     final lng = location.longitude;
 
     final posts = await postRepo.readPosts(
+      (page - 1) * pageSize + 1,
       lat,
       lng,
     ); // Bool to differentate local from world in post repository

@@ -26,7 +26,7 @@ Have flutter access user location
 
 abstract interface class PostRepository {
   /// Read all the posts.
-  Future<List<PostEntity>> readPosts(double lat, double lng);
+  Future<List<PostEntity>> readPosts(int offset, double lat, double lng);
 
   /// Create a new post.
   ///
@@ -60,11 +60,12 @@ final class _AppwritePostRepository implements PostRepository {
   final FeedEntity feed;
 
   @override
-  Future<List<PostEntity>> readPosts(double lat, double lng) async {
+  Future<List<PostEntity>> readPosts(int offset, double lat, double lng) async {
     final documentList = await database.listDocuments(
       databaseId: databaseId,
       collectionId: collectionId,
       queries: [
+        Query.offset(offset),
         ...switch (feed) {
           LocalFeed() => [
               Query.between('lat', lat - 2, lat + 2),
