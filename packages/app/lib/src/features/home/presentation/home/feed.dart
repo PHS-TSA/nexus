@@ -36,7 +36,7 @@ class Feed extends ConsumerWidget {
           lat: 0,
           lng: 0,
           timestamp: DateTime.fromMicrosecondsSinceEpoch(0, isUtc: true),
-          author: const UserId(''),
+          author: '',
         ),
       ),
       itemBuilder: (context, index) {
@@ -58,7 +58,7 @@ class Feed extends ConsumerWidget {
               post: PostEntity(
                 headline: 'Error',
                 description: error.toString(),
-                author: const UserId(''),
+                author: '',
                 lat: 0,
                 lng: 0,
                 timestamp: DateTime.timestamp(),
@@ -98,7 +98,7 @@ class _Post extends StatelessWidget {
           // Will need to be cached in Riverpod. Probably store it in the entity.
           // But, deserialization shouldn't need to know about the API.
           // This'll be tricky. For now, I think we make a dummy image.
-          final BucketFile _ => Image.network(
+          final String _ => Image.network(
               'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png',
             ),
           // final BucketFile image => Image.memory(image),

@@ -30,7 +30,7 @@ void main() {
         (index) => PostEntity(
           description: 'body',
           headline: 'headline',
-          author: const UserId('1234'),
+          author: '1234',
           lat: 0,
           lng: 0,
           timestamp: DateTime(2024, 10, 7, 13, 53),

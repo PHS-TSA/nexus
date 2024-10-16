@@ -22,10 +22,9 @@ base class FeedService extends _$FeedService {
     final id = ref.watch(authServiceProvider).requireValue?.$id;
     final postRepo = ref.watch(
       postRepositoryProvider(
-        UserId(
-          // TODO(MattsAttack): Find a way to handle null here.
-          id!,
-        ),
+        // TODO(MattsAttack): Find a way to handle null here.
+        id,
+
         feed,
       ),
     );

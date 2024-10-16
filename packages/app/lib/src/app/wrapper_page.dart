@@ -14,7 +14,6 @@ import '../features/auth/application/auth_service.dart';
 import '../features/home/application/feed_service.dart';
 import '../features/home/data/post_repository.dart';
 import '../features/home/domain/feed_entity.dart';
-import '../features/home/domain/post_entity.dart';
 import 'router.gr.dart';
 
 /// {@template our_democracy.app.wrapper_page}
@@ -157,7 +156,7 @@ class _Dialog extends HookConsumerWidget {
             .read(
               postRepositoryProvider(
                 // TODO(MattsAttack): Find a way to handle null here.
-                UserId(id!),
+                id,
                 // TODO(lishaduck): This could be a whole lot less hacky.
                 const FeedEntity.world(),
               ),

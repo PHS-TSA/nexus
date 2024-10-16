@@ -37,7 +37,7 @@ abstract interface class PostRepository {
     String? description,
     double lat,
     double lng,
-    BucketFile? image,
+    String? image,
   );
 }
 
@@ -56,7 +56,7 @@ final class _AppwritePostRepository implements PostRepository {
   final String databaseId;
   final String collectionId;
 
-  final UserId? author;
+  final String? author;
   final FeedEntity feed;
 
   @override
@@ -89,7 +89,7 @@ final class _AppwritePostRepository implements PostRepository {
     String? description,
     double lat,
     double lng,
-    BucketFile? image,
+    String? image,
   ) async {
     try {
       await database.createDocument(
@@ -117,7 +117,7 @@ final class _AppwritePostRepository implements PostRepository {
 @riverpod
 PostRepository postRepository(
   PostRepositoryRef ref,
-  UserId? author,
+  String? author,
   FeedEntity feed,
 ) {
   final database = ref.watch(databasesProvider);
