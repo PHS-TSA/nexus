@@ -22,8 +22,7 @@ const pageSize = 10;
 base class FeedService extends _$FeedService {
   @override
   FutureOr<FeedModel> build(FeedEntity feed, int page) async {
-    final authRepo = ref.read(authServiceProvider);
-    final id = authRepo.asData?.value?.$id;
+    final id = ref.watch(authServiceProvider).valueOrNull?.$id;
     final postRepo = ref.watch(
       postRepositoryProvider(UserId(id!), feed), // TODObetter way to remove !
     ); // Add user id here

@@ -130,9 +130,7 @@ class _Dialog extends HookConsumerWidget {
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final title = useState('');
     final description = useState('');
-
-    final authRepo = ref.read(authServiceProvider); // Maybe need a watch here
-    final id = authRepo.asData?.value?.$id;
+    final id = ref.watch(authServiceProvider).valueOrNull?.$id;
 
     final handleSubmit = useCallback(
       () async {
