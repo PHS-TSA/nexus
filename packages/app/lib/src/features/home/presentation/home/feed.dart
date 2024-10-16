@@ -109,7 +109,7 @@ class _Post extends StatelessWidget {
         subtitle: Text(post.description),
         // isThreeLine: true,
         // minVerticalPadding: 100,
-        // TODOadd in on tap functionality to click on post
+        // TODO(MattsAttack): add in on tap functionality to click on post
       ),
     );
   }

@@ -21,11 +21,17 @@ base class FeedService extends _$FeedService {
   FutureOr<FeedModel> build(FeedEntity feed, int page) async {
     final id = ref.watch(authServiceProvider).requireValue?.$id;
     final postRepo = ref.watch(
-      postRepositoryProvider(UserId(id!), feed), // TODObetter way to remove !
-    ); // Add user id here
+      postRepositoryProvider(
+        UserId(
+          // TODO(MattsAttack): Find a way to handle null here.
+          id!,
+        ),
+        feed,
+      ),
+    );
 
-    //Get user location
-    //TODOShould make a location repo eventually so we don't reuse determine location
+    // Get user's location.
+    // TODO(lishaduck): Should make a location service so we cache determine location
     final location = await determinePosition();
     final lat = location.latitude;
     final lng = location.longitude;
@@ -59,6 +65,7 @@ base class FeedService extends _$FeedService {
   }
 }
 
+// TODO(lishaduck): Move this to the location repository.
 Future<Position> determinePosition() async {
   // Test if location services are enabled.
   final serviceEnabled = await Geolocator.isLocationServiceEnabled();

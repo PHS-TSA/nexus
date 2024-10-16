@@ -49,7 +49,7 @@ sealed class PostEntity with _$PostEntity {
     /// An optional media to display alongside the post.
     BucketFile? image,
 
-    //TODO when implementing likes add numberOfLikes here
+    // TODO(MattsAttack): when implementing likes, add numberOfLikes here.
   }) = _PostEntity;
 
   factory PostEntity.fromJson(Map<String, dynamic> json) =>

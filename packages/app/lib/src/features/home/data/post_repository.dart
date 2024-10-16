@@ -25,10 +25,6 @@ Have flutter access user location
 // Post_entitys are put into list in feed_service
 
 abstract interface class PostRepository {
-  //Have funcs in heres
-
-  // TODOadd in get funcs
-
   /// Read all the posts.
   Future<List<PostEntity>> readPosts(double lat, double lng);
 
@@ -36,6 +32,7 @@ abstract interface class PostRepository {
   ///
   /// Returns the created post.
   Future<void> createNewPost(
+    // TODO(lishaduck): Take a PostEntity.
     String? headline,
     String? description,
     double lat,
@@ -100,13 +97,14 @@ final class _AppwritePostRepository implements PostRepository {
         collectionId: collectionId,
         documentId: ID.unique(),
         data: {
+          // TODO(lishaduck): Use native JSON serialization.
           'headline': headline,
           'description': description,
           'author': author,
           'lat': lat,
           'lng': lng,
           'timestamp': DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()),
-          //TODO add images
+          // TODO(MattAttack): add images
         },
       );
     } catch (e) {
