@@ -47,7 +47,7 @@ class Feed extends ConsumerWidget {
         final response = ref.watch(feedServiceProvider(feed, page));
 
         return switch (response) {
-          AsyncData(:final value) when indexInPage >= value.posts.length =>
+          AsyncData(:final value) when indexInPage < value.posts.length =>
             _Post(post: value.posts[indexInPage]),
 
           // If we run out of items, return null.
