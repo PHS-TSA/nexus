@@ -1,4 +1,6 @@
 /// This library contains a widget that displays a feed of posts.
+// ignore_for_file: prefer_expression_function_bodies
+
 library;
 
 import 'package:flutter/foundation.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../application/feed_service.dart';
+import '../../data/post_repository.dart';
 import '../../domain/feed_entity.dart';
 import '../../domain/post_entity.dart';
 
@@ -23,8 +26,19 @@ class Feed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Maybe change to scaffold with floating action button and list view as child
     return ListView.builder(
-      prototypeItem: const _Post(post: PostEntity(body: '', image: null)),
+      shrinkWrap: true,
+      prototypeItem: _Post(
+        post: PostEntity(
+          headline: '',
+          description: '',
+          lat: 0,
+          lng: 0,
+          timestamp: DateTime.fromMicrosecondsSinceEpoch(0, isUtc: true),
+          author: '',
+        ),
+      ),
       itemBuilder: (context, index) {
         // Calculate the page and index in the page.
         final page = index ~/ pageSize + 1;
@@ -33,16 +47,21 @@ class Feed extends ConsumerWidget {
         final response = ref.watch(feedServiceProvider(feed, page));
 
         return switch (response) {
-          AsyncData(:final value) => indexInPage >= value.posts.length
-              // If we run out of items, return null.
-              ? null
-              // Otherwise, return the post.
-              : _Post(post: value.posts[indexInPage]),
+          AsyncData(:final value) when indexInPage < value.posts.length =>
+            _Post(post: value.posts[indexInPage]),
+
+          // If we run out of items, return null.
+          AsyncData() => null,
+
           // If there's an error, display it as another post.
           AsyncError(:final error) => _Post(
               post: PostEntity(
-                body: error.toString(),
-                image: null,
+                headline: 'Error',
+                description: error.toString(),
+                author: '',
+                lat: 0,
+                lng: 0,
+                timestamp: DateTime.timestamp(),
               ),
             ),
           // If we're loading, display a loading indicator.
@@ -75,12 +94,22 @@ class _Post extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: switch (post.image) {
-          // If the image is an ImageProvider, use the image.
-          final ImageProvider image => Image(image: image),
+          // If the image is an BucketFile, figure out how to get the image from the API.
+          // Will need to be cached in Riverpod. Probably store it in the entity.
+          // But, deserialization shouldn't need to know about the API.
+          // This'll be tricky. For now, I think we make a dummy image.
+          final String _ => Image.network(
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png',
+            ),
+          // final BucketFile image => Image.memory(image),
           // Else, return null.
           null => null,
         },
-        title: Text(post.body),
+        title: Text(post.headline),
+        subtitle: Text(post.description),
+        // isThreeLine: true,
+        // minVerticalPadding: 100,
+        // TODO(MattsAttack): add in on tap functionality to click on post
       ),
     );
   }

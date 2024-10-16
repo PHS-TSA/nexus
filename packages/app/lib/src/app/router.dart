@@ -37,7 +37,7 @@ class AppRouter extends RootStackRouter {
             ),
             AutoRoute(
               page: MapRoute.page,
-              path: '',
+              path: 'map',
               title: (context, data) => 'Map',
               initial: true,
             ),
@@ -53,7 +53,7 @@ class AppRouter extends RootStackRouter {
             ),
             AutoRoute(
               page: const EmptyShellRoute('Feeds'),
-              path: '',
+              path: 'local',
               children: [
                 AutoRoute(
                   page: LocalFeedRoute.page,
@@ -82,7 +82,7 @@ class AppRouter extends RootStackRouter {
           path: '/sign-up',
           title: (context, data) => 'Sign Up',
         ),
-        RedirectRoute(path: '/*', redirectTo: '/'),
+        RedirectRoute(path: '/*', redirectTo: '/local'),
       ];
 
   @override

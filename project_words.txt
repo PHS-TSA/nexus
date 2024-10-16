@@ -54,6 +54,7 @@ endtemplate
 fpdart
 fullscreen
 genhtml
+geolocator
 Gmail
 Instructure
 ipad

@@ -49,7 +49,8 @@ class LoginPage extends HookConsumerWidget {
               // Runs the function passed in by the guard and brings user back to previous page.
               _onResult(didLogIn: true);
             } else {
-              await context.router.push(const LocalFeedRoute());
+              // Replace the route so user won't come back to login.
+              await context.router.replace(const LocalFeedRoute());
             }
           } else {
             // TODO(lishaduck): Move this to the guard.
@@ -151,9 +152,7 @@ class LoginPage extends HookConsumerWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       // TODO(MattsAttack): I don't don't love the button color, it could be improved.
-                      onPressed: () async {
-                        await handleSubmit();
-                      },
+                      onPressed: handleSubmit,
                       child: const Text('Log in'),
                     ),
                   ),
