@@ -27,7 +27,7 @@ abstract interface class PostRepository {
   // TODOadd in get funcs
 
   /// Read all the posts.
-  Future<List<PostEntity>> readPosts();
+  Future<List<PostEntity>> readPosts(double lat, double lng);
 
   /// Create a new post.
   ///
@@ -60,22 +60,41 @@ final class _AppwritePostRepository implements PostRepository {
   final FeedEntity? feed;
 
   @override
-  Future<List<PostEntity>> readPosts() async {
-    // Have one func or param for local and one for global
-    final documentList = await database.listDocuments(
-      databaseId: databaseId,
-      collectionId: collectionId,
-      // TODO(MattsAttack): For local vs world sorting have a conditional to determine sorting method.
-      // queries: [
-      //   // Only returns data with these attributes
-      //   Query.equal('createdBy', email),
-      // ],
-    );
-    // @lishaduck after some debugging, I'm pretty sure there's an issue with the json mapping to PostEntitys. Its getting the documents but it seems like its just not mapping the values correctly
+  Future<List<PostEntity>> readPosts(double lat, double lng) async {
+    if (feed.toString() == 'FeedEntity.local()') {
+      // Local Feed
+      print('this if works');
+      // Have one func or param for local and one for global
+      final documentList = await database.listDocuments(
+        databaseId: databaseId,
+        collectionId: collectionId,
+        queries: [
+          // Only returns data with these attributes
+          Query.between('lat', lat - 2, lat + 2),
+          Query.between('lng', lng - 2, lng + 2),
+        ],
+      );
 
-    return documentList.documents.map((document) {
-      return PostEntity.fromJson(document.data);
-    }).toList();
+      print('queries work');
+      print(
+        documentList.documents
+            .map((document) => PostEntity.fromJson(document.data))
+            .toList(),
+      );
+      return documentList.documents
+          .map((document) => PostEntity.fromJson(document.data))
+          .toList();
+    } else {
+      // World Feed
+      // TODOsorting things
+      final documentList = await database.listDocuments(
+        databaseId: databaseId,
+        collectionId: collectionId,
+      );
+      return documentList.documents
+          .map((document) => PostEntity.fromJson(document.data))
+          .toList();
+    }
   }
 
   @override
