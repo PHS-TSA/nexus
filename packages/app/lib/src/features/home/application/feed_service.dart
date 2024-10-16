@@ -19,7 +19,7 @@ part 'feed_service.g.dart';
 base class FeedService extends _$FeedService {
   @override
   FutureOr<FeedModel> build(FeedEntity feed, int page) async {
-    final id = ref.watch(authServiceProvider).valueOrNull?.$id;
+    final id = ref.watch(authServiceProvider).requireValue?.$id;
     final postRepo = ref.watch(
       postRepositoryProvider(UserId(id!), feed), // TODObetter way to remove !
     ); // Add user id here
