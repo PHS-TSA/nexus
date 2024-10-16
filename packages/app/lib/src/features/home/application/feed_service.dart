@@ -33,12 +33,28 @@ base class FeedService extends _$FeedService {
     if (cachedPost != null) return cachedPost;
 
     // Get user's location.
-    final location = await ref.watch(locationServiceProvider.future);
+    // final location = await ref.watch(locationServiceProvider.future);
+
+    final double latitude;
+    final double longitude;
+
+    switch (feed) {
+      case LocalFeed(:final lat, :final lng):
+        latitude = lat;
+        longitude = lng;
+        print('$lat, $lng');
+
+      default:
+        final location = await ref.watch(locationServiceProvider.future);
+        latitude = location.latitude;
+        longitude = location.longitude;
+    }
+    // print();
 
     final posts = await postRepo.readPosts(
       state.cursorPos,
-      location.latitude,
-      location.longitude,
+      latitude,
+      longitude,
     );
 
     if (posts.isEmpty) return null;

@@ -25,8 +25,6 @@ class Feed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print(feed);
-
     // Maybe change to scaffold with floating action button and list view as child
     return ListView.builder(
       shrinkWrap: true,
@@ -41,6 +39,8 @@ class Feed extends ConsumerWidget {
         ),
       ),
       itemBuilder: (context, index) {
+        print('feed in feed.dart: $feed');
+
         final response = ref.watch(
           singlePostProvider(
             feed,
