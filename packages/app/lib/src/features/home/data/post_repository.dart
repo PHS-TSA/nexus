@@ -88,26 +88,21 @@ final class _AppwritePostRepository implements PostRepository {
     double lng,
     String? image,
   ) async {
-    try {
-      await database.createDocument(
-        databaseId: databaseId,
-        collectionId: collectionId,
-        documentId: ID.unique(),
-        data: {
-          // TODO(lishaduck): Use native JSON serialization.
-          'headline': headline,
-          'description': description,
-          'author': author,
-          'lat': lat,
-          'lng': lng,
-          'timestamp': DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()),
-          // TODO(MattAttack): add images
-        },
-      );
-    } catch (e) {
-      print(e);
-    }
-    // return PostEntity.fromJson(document.data);
+    await database.createDocument(
+      databaseId: databaseId,
+      collectionId: collectionId,
+      documentId: ID.unique(),
+      data: {
+        // TODO(lishaduck): Use native JSON serialization.
+        'headline': headline,
+        'description': description,
+        'author': author,
+        'lat': lat,
+        'lng': lng,
+        'timestamp': DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()),
+        // TODO(MattAttack): add images
+      },
+    );
   }
 }
 
