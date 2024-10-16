@@ -2,6 +2,7 @@
 library;
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:latlong2/latlong.dart';
 
 part 'feed_entity.freezed.dart';
 
@@ -10,7 +11,7 @@ part 'feed_entity.freezed.dart';
 @freezed
 sealed class FeedEntity with _$FeedEntity {
   /// A feed that features content nearby the user.
-  const factory FeedEntity.local() = LocalFeed;
+  const factory FeedEntity.local(LatLng location) = LocalFeed;
 
   /// A feed that features content from around the world.
   const factory FeedEntity.world() = WorldFeed;

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../application/feed_service.dart';
+import '../../data/post_repository.dart';
 import '../../domain/feed_entity.dart';
 import '../../domain/post_entity.dart';
 
@@ -36,18 +37,18 @@ class Feed extends ConsumerWidget {
           lng: 0,
           timestamp: DateTime.fromMicrosecondsSinceEpoch(0, isUtc: true),
           author: const UserId(''),
+          id: '',
         ),
       ),
       itemBuilder: (context, index) {
         // Calculate the page and index in the page.
-        final page = index ~/ pageSize + 1;
         final indexInPage = index % pageSize;
 
-        final response = ref.watch(feedServiceProvider(feed, page));
+        final response = ref.watch(feedServiceProvider(feed, cursor));
 
         return switch (response) {
           AsyncData(:final value)
-              when indexInPage >= value.posts.length =>
+              when value != null && indexInPage >= value.posts.length =>
             _Post(post: value.posts[indexInPage]),
 
           // If we run out of items, return null.
@@ -61,9 +62,11 @@ class Feed extends ConsumerWidget {
                 author: const UserId(''),
                 lat: 0,
                 lng: 0,
+                id: '',
                 timestamp: DateTime.timestamp(),
               ),
             ),
+
           // If we're loading, display a loading indicator.
           _ => const CircularProgressIndicator(),
         };
@@ -107,7 +110,7 @@ class _Post extends StatelessWidget {
         },
         title: Text(post.headline),
         subtitle: Text(post.description),
-        // isThreeLine: true,
+        isThreeLine: true,
         // minVerticalPadding: 100,
         // TODOadd in on tap functionality to click on post
       ),

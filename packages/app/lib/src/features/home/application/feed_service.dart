@@ -12,40 +12,30 @@ import '../domain/post_entity.dart';
 
 part 'feed_service.g.dart';
 
-/// The number of posts to fetch at a time.
-const pageSize = 10;
-
 //Load in the posts repository here as a func
 
 /// Provide the values of a feed.
 @riverpod
 base class FeedService extends _$FeedService {
   @override
-  FutureOr<FeedModel> build(FeedEntity feed, int page) async {
-    final authRepo = ref.read(authServiceProvider);
-    final id = authRepo.asData?.value?.$id;
+  FutureOr<FeedModel?> build(FeedEntity feed, String? cursor) async {
+    final id = ref.watch(authServiceProvider).valueOrNull?.$id;
     final postRepo = ref.watch(
-      postRepositoryProvider(UserId(id!), feed), // TODObetter way to remove !
-    ); // Add user id here
-
-    //Get user location
-    //TODOShould make a location repo eventually so we don't reuse determine location
-    final location = await determinePosition();
-    final lat = location.latitude;
-    final lng = location.longitude;
-
-    final posts = await postRepo.readPosts(
-      lat,
-      lng,
-    ); // Bool to differentate local from world in post repository
-
-    return FeedModel(
-      posts: posts,
-      // TODO(lishaduck): Set the cursor position to the last post.
-      cursorPos: '',
+      postRepositoryProvider(UserId(id!), feed),
     );
+
+    final posts = await postRepo.readPosts(cursor);
+    final newCursor = posts.lastOrNull?.id;
+
+    return newCursor == null
+        ? null
+        : FeedModel(
+            posts: posts,
+            cursorPos: newCursor,
+          );
   }
 
+  // TODO(lishaduck): Replace this with an impl that actually writes to the DB.
   /// Replace the current posts with newly generated posts.
   Future<void> addPosts(List<PostEntity> newPosts) async {
     // You can only change a Notifier's `state` by adding methods that assign a new value.
@@ -62,42 +52,39 @@ base class FeedService extends _$FeedService {
       );
     }
   }
+}
 
-  Future<Position> determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      return Future.error(
-        'Location permissions are permanently denied, we cannot request permissions.',
-      );
-    }
-
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
-    return Geolocator.getCurrentPosition();
+Future<Position> determinePosition() async {
+  // Test if location services are enabled.
+  final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    // Location services are not enabled don't continue
+    // accessing the position and request users of the
+    // App to enable the location services.
+    throw Exception('Location services are disabled.');
   }
+
+  var permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      // Permissions are denied, next time you could try
+      // requesting permissions again (this is also where
+      // Android's shouldShowRequestPermissionRationale
+      // returned true. According to Android guidelines
+      // your App should show an explanatory UI now.
+      throw Exception('Location permissions are denied');
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    // Permissions are denied forever, handle appropriately.
+    throw Exception(
+      'Location permissions are permanently denied, we cannot request permissions.',
+    );
+  }
+
+  // When we reach here, permissions are granted and we can
+  // continue accessing the position of the device.
+  return Geolocator.getCurrentPosition();
 }

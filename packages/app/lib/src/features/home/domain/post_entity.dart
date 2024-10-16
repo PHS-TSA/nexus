@@ -46,6 +46,9 @@ sealed class PostEntity with _$PostEntity {
     ///
     required DateTime timestamp,
 
+    /// The unique identifier of the post.
+    required String id,
+
     /// An optional media to display alongside the post.
     BucketFile? image,
 

@@ -21,6 +21,6 @@ sealed class FeedModel with _$FeedModel {
     required List<PostEntity> posts,
 
     /// The database pagination cursor position.
-    required String cursorPos,
+    required String? cursorPos,
   }) = _FeedModel;
 }
