@@ -20,10 +20,6 @@ For first implementation have post_repository read in all posts and then add que
 Have flutter access user location
 */
 
-// Might need to have 2 posts lists. One for local and one for world
-
-// Post_entitys are put into list in feed_service
-
 abstract interface class PostRepository {
   /// Read all the posts.
   Future<List<PostEntity>> readPosts(int offset, double lat, double lng);
