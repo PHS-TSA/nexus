@@ -30,6 +30,7 @@ class LocalFeedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('cords in local_feed_page file: $latitude , $longitude');
     return Feed(feed: FeedEntity.local(latitude, longitude));
   }
 

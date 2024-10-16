@@ -20,8 +20,6 @@ base class FeedService extends _$FeedService {
   FutureOr<FeedModel> build(
     FeedEntity feed,
     int page,
-    double lat,
-    double lng,
   ) async {
     final id = ref.watch(authServiceProvider).requireValue?.$id;
     final postRepo = ref.watch(
@@ -34,14 +32,28 @@ base class FeedService extends _$FeedService {
 
     // Get user's location.
     // TODO(lishaduck): Should make a location service so we cache determine location
-    final location = await determinePosition();
-    final lat = location.latitude;
-    final lng = location.longitude;
+
+    // final location = await determinePosition();
+    final double latitude;
+    final double longitude;
+
+    switch (feed) {
+      case LocalFeed(:final lat, :final lng):
+        latitude = lat;
+        longitude = lng;
+        print('$lat, $lng');
+
+      default:
+        final location = await determinePosition();
+        latitude = location.latitude;
+        longitude = location.longitude;
+    }
+    // print();
 
     final posts = await postRepo.readPosts(
       (page - 1) * pageSize + 1,
-      lat,
-      lng,
+      latitude,
+      longitude, // CHANGE
     ); // Bool to differentate local from world in post repository
 
     return FeedModel(
