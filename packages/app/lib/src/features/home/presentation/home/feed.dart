@@ -46,11 +46,13 @@ class Feed extends ConsumerWidget {
         final response = ref.watch(feedServiceProvider(feed, page));
 
         return switch (response) {
-          AsyncData(:final value) => indexInPage >= value.posts.length
-              // If we run out of items, return null.
-              ? null
-              // Otherwise, return the post.
-              : _Post(post: value.posts[indexInPage]),
+          AsyncData(:final value)
+              when indexInPage >= value.posts.length =>
+            _Post(post: value.posts[indexInPage]),
+
+          // If we run out of items, return null.
+          AsyncData() => null,
+
           // If there's an error, display it as another post.
           AsyncError(:final error) => _Post(
               post: PostEntity(
