@@ -1,4 +1,6 @@
 /// This library contains a widget that displays a feed of posts.
+// ignore_for_file: prefer_expression_function_bodies
+
 library;
 
 import 'package:flutter/foundation.dart';
