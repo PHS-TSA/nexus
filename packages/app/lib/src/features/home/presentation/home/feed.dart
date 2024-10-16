@@ -61,7 +61,7 @@ class Feed extends ConsumerWidget {
                 author: const UserId(''),
                 lat: 0,
                 lng: 0,
-                timestamp: DateTime.now(),
+                timestamp: DateTime.timestamp(),
               ),
             ),
           // If we're loading, display a loading indicator.
