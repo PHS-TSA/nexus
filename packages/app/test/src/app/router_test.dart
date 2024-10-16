@@ -40,9 +40,9 @@ void main() {
         final routerSubscription = container.listen(routerProvider, (_, __) {});
         final tested = routerSubscription.read();
 
-        final sampleItemDetailsRoute =
+        final sampleItemListRoute =
             tested.routes[0].children?.routes.toList()[0];
-        check(sampleItemDetailsRoute?.path).equals('sample');
+        check(sampleItemListRoute?.path).equals('sample');
       });
       test('should be correct for SampleItemDetailsRoute.', () {
         final container = createContainer();
