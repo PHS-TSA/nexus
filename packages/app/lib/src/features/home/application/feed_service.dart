@@ -17,13 +17,17 @@ part 'feed_service.g.dart';
 @riverpod
 base class FeedService extends _$FeedService {
   @override
-  FutureOr<FeedModel> build(FeedEntity feed, int page) async {
+  FutureOr<FeedModel> build(
+    FeedEntity feed,
+    int page,
+    double lat,
+    double lng,
+  ) async {
     final id = ref.watch(authServiceProvider).requireValue?.$id;
     final postRepo = ref.watch(
       postRepositoryProvider(
         // TODO(MattsAttack): Find a way to handle null here.
         id,
-
         feed,
       ),
     );

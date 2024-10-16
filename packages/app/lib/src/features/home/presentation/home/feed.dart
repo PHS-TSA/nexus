@@ -26,6 +26,8 @@ class Feed extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    print(feed);
+
     // Maybe change to scaffold with floating action button and list view as child
     return ListView.builder(
       shrinkWrap: true,
@@ -43,8 +45,14 @@ class Feed extends ConsumerWidget {
         // Calculate the page and index in the page.
         final page = index ~/ pageSize + 1;
         final indexInPage = index % pageSize;
-
-        final response = ref.watch(feedServiceProvider(feed, page));
+        final response = ref.watch(
+          feedServiceProvider(
+            feed,
+            page,
+            0, // Change params to lat lng
+            0,
+          ),
+        );
 
         return switch (response) {
           AsyncData(:final value) when indexInPage < value.posts.length =>
