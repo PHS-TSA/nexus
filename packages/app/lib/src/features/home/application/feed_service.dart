@@ -8,7 +8,6 @@ import '../../auth/application/auth_service.dart';
 import '../data/post_repository.dart';
 import '../domain/feed_entity.dart';
 import '../domain/feed_model.dart';
-import '../domain/post_entity.dart';
 
 part 'feed_service.g.dart';
 
@@ -47,25 +46,11 @@ base class FeedService extends _$FeedService {
       cursorPos: '',
     );
   }
-
-  // TODO(MattsAttack): This is just an unused example. It should be used or removed.
-  /// Replace the current posts with newly generated posts.
-  Future<FeedModel> addPosts(List<PostEntity> newPosts) async {
-    // You can only change a Notifier's `state` by adding methods that assign a new value.
-    // You can't mutate the state directly, nor can you change it outside of a method.
-    return await update((value) {
-      return value.copyWith(
-        posts: [
-          // Spread the new list into the generated list.
-          ...value.posts,
-          ...newPosts,
-        ],
-      );
-    });
-  }
 }
 
 // TODO(lishaduck): Move this to the location repository.
+
+/// Uses geolocator plugin to request location permission and return a position
 Future<Position> determinePosition() async {
   // Test if location services are enabled.
   final serviceEnabled = await Geolocator.isLocationServiceEnabled();

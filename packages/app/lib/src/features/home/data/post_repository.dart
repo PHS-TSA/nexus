@@ -20,6 +20,7 @@ For first implementation have post_repository read in all posts and then add que
 Have flutter access user location
 */
 
+/// Abstract PostRepository with readPosts and createNewPosts methods
 abstract interface class PostRepository {
   /// Read all the posts.
   Future<List<PostEntity>> readPosts(int offset, double lat, double lng);
@@ -106,6 +107,7 @@ final class _AppwritePostRepository implements PostRepository {
   }
 }
 
+/// Returns an AppWritePostRepository that allows the use of createNewPosts and readPosts
 @riverpod
 PostRepository postRepository(
   PostRepositoryRef ref,

@@ -1,9 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+/// Widget for like button
 class Like extends StatelessWidget {
+  //// Constructor for Like Widget
   const Like({super.key, this.onPressed});
 
+  /// Method for liking posts. NEEDS IMPLEMENTATION
   final VoidCallback? onPressed;
 
   @override
