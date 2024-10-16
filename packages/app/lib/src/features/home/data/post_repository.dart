@@ -60,44 +60,30 @@ final class _AppwritePostRepository implements PostRepository {
   final String collectionId;
 
   final UserId? author;
-  final FeedEntity? feed;
+  final FeedEntity feed;
 
   @override
   Future<List<PostEntity>> readPosts(double lat, double lng) async {
-    if (feed.toString() == 'FeedEntity.local()') {
-      // Local Feed
-      print('this if works');
-      // Have one func or param for local and one for global
-      final documentList = await database.listDocuments(
-        databaseId: databaseId,
-        collectionId: collectionId,
-        queries: [
-          // Only returns data with these attributes
-          Query.between('lat', lat - 2, lat + 2),
-          Query.between('lng', lng - 2, lng + 2),
-        ],
-      );
+    final documentList = await database.listDocuments(
+      databaseId: databaseId,
+      collectionId: collectionId,
+      queries: [
+        ...switch (feed) {
+          LocalFeed() => [
+              Query.between('lat', lat - 2, lat + 2),
+              Query.between('lng', lng - 2, lng + 2),
+            ],
+          WorldFeed() => [
+              // No filter.
+            ],
+        },
+        Query.limit(pageSize),
+      ],
+    );
 
-      print('queries work');
-      print(
-        documentList.documents
-            .map((document) => PostEntity.fromJson(document.data))
-            .toList(),
-      );
-      return documentList.documents
-          .map((document) => PostEntity.fromJson(document.data))
-          .toList();
-    } else {
-      // World Feed
-      // TODOsorting things
-      final documentList = await database.listDocuments(
-        databaseId: databaseId,
-        collectionId: collectionId,
-      );
-      return documentList.documents
-          .map((document) => PostEntity.fromJson(document.data))
-          .toList();
-    }
+    return documentList.documents.map((document) {
+      return PostEntity.fromJson(document.data);
+    }).toList();
   }
 
   @override
@@ -134,7 +120,7 @@ final class _AppwritePostRepository implements PostRepository {
 PostRepository postRepository(
   PostRepositoryRef ref,
   UserId? author,
-  FeedEntity? feed,
+  FeedEntity feed,
 ) {
   final database = ref.read(databasesProvider);
 
