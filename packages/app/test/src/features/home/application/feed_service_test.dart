@@ -1,6 +1,7 @@
 import 'package:checks/checks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nexus/src/features/home/application/feed_service.dart';
+import 'package:nexus/src/features/home/data/post_repository.dart';
 import 'package:nexus/src/features/home/domain/feed_entity.dart';
 import 'package:nexus/src/features/home/domain/post_entity.dart';
 
@@ -27,7 +28,6 @@ void main() {
       final postsToAdd = List.generate(
         pageSize, //@lishaduck implemented a fix here but you may want to review
         (index) => PostEntity(
-          image: null,
           description: 'body',
           headline: 'headline',
           author: const UserId('1234'),

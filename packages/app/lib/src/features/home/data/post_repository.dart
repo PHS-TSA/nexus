@@ -9,6 +9,9 @@ import '../domain/post_entity.dart';
 
 part 'post_repository.g.dart';
 
+/// The number of posts to fetch at a time.
+const pageSize = 10;
+
 /*
 How to do things:
 Put database and collection id in .env

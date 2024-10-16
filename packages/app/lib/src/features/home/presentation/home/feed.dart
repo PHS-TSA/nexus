@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../application/feed_service.dart';
+import '../../data/post_repository.dart';
 import '../../domain/feed_entity.dart';
 import '../../domain/post_entity.dart';
 
@@ -46,8 +47,7 @@ class Feed extends ConsumerWidget {
         final response = ref.watch(feedServiceProvider(feed, page));
 
         return switch (response) {
-          AsyncData(:final value)
-              when indexInPage >= value.posts.length =>
+          AsyncData(:final value) when indexInPage >= value.posts.length =>
             _Post(post: value.posts[indexInPage]),
 
           // If we run out of items, return null.

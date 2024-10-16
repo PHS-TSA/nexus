@@ -12,9 +12,6 @@ import '../domain/post_entity.dart';
 
 part 'feed_service.g.dart';
 
-/// The number of posts to fetch at a time.
-const pageSize = 10;
-
 //Load in the posts repository here as a func
 
 /// Provide the values of a feed.
