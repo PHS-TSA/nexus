@@ -20,10 +20,17 @@ For first implementation have post_repository read in all posts and then add que
 Have flutter access user location
 */
 
+/// A tuple of a post entity and its db id.
+typedef PostEntityIdTuple = ({PostEntity entity, String id});
+
 /// Abstract PostRepository with readPosts and createNewPosts methods
 abstract interface class PostRepository {
   /// Read all the posts.
-  Future<List<PostEntity>> readPosts(int offset, double lat, double lng);
+  Future<List<PostEntityIdTuple>> readPosts(
+    String? cursor,
+    double lat,
+    double lng,
+  );
 
   /// Create a new post.
   ///
@@ -57,12 +64,15 @@ final class _AppwritePostRepository implements PostRepository {
   final FeedEntity feed;
 
   @override
-  Future<List<PostEntity>> readPosts(int offset, double lat, double lng) async {
+  Future<List<PostEntityIdTuple>> readPosts(
+    String? cursor,
+    double lat,
+    double lng,
+  ) async {
     final documentList = await database.listDocuments(
       databaseId: databaseId,
       collectionId: collectionId,
       queries: [
-        Query.offset(offset),
         ...switch (feed) {
           LocalFeed() => [
               Query.between('lat', lat - 2, lat + 2),
@@ -72,12 +82,16 @@ final class _AppwritePostRepository implements PostRepository {
               // No filter.
             ],
         },
+        if (cursor != null) Query.cursorAfter(cursor),
         Query.limit(pageSize),
       ],
     );
 
     return documentList.documents.map((document) {
-      return PostEntity.fromJson(document.data);
+      return (
+        entity: PostEntity.fromJson(document.data),
+        id: document.$id,
+      );
     }).toList();
   }
 
@@ -107,7 +121,7 @@ final class _AppwritePostRepository implements PostRepository {
   }
 }
 
-/// Returns an AppWritePostRepository that allows the use of createNewPosts and readPosts
+/// Get a [PostRepository] for a specific author and feed.
 @riverpod
 PostRepository postRepository(
   PostRepositoryRef ref,

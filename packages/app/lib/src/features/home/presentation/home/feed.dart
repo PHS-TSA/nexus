@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../application/feed_service.dart';
-import '../../data/post_repository.dart';
 import '../../domain/feed_entity.dart';
 import '../../domain/post_entity.dart';
 
@@ -40,15 +39,10 @@ class Feed extends ConsumerWidget {
         ),
       ),
       itemBuilder: (context, index) {
-        // Calculate the page and index in the page.
-        final page = index ~/ pageSize + 1;
-        final indexInPage = index % pageSize;
-
-        final response = ref.watch(feedServiceProvider(feed, page));
+        final response = ref.watch(singlePostProvider(feed, index));
 
         return switch (response) {
-          AsyncData(:final value) when indexInPage < value.posts.length =>
-            _Post(post: value.posts[indexInPage]),
+          AsyncData(:final value) when value != null => _Post(post: value),
 
           // If we run out of items, return null.
           AsyncData() => null,
@@ -64,8 +58,9 @@ class Feed extends ConsumerWidget {
                 timestamp: DateTime.timestamp(),
               ),
             ),
+
           // If we're loading, display a loading indicator.
-          _ => const CircularProgressIndicator(),
+          _ => null,
         };
       },
     );

@@ -8,6 +8,7 @@ import '../../auth/application/auth_service.dart';
 import '../data/post_repository.dart';
 import '../domain/feed_entity.dart';
 import '../domain/feed_model.dart';
+import '../domain/post_entity.dart';
 
 part 'feed_service.g.dart';
 
@@ -17,16 +18,19 @@ part 'feed_service.g.dart';
 @riverpod
 base class FeedService extends _$FeedService {
   @override
-  FutureOr<FeedModel> build(FeedEntity feed, int page) async {
-    final id = ref.watch(authServiceProvider).requireValue?.$id;
-    final postRepo = ref.watch(
-      postRepositoryProvider(
-        // TODO(MattsAttack): Find a way to handle null here.
-        id,
+  FeedModel build(FeedEntity feed) {
+    return const FeedModel(posts: [], cursorPos: null);
+  }
 
-        feed,
-      ),
-    );
+  /// Fetch the next post in the feed.
+  /// Handles pagination automatically.
+  /// Returns null if there are no more posts.
+  Future<PostEntity?> fetch(int postIndex) async {
+    final id = ref.watch(authServiceProvider).requireValue?.$id;
+    final postRepo = ref.watch(postRepositoryProvider(id, feed));
+
+    final cachedPost = state.posts.elementAtOrNull(postIndex);
+    if (cachedPost != null) return cachedPost;
 
     // Get user's location.
     // TODO(lishaduck): Should make a location service so we cache determine location
@@ -35,17 +39,38 @@ base class FeedService extends _$FeedService {
     final lng = location.longitude;
 
     final posts = await postRepo.readPosts(
-      (page - 1) * pageSize + 1,
+      state.cursorPos,
       lat,
       lng,
-    ); // Bool to differentate local from world in post repository
-
-    return FeedModel(
-      posts: posts,
-      // TODO(lishaduck): Set the cursor position to the last post.
-      cursorPos: '',
     );
+
+    if (posts.isEmpty) return null;
+
+    state = state.copyWith(
+      posts: [...state.posts, ...posts.map((tuple) => tuple.entity)],
+      cursorPos: posts.lastOrNull?.id,
+    );
+
+    final post = state.posts.elementAtOrNull(postIndex);
+    return post ?? await fetch(postIndex + 1);
   }
+}
+
+/// Fetch a single post from the feed.
+@riverpod
+FutureOr<PostEntity?> singlePost(
+  SinglePostRef ref,
+  FeedEntity feed,
+  int postIndex,
+) async {
+  // Keep previous posts in cache to make scrolling up possible.
+  // Otherwise, `ListView` freaks out.
+  if (postIndex != 0) ref.watch(singlePostProvider(feed, postIndex - 1));
+
+  final feedNotifier = ref.watch(feedServiceProvider(feed).notifier);
+  final post = await feedNotifier.fetch(postIndex);
+
+  return post;
 }
 
 // TODO(lishaduck): Move this to the location repository.
