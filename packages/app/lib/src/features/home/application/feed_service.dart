@@ -41,14 +41,12 @@ base class FeedService extends _$FeedService {
       case LocalFeed(:final lat, :final lng):
         latitude = lat;
         longitude = lng;
-        print('$lat, $lng');
 
       default:
         final location = await determinePosition();
         latitude = location.latitude;
         longitude = location.longitude;
     }
-    // print();
 
     final posts = await postRepo.readPosts(
       (page - 1) * pageSize + 1,

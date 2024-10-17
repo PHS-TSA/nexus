@@ -43,7 +43,6 @@ class Feed extends ConsumerWidget {
         // Calculate the page and index in the page.
         final page = index ~/ pageSize + 1;
         final indexInPage = index % pageSize;
-        print('feed in feed.dart: $feed');
         final response = ref.watch(
           feedServiceProvider(
             feed,
