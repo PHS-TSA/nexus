@@ -135,7 +135,7 @@ class _Dialog extends HookConsumerWidget {
     final handleSubmit = useCallback(
       () async {
         final random = Random();
-        final location = await determinePosition();
+        final location = await ref.read(locationServiceProvider.future);
         var lat = location.latitude.roundToDouble();
         var lng = location.longitude.roundToDouble();
 
