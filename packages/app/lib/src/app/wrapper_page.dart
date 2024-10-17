@@ -11,7 +11,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../features/auth/application/auth_service.dart';
-import '../features/home/application/feed_service.dart';
+import '../features/home/application/location_service.dart';
 import '../features/home/data/post_repository.dart';
 import '../features/home/domain/feed_entity.dart';
 import 'router.gr.dart';
@@ -134,19 +134,14 @@ class _Dialog extends HookConsumerWidget {
 
     final handleSubmit = useCallback(
       () async {
-        final random = Random();
         final location = await ref.read(locationServiceProvider.future);
         var lat = location.latitude.roundToDouble();
         var lng = location.longitude.roundToDouble();
+        final random = Random();
 
-        if (lat < 179) {
-          lat += random.nextDouble();
-        }
-
-        if (lng < 179) {
-          // cords can't be greater than 180
-          lng += random.nextDouble();
-        }
+        // Coords can't be greater than 180.
+        if (lat < 179) lat += random.nextDouble();
+        if (lng < 179) lng += random.nextDouble();
 
         if (!(formKey.currentState?.validate() ?? false)) return;
 
