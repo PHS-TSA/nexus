@@ -39,8 +39,6 @@ class Feed extends ConsumerWidget {
         ),
       ),
       itemBuilder: (context, index) {
-        print('feed in feed.dart: $feed');
-
         final response = ref.watch(
           singlePostProvider(
             feed,
