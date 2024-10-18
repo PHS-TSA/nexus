@@ -40,13 +40,7 @@ class Feed extends ConsumerWidget {
       ),
       itemBuilder: (context, index) {
         final response = ref.watch(
-          singlePostProvider(
-            feed,
-            index,
-            // Change params to lat lng
-            0,
-            0,
-          ),
+          singlePostProvider(feed, index),
         );
 
         return switch (response) {
