@@ -2,7 +2,6 @@ import 'package:checks/checks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_checks/flutter_checks.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nexus/src/features/home/application/feed_service.dart';
 import 'package:nexus/src/features/home/data/post_repository.dart';
 import 'package:nexus/src/features/home/domain/feed_entity.dart';
 import 'package:nexus/src/features/home/presentation/home/feed.dart';
@@ -34,14 +33,7 @@ void main() {
       // Act
 
       // Pumping the widget will run the build method and return the widget that was built.
-      await tester.pumpApp(
-        widget,
-        // Overrides let you swap out providers with different implementations.
-        overrides: [
-          feedServiceProvider(const FeedEntity.world(), 1)
-              .overrideWith(() => throw UnimplementedError()),
-        ],
-      );
+      await tester.pumpApp(widget);
 
       // Assert
 
