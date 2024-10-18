@@ -1,4 +1,6 @@
 /// This library contains a widget that displays a feed of posts.
+// ignore_for_file: prefer_expression_function_bodies
+
 library;
 
 import 'package:flutter/foundation.dart';
@@ -39,7 +41,6 @@ class Feed extends ConsumerWidget {
       ),
       itemBuilder: (context, index) {
         final response = ref.watch(singlePostProvider(feed, index));
-
         return switch (response) {
           AsyncData(:final value) when value != null => Post(post: value),
 
