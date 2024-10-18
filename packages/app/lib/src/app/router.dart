@@ -26,16 +26,6 @@ class AppRouter extends RootStackRouter {
           path: '/',
           children: [
             AutoRoute(
-              page: SampleItemsListRoute.page,
-              path: 'sample',
-              title: (context, data) => 'Sample Items',
-            ),
-            AutoRoute(
-              page: SampleItemDetailsRoute.page,
-              path: 'sample-item',
-              title: (context, data) => 'Item Details',
-            ),
-            AutoRoute(
               page: MapRoute.page,
               path: 'map',
               title: (context, data) => 'Map',
@@ -53,11 +43,11 @@ class AppRouter extends RootStackRouter {
             ),
             AutoRoute(
               page: const EmptyShellRoute('Feeds'),
-              path: 'local',
+              path: '',
               children: [
                 AutoRoute(
                   page: LocalFeedRoute.page,
-                  path: '', // FIXME: This should be 'local'.
+                  path: 'local',
                   title: (context, data) => 'Test',
                 ),
                 AutoRoute(
@@ -65,6 +55,7 @@ class AppRouter extends RootStackRouter {
                   path: 'world',
                   title: (context, data) => 'Test',
                 ),
+                RedirectRoute(path: '*', redirectTo: 'local'),
               ],
             ),
           ],
