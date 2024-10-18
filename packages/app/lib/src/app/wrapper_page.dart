@@ -32,13 +32,6 @@ class WrapperPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AutoTabsScaffold(
       routes: [
-        // TODO(MattsAttack): fix bar.
-        // const EmptyShellRoute('Feeds')(
-        //   children: [
-        //     const LocalFeedRoute(),
-        //     const WorldFeedRoute(),
-        //   ],
-        // ),
         LocalFeedRoute(),
         const MapRoute(),
         const SettingsRoute(),

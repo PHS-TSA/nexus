@@ -2,9 +2,10 @@
 library;
 
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../application/location_service.dart';
 import '../../domain/feed_entity.dart';
 import 'feed.dart';
 
@@ -12,33 +13,22 @@ import 'feed.dart';
 /// A page that displays a feed of posts from the area nearby the user.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
-class LocalFeedPage extends StatelessWidget {
+class LocalFeedPage extends ConsumerWidget {
   /// {@macro our_democracy.features.home.presentation.home.local_feed_page}
   ///
   /// Construct a new [LocalFeedPage] widget.
-  const LocalFeedPage({
-    @queryParam this.latitude = 0,
-    @queryParam this.longitude = 0,
-    super.key,
-  });
-
-  /// The latitude of a location.
-  final double latitude;
-
-  /// The longitude of a location.
-  final double longitude;
+  const LocalFeedPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    print('cords in local_feed_page file: $latitude , $longitude');
-    return Feed(feed: FeedEntity.local(latitude, longitude));
-  }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final pos = ref.watch(locationServiceProvider);
 
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DoubleProperty('latitude', latitude))
-      ..add(DoubleProperty('longitude', longitude));
+    return switch (pos) {
+      AsyncData(:final value) => Feed(
+          feed: FeedEntity.local(value.latitude, value.longitude),
+        ),
+      AsyncError(:final error) => Center(child: Text('Error: $error')),
+      _ => const Center(child: CircularProgressIndicator()),
+    };
   }
 }

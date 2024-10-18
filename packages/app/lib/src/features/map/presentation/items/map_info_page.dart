@@ -2,7 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../app/router.gr.dart';
+import '../../../home/domain/feed_entity.dart';
+import '../../../home/presentation/home/feed.dart';
 
 /// {@template our_democracy.features.map.presentation.items.map_info_page}
 /// Displays detailed information about a location on the map.
@@ -26,19 +27,7 @@ class MapInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          'Your coordinates are (${latitude.toStringAsFixed(4)}, ${longitude.toStringAsFixed(4)}).',
-        ),
-        TextButton(
-          child: const Text('Back'),
-          onPressed: () async {
-            await context.router.navigate(const MapRoute());
-          },
-        ),
-      ],
-    );
+    return Feed(feed: FeedEntity.local(latitude, longitude));
   }
 
   // coverage:ignore-start
