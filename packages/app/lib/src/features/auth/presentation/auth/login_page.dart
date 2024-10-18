@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
 import '../../../../gen/assets.gen.dart';
+import '../../../../utils/toast.dart';
 import '../../application/auth_service.dart';
 
 // TODO(lishaduck): Rename to `LogInPage`.
@@ -54,10 +55,8 @@ class LoginPage extends HookConsumerWidget {
             }
           } else {
             // TODO(lishaduck): Move this to the guard.
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Invalid username and password'),
-              ),
+            context.showSnackBar(
+              content: const Text('Invalid username and password'),
             );
           }
         }
@@ -85,33 +84,18 @@ class LoginPage extends HookConsumerWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            // TODO(MattsAttack): Find a better color for this (use `Theme.of(context).<someColor>`).
-            color: const Color.fromARGB(
-              255,
-              34,
-              29,
-              43,
-            ),
+            color: Theme.of(context).colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(15),
           ),
           child: Form(
             key: formKey,
             child: Column(
               children: [
-                const DecoratedBox(
-                  // TODO(MattsAttack): Redesign this, it was for testing.
-                  decoration: BoxDecoration(
-                      // color: Colors.white,
-                      // border: Border.all(color: Colors.white),
-                      // borderRadius: BorderRadius.circular(5),
-                      ),
-                  child: Text(
-                    'Welcome to Nexus!',
-                    style: TextStyle(
-                      fontSize: 28,
-                      // TODO(MattsAttack): Use `Theme.of(context).<someColor>`.
-                      color: Color.fromARGB(255, 221, 168, 230),
-                    ),
+                Text(
+                  'Welcome to Nexus!',
+                  style: TextStyle(
+                    fontSize: 28,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
                 ),
                 const SizedBox(height: 32),

@@ -24,9 +24,6 @@ base class AuthService extends _$AuthService {
 
   /// Creates a new user in the Appwrite database.
   Future<void> createUser(String name, String email, String password) async {
-    // Set the state to loading.
-    state = const AsyncValue.loading();
-
     // Try to create the user. If it fails, set the state to error.
     // Note that expected errors are already converted to null.
     state = await AsyncValue.guard(
