@@ -1,22 +1,30 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:checks/checks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:nexus/src/features/settings/application/settings_service.dart';
 import 'package:nexus/src/features/settings/data/preferences_repository.dart';
+import 'package:nexus/src/utils/api.dart' show clientProvider;
 
 import '../../../../helpers/mocks.dart';
 import '../../../../helpers/riverpod.dart';
 
 void main() {
+  setUpAll(registerFallbacks);
+
   group('PreferencesRepository', () {
     test('should update the theme mode', () async {
       // Arrange
-      final mockSharedPreferences = MockSharedPreferences();
+      final client = MockClient()
+        ..mockCall(
+          path: any(named: '/account/prefs'),
+          response: Response(data: <String, Object?>{}),
+        );
 
       final container = createContainer(
         overrides: [
-          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
+          clientProvider.overrideWithValue(client),
           initialSettingsProvider.overrideWithValue(defaultSettings),
         ],
       );
@@ -31,14 +39,15 @@ void main() {
 
     test('should decode the theme mode', () async {
       // Arrange
-      final mockSharedPreferences = MockSharedPreferences();
-
-      when(() => mockSharedPreferences.getString('prefs'))
-          .thenReturn('{"themeMode":"dark"}');
+      final client = MockClient()
+        ..mockCall(
+          path: any(named: '/account/prefs'),
+          response: Response(data: <String, Object?>{}),
+        );
 
       final container = createContainer(
         overrides: [
-          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
+          clientProvider.overrideWithValue(client),
           initialSettingsProvider.overrideWithValue(defaultSettings),
         ],
       );
@@ -53,7 +62,7 @@ void main() {
   });
 
   group('sharedPreferences', () {
-    test('should throw an error if SharedPreferences is not provided', () {
+    test('should throw an error if Account is not provided', () {
       // Arrange
       final container = createContainer();
 
