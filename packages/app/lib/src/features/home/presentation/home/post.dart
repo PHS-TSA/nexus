@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_expression_function_bodies
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -100,15 +102,11 @@ class _PostBody extends StatelessWidget {
     // final time = DateFormat.Hms().format(post.timestamp);
 
     return Expanded(
-      child: Row(
+      child: Column(
         children: [
-          CircleAvatar(
-            backgroundImage: AssetImage(Assets.pictures.kid.path),
-          ), // Possible bug here,
+          Text(post.headline),
           const Padding(padding: EdgeInsets.all(4)),
-          Text(post.author), // Get user name instead of id
-          const Padding(padding: EdgeInsets.all(4)),
-          // Text('$time , $month $day, $year'),
+          Text(post.description), // Get user name instead of id
         ],
       ),
     );
