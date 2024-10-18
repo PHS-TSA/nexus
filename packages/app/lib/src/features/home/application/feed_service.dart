@@ -8,7 +8,6 @@ import '../data/post_repository.dart';
 import '../domain/feed_entity.dart';
 import '../domain/feed_model.dart';
 import '../domain/post_entity.dart';
-import 'location_service.dart';
 
 part 'feed_service.g.dart';
 
@@ -25,7 +24,7 @@ base class FeedService extends _$FeedService {
   /// Fetch the next post in the feed.
   /// Handles pagination automatically.
   /// Returns null if there are no more posts.
-  Future<PostEntity?> fetch(int postIndex, double lat, double lng) async {
+  Future<PostEntity?> fetch(int postIndex) async {
     final id = ref.watch(authServiceProvider).requireValue?.$id;
     final postRepo = ref.watch(postRepositoryProvider(id, feed));
 
@@ -33,27 +32,7 @@ base class FeedService extends _$FeedService {
     if (cachedPost != null) return cachedPost;
 
     // Get user's location.
-    // final location = await ref.watch(locationServiceProvider.future);
-
-    final double latitude;
-    final double longitude;
-
-    switch (feed) {
-      case LocalFeed(:final lat, :final lng):
-        latitude = lat;
-        longitude = lng;
-
-      default:
-        final location = await ref.watch(locationServiceProvider.future);
-        latitude = location.latitude;
-        longitude = location.longitude;
-    }
-
-    final posts = await postRepo.readPosts(
-      state.cursorPos,
-      latitude,
-      longitude,
-    );
+    final posts = await postRepo.readPosts(state.cursorPos);
 
     if (posts.isEmpty) return null;
 
@@ -63,7 +42,7 @@ base class FeedService extends _$FeedService {
     );
 
     final post = state.posts.elementAtOrNull(postIndex);
-    return post ?? await fetch(postIndex + 1, lat, lng);
+    return post ?? await fetch(postIndex + 1);
   }
 }
 
@@ -73,19 +52,13 @@ FutureOr<PostEntity?> singlePost(
   SinglePostRef ref,
   FeedEntity feed,
   int postIndex,
-  double lat,
-  double lng,
 ) async {
   // Keep previous posts in cache to make scrolling up possible.
   // Otherwise, `ListView` freaks out.
-  if (postIndex != 0) {
-    ref.watch(
-      singlePostProvider(feed, postIndex - 1, lat, lng),
-    );
-  }
+  if (postIndex != 0) ref.watch(singlePostProvider(feed, postIndex - 1));
 
   final feedNotifier = ref.watch(feedServiceProvider(feed).notifier);
-  final post = await feedNotifier.fetch(postIndex, lat, lng);
+  final post = await feedNotifier.fetch(postIndex);
 
   return post;
 }

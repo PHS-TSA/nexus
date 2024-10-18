@@ -26,11 +26,7 @@ typedef PostEntityIdTuple = ({PostEntity entity, String id});
 /// Abstract PostRepository with readPosts and createNewPosts methods
 abstract interface class PostRepository {
   /// Read all the posts.
-  Future<List<PostEntityIdTuple>> readPosts(
-    String? cursor,
-    double lat,
-    double lng,
-  );
+  Future<List<PostEntityIdTuple>> readPosts(String? cursor);
 
   /// Create a new post.
   ///
@@ -64,17 +60,13 @@ final class _AppwritePostRepository implements PostRepository {
   final FeedEntity feed;
 
   @override
-  Future<List<PostEntityIdTuple>> readPosts(
-    String? cursor,
-    double lat,
-    double lng,
-  ) async {
+  Future<List<PostEntityIdTuple>> readPosts(String? cursor) async {
     final documentList = await database.listDocuments(
       databaseId: databaseId,
       collectionId: collectionId,
       queries: [
         ...switch (feed) {
-          LocalFeed() => [
+          LocalFeed(:final lat, :final lng) => [
               Query.between('lat', lat - 2, lat + 2),
               Query.between('lng', lng - 2, lng + 2),
             ],
