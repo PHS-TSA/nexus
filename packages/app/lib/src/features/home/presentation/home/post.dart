@@ -22,7 +22,7 @@ class Post extends StatelessWidget {
     return Card(
       child: Container(
         width: MediaQuery.sizeOf(context).width,
-        height: 100, // TODO(MattsAttack): Scale based on required height.
+        height: 150, // TODO(MattsAttack): Scale based on required height.
         margin: const EdgeInsets.all(4),
         padding: const EdgeInsets.all(4),
         child: Column(
@@ -58,19 +58,17 @@ class _PosterInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO(MattsAttack): Implement build method.
-    return Expanded(
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundImage: AssetImage(Assets.pictures.kid.path),
-          ), // Possible bug here,
-          const Padding(padding: EdgeInsets.all(4)),
-          Text(post.author), // Get user name instead of id
-          const Padding(padding: EdgeInsets.all(4)),
-          Text(post.timestamp.toString()),
-        ],
-      ),
+    return Row(
+      children: [
+        CircleAvatar(
+          backgroundImage: AssetImage(Assets.pictures.kid.path),
+        ), // Possible bug here,
+        const Padding(padding: EdgeInsets.all(4)),
+        Text(post.author), // Get user name instead of id
+        const Padding(padding: EdgeInsets.all(4)),
+        Text(post.timestamp.toString()),
+        // Could add flair here
+      ],
     );
   }
 
@@ -95,18 +93,24 @@ class _PostBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO(MattsAttack): Implement build method.
-    // final day = post.timestamp.day;
-    // final month = post.timestamp.month;
-    // final year = post.timestamp.year;
-    // final time = DateFormat.Hms().format(post.timestamp);
-
     return Expanded(
-      child: Column(
+      child: Row(
         children: [
-          Text(post.headline),
-          const Padding(padding: EdgeInsets.all(4)),
-          Text(post.description), // Get user name instead of id
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                post.headline,
+                textAlign: TextAlign.left,
+                style: const TextStyle(fontSize: 24),
+              ), // Need text styling
+              const Padding(padding: EdgeInsets.all(4)),
+              Text(
+                post.description,
+                textAlign: TextAlign.left,
+              ), // Get user name instead of id
+            ],
+          ),
         ],
       ),
     );
