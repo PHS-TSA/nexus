@@ -1,9 +1,33 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:checks/checks.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nexus/src/app/router.dart';
+import 'package:nexus/src/app/router.gr.dart';
+import 'package:nexus/src/app/wrapper_page.dart';
 import 'package:nexus/src/utils/router.dart';
 
+import '../../helpers/pump_app.dart';
 import '../../helpers/riverpod.dart';
+
+Future<BuildContext> _getContext<W extends Widget>(
+  WidgetTester tester,
+  ProviderContainer container,
+  AppRouter router,
+) async {
+  await tester.pumpApp(
+    UncontrolledProviderScope(
+      container: container,
+      child: MaterialApp.router(
+        routerConfig: router.config(),
+      ),
+    ),
+  );
+  return tester.element(find.byType(W));
+}
+
+// class MockRouteData extends Mock implements RouteData {}
 
 void main() {
   group('router', () {
@@ -27,13 +51,23 @@ void main() {
     });
 
     group('path', () {
-      test('should be correct for WrapperRoute.', () {
+      testWidgets('should be correct for WrapperRoute.', (tester) async {
         final container = createContainer();
         final routerSubscription = container.listen(routerProvider, (_, __) {});
-        final tested = routerSubscription.read();
+        final router = routerSubscription.read();
+        final context = await _getContext<WrapperPage>(
+          tester,
+          container,
+          router,
+        );
 
-        final wrapperRoute = tested.routes[0];
-        check(wrapperRoute.path).equals('/');
+        // FIXME: Hangs! Yay!
+        await context.router.push(const WrapperRoute());
+        await tester.pumpAndSettle();
+
+        check(router)
+          ..has((router) => router.urlState.url, 'url').equals('/')
+          ..has((router) => router.topRoute.title(context), 'title').equals('');
       });
       test('should be correct for MapRoute.', () {
         final container = createContainer();
