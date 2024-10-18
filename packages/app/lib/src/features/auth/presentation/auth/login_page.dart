@@ -51,7 +51,7 @@ class LoginPage extends HookConsumerWidget {
               _onResult(didLogIn: true);
             } else {
               // Replace the route so user won't come back to login.
-              await context.router.replace(const LocalFeedRoute());
+              await context.router.replace(LocalFeedRoute());
             }
           } else {
             // TODO(lishaduck): Move this to the guard.

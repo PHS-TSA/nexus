@@ -8,7 +8,6 @@ import '../data/post_repository.dart';
 import '../domain/feed_entity.dart';
 import '../domain/feed_model.dart';
 import '../domain/post_entity.dart';
-import 'location_service.dart';
 
 part 'feed_service.g.dart';
 
@@ -33,13 +32,7 @@ base class FeedService extends _$FeedService {
     if (cachedPost != null) return cachedPost;
 
     // Get user's location.
-    final location = await ref.watch(locationServiceProvider.future);
-
-    final posts = await postRepo.readPosts(
-      state.cursorPos,
-      location.latitude,
-      location.longitude,
-    );
+    final posts = await postRepo.readPosts(state.cursorPos);
 
     if (posts.isEmpty) return null;
 

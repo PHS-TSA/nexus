@@ -31,17 +31,10 @@ class WrapperPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AutoTabsScaffold(
-      routes: const [
-        // TODO(MattsAttack): fix bar.
-        // const EmptyShellRoute('Feeds')(
-        //   children: [
-        //     const LocalFeedRoute(),
-        //     const WorldFeedRoute(),
-        //   ],
-        // ),
+      routes: [
         LocalFeedRoute(),
-        MapRoute(),
-        SettingsRoute(),
+        const MapRoute(),
+        const SettingsRoute(),
       ],
       floatingActionButton: FloatingActionButton(
         onPressed: () async => showDialog<void>(

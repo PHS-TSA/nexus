@@ -39,7 +39,9 @@ class Feed extends ConsumerWidget {
         ),
       ),
       itemBuilder: (context, index) {
-        final response = ref.watch(singlePostProvider(feed, index));
+        final response = ref.watch(
+          singlePostProvider(feed, index),
+        );
 
         return switch (response) {
           AsyncData(:final value) when value != null => _Post(post: value),

@@ -13,7 +13,7 @@ void main() {
   group('Feed', () {
     testWidgets('contains a page of items', (tester) async {
       // Arrange
-      const widget = Feed(feed: FeedEntity.local());
+      const widget = Feed(feed: FeedEntity.local(0, 0));
 
       // Act
 
@@ -42,5 +42,5 @@ void main() {
     });
   });
 
-  testAccessibilityGuidelines(const Feed(feed: FeedEntity.local()));
+  testAccessibilityGuidelines(const Feed(feed: FeedEntity.local(0, 0)));
 }
