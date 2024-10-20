@@ -26,7 +26,7 @@ sealed class PostEntity with _$PostEntity {
     required String author,
 
     /// The username of the author of the post
-    // required String authorName,
+    required String authorName,
 
     ///
     required double lat,

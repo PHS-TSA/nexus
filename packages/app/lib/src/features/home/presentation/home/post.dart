@@ -21,7 +21,7 @@ class Post extends StatelessWidget {
     return Card(
       child: Container(
         width: MediaQuery.sizeOf(context).width,
-        height: 150, // TODO(MattsAttack): Scale based on required height.
+        height: 200, // TODO(MattsAttack): Scale based on required height.
         margin: const EdgeInsets.all(4),
         padding: const EdgeInsets.all(4),
         child: Column(
@@ -115,8 +115,8 @@ class _PosterInfo extends StatelessWidget {
           backgroundImage: AssetImage(Assets.pictures.kid.path),
         ), // Possible bug here,
         const Padding(padding: EdgeInsets.all(4)),
-        // Text(post.authorName), // Get user name instead of id
-        Text(post.author), // Get user name instead of id
+        Text(post.authorName), // Get user name instead of id
+        // Text(post.author), // Get user name instead of id
         const Padding(padding: EdgeInsets.all(4)),
         Text(timePostValue),
         // Could add flair here

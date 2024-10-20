@@ -37,7 +37,7 @@ class Feed extends ConsumerWidget {
           lng: 0,
           timestamp: DateTime.fromMicrosecondsSinceEpoch(0, isUtc: true),
           author: '',
-          // authorName: '',
+          authorName: '',
         ),
       ),
       itemBuilder: (context, index) {
@@ -55,7 +55,7 @@ class Feed extends ConsumerWidget {
                 headline: 'Error',
                 description: error.toString(),
                 author: '',
-                // authorName: '',
+                authorName: '',
                 lat: 0,
                 lng: 0,
                 timestamp: DateTime.timestamp(),
