@@ -42,8 +42,9 @@ class AppRouter extends RootStackRouter {
               title: (context, data) => 'Settings',
             ),
             AutoRoute(
-              page: const EmptyShellRoute('Feeds'),
+              page: FeedRoutingRoute.page,
               path: '',
+              title: (context, data) => 'Feeds',
               children: [
                 AutoRoute(
                   page: LocalFeedRoute.page,

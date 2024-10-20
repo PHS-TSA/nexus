@@ -33,9 +33,9 @@ class WrapperPage extends ConsumerWidget {
     print('wrapper page is building');
     return AutoTabsScaffold(
       routes: const [
-        LocalFeedRoute(),
+        FeedRoutingRoute(),
         MapRoute(),
-        SettingsRoute(),
+        SettingsRoute(), // Make a new feed route page that has an app bar that routes between local and world
       ],
       floatingActionButton: FloatingActionButton(
         onPressed: () async => showDialog<void>(
@@ -97,7 +97,7 @@ class WrapperPage extends ConsumerWidget {
               label: 'Feeds',
             ),
             NavigationDestination(
-              icon: Icon(Icons.location_on),
+              icon: Icon(Icons.map_outlined),
               label: 'Discover',
             ),
             NavigationDestination(
