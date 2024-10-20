@@ -30,7 +30,6 @@ class WrapperPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('wrapper page is building');
     return AutoTabsScaffold(
       routes: const [
         FeedRoutingRoute(),
