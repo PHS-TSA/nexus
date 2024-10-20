@@ -59,9 +59,7 @@ class _PosterInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     // Have post info show how long ago in bar
     // Show actual date and time of post if you click on it
-    print(DateTime.now());
-    final timeSincePost = DateTime.now().difference(post.timestamp);
-    print(timeSincePost);
+    final timeSincePost = DateTime.timestamp().difference(post.timestamp);
     int timeValue;
     String timePostValue;
     if (timeSincePost.inDays > 364) {
@@ -90,7 +88,7 @@ class _PosterInfo extends StatelessWidget {
           timePostValue = '$timeValue hours ago';
       }
     } else if (timeSincePost.inMinutes >= 1) {
-      timeValue = timeSincePost.inDays;
+      timeValue = timeSincePost.inMinutes;
       switch (timeValue) {
         case 1:
           timePostValue = '$timeValue minute ago';
