@@ -66,15 +66,13 @@ final class _AppwritePostRepository implements PostRepository {
       databaseId: databaseId,
       collectionId: collectionId,
       queries: [
+        Query.orderDesc('timestamp'),
         ...switch (feed) {
           LocalFeed(:final lat, :final lng) => [
               Query.between('lat', lat - 2, lat + 2),
               Query.between('lng', lng - 2, lng + 2),
-              Query.orderDesc('timestamp'),
             ],
-          WorldFeed() => [
-              Query.orderDesc('timestamp'),
-            ],
+          WorldFeed() => [],
         },
         if (cursor != null) Query.cursorAfter(cursor),
         Query.limit(pageSize),
