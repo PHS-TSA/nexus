@@ -70,9 +70,10 @@ final class _AppwritePostRepository implements PostRepository {
           LocalFeed(:final lat, :final lng) => [
               Query.between('lat', lat - 2, lat + 2),
               Query.between('lng', lng - 2, lng + 2),
+              Query.orderDesc('timestamp'),
             ],
           WorldFeed() => [
-              // No filter.
+              Query.orderDesc('timestamp'),
             ],
         },
         if (cursor != null) Query.cursorAfter(cursor),
