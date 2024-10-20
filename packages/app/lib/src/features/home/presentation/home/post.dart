@@ -18,7 +18,6 @@ class Post extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('trying to build post!');
     return Card(
       child: Container(
         width: MediaQuery.sizeOf(context).width,
@@ -58,6 +57,59 @@ class _PosterInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Have post info show how long ago in bar
+    // Show actual date and time of post if you click on it
+    final timeSincePost = post.timestamp.difference(DateTime.now()) +
+        post.timestamp.timeZoneOffset; // Duration values are negative
+    int timeValue;
+    String timePostValue;
+    if (timeSincePost.inDays < -364) {
+      //TODOwrite more efficient code with variables
+      timeValue = (timeSincePost.inDays / -364).round();
+      switch (timeValue) {
+        case 1:
+          timePostValue = '$timeValue year ago';
+        default:
+          timePostValue = '$timeValue years ago';
+      }
+    } else if (timeSincePost.inDays <= -1) {
+      timeValue = timeSincePost.inDays.abs();
+      switch (timeValue) {
+        case 1:
+          timePostValue = '$timeValue day ago';
+        default:
+          timePostValue = '$timeValue days ago';
+      }
+    } else if (timeSincePost.inHours <= -1) {
+      timeValue = timeSincePost.inHours.abs();
+      switch (timeValue) {
+        case 1:
+          timePostValue = '$timeValue hour ago';
+        default:
+          timePostValue = '$timeValue hours ago';
+      }
+    } else if (timeSincePost.inMinutes <= -1) {
+      timeValue = timeSincePost.inDays.abs();
+      switch (timeValue) {
+        case 1:
+          timePostValue = '$timeValue minute ago';
+        default:
+          timePostValue = '$timeValue minutes ago';
+      }
+    } else {
+      timeValue = timeSincePost.inSeconds.abs();
+      if (timeValue < 1) {
+        // In case post was made miliseconds ago
+        timeValue = 1;
+      }
+      switch (timeValue) {
+        case 1:
+          timePostValue = '$timeValue second ago';
+        default:
+          timePostValue = '$timeValue seconds ago';
+      }
+    }
+
     return Row(
       children: [
         CircleAvatar(
@@ -66,7 +118,7 @@ class _PosterInfo extends StatelessWidget {
         const Padding(padding: EdgeInsets.all(4)),
         Text(post.author), // Get user name instead of id
         const Padding(padding: EdgeInsets.all(4)),
-        Text(post.timestamp.toString()),
+        Text(timePostValue),
         // Could add flair here
       ],
     );
