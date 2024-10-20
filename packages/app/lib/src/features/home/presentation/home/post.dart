@@ -59,37 +59,38 @@ class _PosterInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     // Have post info show how long ago in bar
     // Show actual date and time of post if you click on it
-    final timeSincePost = post.timestamp.difference(DateTime.now()) +
-        post.timestamp.timeZoneOffset; // Duration values are negative
+    print(DateTime.now());
+    final timeSincePost = DateTime.now().difference(post.timestamp);
+    print(timeSincePost);
     int timeValue;
     String timePostValue;
-    if (timeSincePost.inDays < -364) {
+    if (timeSincePost.inDays > 364) {
       //TODOwrite more efficient code with variables
-      timeValue = (timeSincePost.inDays / -364).round();
+      timeValue = (timeSincePost.inDays / 364).round();
       switch (timeValue) {
         case 1:
           timePostValue = '$timeValue year ago';
         default:
           timePostValue = '$timeValue years ago';
       }
-    } else if (timeSincePost.inDays <= -1) {
-      timeValue = timeSincePost.inDays.abs();
+    } else if (timeSincePost.inDays >= 1) {
+      timeValue = timeSincePost.inDays;
       switch (timeValue) {
         case 1:
           timePostValue = '$timeValue day ago';
         default:
           timePostValue = '$timeValue days ago';
       }
-    } else if (timeSincePost.inHours <= -1) {
-      timeValue = timeSincePost.inHours.abs();
+    } else if (timeSincePost.inHours >= 1) {
+      timeValue = timeSincePost.inHours;
       switch (timeValue) {
         case 1:
           timePostValue = '$timeValue hour ago';
         default:
           timePostValue = '$timeValue hours ago';
       }
-    } else if (timeSincePost.inMinutes <= -1) {
-      timeValue = timeSincePost.inDays.abs();
+    } else if (timeSincePost.inMinutes >= 1) {
+      timeValue = timeSincePost.inDays;
       switch (timeValue) {
         case 1:
           timePostValue = '$timeValue minute ago';
@@ -97,7 +98,7 @@ class _PosterInfo extends StatelessWidget {
           timePostValue = '$timeValue minutes ago';
       }
     } else {
-      timeValue = timeSincePost.inSeconds.abs();
+      timeValue = timeSincePost.inSeconds;
       if (timeValue < 1) {
         // In case post was made miliseconds ago
         timeValue = 1;
