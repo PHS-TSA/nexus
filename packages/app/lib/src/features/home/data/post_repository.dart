@@ -108,7 +108,8 @@ final class _AppwritePostRepository implements PostRepository {
         'author': author,
         'lat': lat,
         'lng': lng,
-        'timestamp': DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()),
+        'timestamp':
+            DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.timestamp()),
         // TODO(MattAttack): add images
       },
     );
