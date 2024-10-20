@@ -115,6 +115,7 @@ class _PosterInfo extends StatelessWidget {
           backgroundImage: AssetImage(Assets.pictures.kid.path),
         ), // Possible bug here,
         const Padding(padding: EdgeInsets.all(4)),
+        // Text(post.authorName), // Get user name instead of id
         Text(post.author), // Get user name instead of id
         const Padding(padding: EdgeInsets.all(4)),
         Text(timePostValue),

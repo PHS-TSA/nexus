@@ -124,6 +124,7 @@ class _Dialog extends HookConsumerWidget {
     final title = useState('');
     final description = useState('');
     final id = ref.watch(authServiceProvider).requireValue?.$id;
+    final username = ref.watch(authServiceProvider).requireValue?.name;
 
     final handleSubmit = useCallback(
       () async {
@@ -146,6 +147,7 @@ class _Dialog extends HookConsumerWidget {
                 // TODO(MattsAttack): Find a way to handle null here.
                 id,
                 // TODO(lishaduck): This could be a whole lot less hacky.
+                username,
                 const FeedEntity.world(),
               ),
             )

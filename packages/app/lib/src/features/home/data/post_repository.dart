@@ -47,6 +47,7 @@ final class _AppwritePostRepository implements PostRepository {
     required this.databaseId,
     required this.collectionId,
     required this.author,
+    required this.authorName,
     // required this.feed,
     required this.feed,
   });
@@ -57,6 +58,7 @@ final class _AppwritePostRepository implements PostRepository {
   final String collectionId;
 
   final String? author;
+  final String? authorName;
   final FeedEntity feed;
 
   @override
@@ -103,6 +105,7 @@ final class _AppwritePostRepository implements PostRepository {
         'headline': headline,
         'description': description,
         'author': author,
+        'authorName': authorName,
         'lat': lat,
         'lng': lng,
         'timestamp':
@@ -118,12 +121,14 @@ final class _AppwritePostRepository implements PostRepository {
 PostRepository postRepository(
   PostRepositoryRef ref,
   String? author,
+  String? authorName,
   FeedEntity feed,
 ) {
   final database = ref.watch(databasesProvider);
 
   return _AppwritePostRepository(
     author: author,
+    authorName: authorName,
     feed: feed,
     database: database,
     databaseId: Env.databaseId,
