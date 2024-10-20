@@ -29,7 +29,8 @@ base class FeedService extends _$FeedService {
   /// Returns null if there are no more posts.
   Future<PostEntity?> fetch(int postIndex) async {
     final id = ref.watch(authServiceProvider).requireValue?.$id;
-    final postRepo = ref.watch(postRepositoryProvider(id, feed));
+    final username = ref.watch(authServiceProvider).requireValue?.name;
+    final postRepo = ref.watch(postRepositoryProvider(id, username, feed));
 
     final cachedPost = state.posts.elementAtOrNull(postIndex);
     if (cachedPost != null) return cachedPost;
