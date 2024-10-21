@@ -71,8 +71,8 @@ class SignupPage extends HookConsumerWidget {
           // `MediaQuery`s shouldn't be cached, it makes them potentially less responsive.
           left: MediaQuery.sizeOf(context).width / 4,
           right: MediaQuery.sizeOf(context).width / 4,
-          top: 35,
-          bottom: 40,
+          top: MediaQuery.sizeOf(context).height / 6,
+          bottom: MediaQuery.sizeOf(context).height / 4,
         ),
         decoration: BoxDecoration(
           image: DecorationImage(

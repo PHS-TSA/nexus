@@ -71,8 +71,8 @@ class LoginPage extends HookConsumerWidget {
           // `MediaQuery`s shouldn't be cached, it makes them potentially less responsive.
           left: MediaQuery.sizeOf(context).width / 4,
           right: MediaQuery.sizeOf(context).width / 4,
-          top: 35,
-          bottom: 40,
+          top: MediaQuery.sizeOf(context).height / 6,
+          bottom: MediaQuery.sizeOf(context).height / 6,
         ),
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -81,80 +81,86 @@ class LoginPage extends HookConsumerWidget {
             fit: BoxFit.fill,
           ),
         ),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Form(
-            key: formKey,
-            child: Column(
-              children: [
-                Text(
-                  'Welcome to Nexus!',
-                  style: TextStyle(
-                    fontSize: 28,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
-                ),
-                const SizedBox(height: 32),
-                TextFormField(
-                  initialValue: email.value,
-                  onSaved: (value) {
-                    if (value == null) return;
-
-                    email.value = value;
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  initialValue: password.value,
-                  onSaved: (value) {
-                    if (value == null) return;
-
-                    password.value = value;
-                  },
-                  obscureText: true,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  keyboardType: TextInputType.visiblePassword,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Center(
-                  child: SizedBox(
-                    // Makes the button take up the full width of its parent.
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      // TODO(MattsAttack): I don't don't love the button color, it could be improved.
-                      onPressed: handleSubmit,
-                      child: const Text('Log in'),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(15),
+              ),
+//               constraints: const BoxConstraints(maxWidth: 200,
+// maxHeight              : 200,),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    Text(
+                      'Welcome to Nexus!',
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 32),
+                    TextFormField(
+                      initialValue: email.value,
+                      onSaved: (value) {
+                        if (value == null) return;
+
+                        email.value = value;
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Email',
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      initialValue: password.value,
+                      onSaved: (value) {
+                        if (value == null) return;
+
+                        password.value = value;
+                      },
+                      obscureText: true,
+                      enableSuggestions: false,
+                      autocorrect: false,
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Password',
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Center(
+                      child: SizedBox(
+                        // Makes the button take up the full width of its parent.
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          // TODO(MattsAttack): I don't don't love the button color, it could be improved.
+                          onPressed: handleSubmit,
+                          child: const Text('Log in'),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: TextButton(
+                        onPressed: () async {
+                          await context.router
+                              .push(SignupRoute(onResult: _onResult));
+                        },
+                        child: const Text("Don't have an account? Sign up!"),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 20),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: TextButton(
-                    onPressed: () async {
-                      await context.router
-                          .push(SignupRoute(onResult: _onResult));
-                    },
-                    child: const Text("Don't have an account? Sign up!"),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

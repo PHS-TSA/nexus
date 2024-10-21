@@ -25,6 +25,7 @@ class FeedRoutingPage extends ConsumerWidget {
       appBarBuilder: (context, autoRouter) {
         return AppBar(
           //TODOfix coloring
+          automaticallyImplyLeading: false,
           title: NavigationBar(
             selectedIndex: autoRouter.activeIndex,
             onDestinationSelected: autoRouter.setActiveIndex,
