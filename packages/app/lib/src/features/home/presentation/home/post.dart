@@ -22,7 +22,7 @@ class Post extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.all(4),
       child: Container(
-        constraints: const BoxConstraints(minHeight: 225),
+        constraints: const BoxConstraints(minHeight: 220, maxHeight: 300),
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

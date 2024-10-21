@@ -109,7 +109,7 @@ class SignupPage extends HookConsumerWidget {
                   keyboardType: TextInputType.name,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Name',
+                    labelText: 'First and Last Name',
                   ),
                 ),
                 const SizedBox(height: 16),

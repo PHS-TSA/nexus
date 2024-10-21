@@ -8,8 +8,8 @@ part 'avatar_service.g.dart';
 
 /// Get the user's avatar.
 @riverpod
-FutureOr<Uint8List> avatarService(AvatarServiceRef ref, [String? name]) {
+FutureOr<Uint8List> avatarService(AvatarServiceRef ref, [String? username]) {
   final avatarRepo = ref.watch(avatarProvider);
 
-  return avatarRepo.getAvatar(name: name);
+  return avatarRepo.getAvatar(name: username);
 }
