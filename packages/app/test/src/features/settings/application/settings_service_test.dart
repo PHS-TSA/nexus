@@ -1,24 +1,17 @@
 import 'package:checks/checks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:nexus/src/features/settings/application/settings_service.dart';
 import 'package:nexus/src/features/settings/data/preferences_repository.dart';
 import 'package:nexus/src/features/settings/domain/settings_model.dart';
 
-import '../../../../helpers/mocks.dart';
 import '../../../../helpers/riverpod.dart';
 
 void main() {
   group('SettingsService', () {
     test('should update the theme mode', () async {
-      final mockSharedPreferences = MockSharedPreferences();
-      when(() => mockSharedPreferences.setString(any(), any()))
-          .thenAnswer((_) async => true);
-
       final container = createContainer(
         overrides: [
-          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
           initialSettingsProvider.overrideWithValue(defaultSettings),
         ],
       );

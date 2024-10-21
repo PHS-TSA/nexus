@@ -1,10 +1,34 @@
+// Mocktail requires discarding futures.
+// ignore_for_file: discarded_futures
+
+import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
+import 'package:appwrite/src/enums.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:nexus/src/features/auth/data/auth_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class MockSharedPreferences extends Mock
-    implements SharedPreferencesWithCache {}
+void registerFallbacks() {
+  registerFallbackValue(HttpMethod.get);
+}
+
+class MockClient extends Mock implements Client {}
+
+extension MockClientX on MockClient {
+  void mockCall<T>({
+    required String path,
+    required Response<T> response,
+  }) {
+    when(
+      () => call(
+        any(),
+        path: path,
+        headers: any(named: 'headers'),
+        params: any(named: 'params'),
+        responseType: any(named: 'responseType'),
+      ),
+    ).thenAnswer((_) => Future.value(response));
+  }
+}
 
 class MockAuthRepository extends Mock implements AuthRepository {}
 
