@@ -10,5 +10,9 @@ part 'location_service.g.dart';
 FutureOr<Position> locationService(LocationServiceRef ref) {
   final locationRepo = ref.watch(locationRepositoryProvider);
 
-  return locationRepo.determinePosition();
+  try {
+    return locationRepo.determinePosition();
+  } catch (e) {
+    throw 'Hmmmmm $e';
+  }
 }
