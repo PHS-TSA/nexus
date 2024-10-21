@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_expression_function_bodies
 
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../gen/assets.gen.dart';
+import '../../../../utils/api.dart';
 import '../../domain/post_entity.dart';
 
 class Post extends StatelessWidget {
@@ -18,16 +20,19 @@ class Post extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Change back to stateless
     return Card(
       child: Container(
         width: MediaQuery.sizeOf(context).width,
-        height: 200, // TODO(MattsAttack): Scale based on required height.
+        height: 150, // TODO(MattsAttack): Scale based on required height.
         margin: const EdgeInsets.all(4),
         padding: const EdgeInsets.all(4),
         child: Column(
           children: [
             // Have sections of post in here. Poster info and post content
-            _PosterInfo(post: post),
+            _PosterInfo(
+              post: post,
+            ),
             const Divider(color: Colors.white), //TODObase on theme
             _PostBody(post: post),
           ],
@@ -108,12 +113,9 @@ class _PosterInfo extends StatelessWidget {
           timePostValue = '$timeValue seconds ago';
       }
     }
-
     return Row(
       children: [
-        CircleAvatar(
-          backgroundImage: AssetImage(Assets.pictures.kid.path),
-        ), // Possible bug here,
+        _PostAvatar(post: post),
         const Padding(padding: EdgeInsets.all(4)),
         Text(post.authorName), // Get user name instead of id
         // Text(post.author), // Get user name instead of id
@@ -131,6 +133,43 @@ class _PosterInfo extends StatelessWidget {
     properties.add(DiagnosticsProperty<PostEntity>('post', post));
   }
   // coverage:ignore-end
+}
+
+class _PostAvatar extends ConsumerWidget {
+  const _PostAvatar({
+    required this.post,
+    super.key,
+  });
+
+  final PostEntity post;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final avatarService = ref.watch(avatarsProvider);
+    return FutureBuilder<MemoryImage>(
+      future: getAvatar(avatarService),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return const Text('Error loading avatar');
+        } else {
+          return CircleAvatar(
+            backgroundImage: snapshot.data,
+          );
+        }
+      },
+    );
+  }
+
+  Future<MemoryImage> getAvatar(Avatars avatarService) async {
+    return MemoryImage(await avatarService.getInitials(name: post.authorName));
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<PostEntity>('post', post));
+  }
 }
 
 class _PostBody extends StatelessWidget {
