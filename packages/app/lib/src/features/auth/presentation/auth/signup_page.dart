@@ -92,7 +92,7 @@ class SignupPage extends HookConsumerWidget {
             child: Column(
               children: [
                 Text(
-                  'Welcome to Nexus!',
+                  'Welcome to Town Talk!',
                   style: TextStyle(
                     fontSize: 28,
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
