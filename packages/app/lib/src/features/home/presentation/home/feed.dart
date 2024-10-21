@@ -27,45 +27,50 @@ class Feed extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Maybe change to scaffold with floating action button and list view as child
-    return ListView.builder(
-      shrinkWrap: true,
-      prototypeItem: Post(
-        post: PostEntity(
-          headline: '',
-          description: '',
-          lat: 0,
-          lng: 0,
-          timestamp: DateTime.fromMicrosecondsSinceEpoch(0, isUtc: true),
-          author: '',
-          authorName: '',
+    return Center(
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: ListView.builder(
+          shrinkWrap: true,
+          prototypeItem: Post(
+            post: PostEntity(
+              headline: '',
+              description: '',
+              lat: 0,
+              lng: 0,
+              timestamp: DateTime.fromMicrosecondsSinceEpoch(0, isUtc: true),
+              author: '',
+              authorName: '',
+            ),
+          ),
+          itemBuilder: (context, index) {
+            final response = ref.watch(singlePostProvider(feed, index));
+
+            return switch (response) {
+              AsyncData(:final value) when value != null => Post(post: value),
+
+              // If we run out of items, return null.
+              AsyncData() => null,
+
+              // If there's an error, display it as another post.
+              AsyncError(:final error) => Post(
+                  post: PostEntity(
+                    headline: 'Error',
+                    description: error.toString(),
+                    author: '',
+                    authorName: '',
+                    lat: 0,
+                    lng: 0,
+                    timestamp: DateTime.timestamp(),
+                  ),
+                ),
+
+              // If we're loading, display a loading indicator.
+              _ => null,
+            };
+          },
         ),
       ),
-      itemBuilder: (context, index) {
-        final response = ref.watch(singlePostProvider(feed, index));
-
-        return switch (response) {
-          AsyncData(:final value) when value != null => Post(post: value),
-
-          // If we run out of items, return null.
-          AsyncData() => null,
-
-          // If there's an error, display it as another post.
-          AsyncError(:final error) => Post(
-              post: PostEntity(
-                headline: 'Error',
-                description: error.toString(),
-                author: '',
-                authorName: '',
-                lat: 0,
-                lng: 0,
-                timestamp: DateTime.timestamp(),
-              ),
-            ),
-
-          // If we're loading, display a loading indicator.
-          _ => null,
-        };
-      },
     );
   }
 
