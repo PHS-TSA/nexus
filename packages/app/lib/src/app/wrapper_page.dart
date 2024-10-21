@@ -31,10 +31,10 @@ class WrapperPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AutoTabsScaffold(
-      routes: [
+      routes: const [
         LocalFeedRoute(),
-        const MapRoute(),
-        const SettingsRoute(),
+        MapRoute(),
+        SettingsRoute(),
       ],
       floatingActionButton: FloatingActionButton(
         onPressed: () async => showDialog<void>(

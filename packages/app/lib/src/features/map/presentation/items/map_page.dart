@@ -24,7 +24,7 @@ class MapPage extends HookWidget {
         initialCenter: const LatLng(38.657457, -95.560048),
         initialZoom: 4.5,
         onTap: (_, pos) async {
-          await context.router.navigate(
+          await context.router.push(
             MapInfoRoute(
               latitude: pos.latitude,
               longitude: pos.longitude,
