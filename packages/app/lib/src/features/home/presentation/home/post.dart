@@ -1,11 +1,10 @@
 // ignore_for_file: prefer_expression_function_bodies
 
-import 'package:appwrite/appwrite.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../utils/api.dart';
+import '../../application/avatar_service.dart';
 import '../../domain/post_entity.dart';
 
 class Post extends StatelessWidget {
@@ -20,19 +19,17 @@ class Post extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Change back to stateless
     return Card(
+      margin: const EdgeInsets.all(4),
       child: Container(
-        width: MediaQuery.sizeOf(context).width,
-        height: 150, // TODO(MattsAttack): Scale based on required height.
-        margin: const EdgeInsets.all(4),
-        padding: const EdgeInsets.all(4),
+        constraints: const BoxConstraints(minHeight: 225),
+        padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             // Have sections of post in here. Poster info and post content
-            _PosterInfo(
-              post: post,
-            ),
+            _PosterInfo(post: post),
             const Divider(color: Colors.white), //TODObase on theme
             _PostBody(post: post),
           ],
@@ -144,25 +141,15 @@ class _PostAvatar extends ConsumerWidget {
   final PostEntity post;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final avatarService = ref.watch(avatarsProvider);
-    return FutureBuilder<MemoryImage>(
-      future: getAvatar(avatarService),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return const Text('Error loading avatar');
-        } else {
-          return CircleAvatar(
-            backgroundImage: snapshot.data,
-          );
-        }
-      },
-    );
-  }
+    final avatar = ref.watch(avatarServiceProvider(post.authorName));
 
-  Future<MemoryImage> getAvatar(Avatars avatarService) async {
-    return MemoryImage(await avatarService.getInitials(name: post.authorName));
+    return switch (avatar) {
+      AsyncData(:final value) => CircleAvatar(
+          backgroundImage: MemoryImage(value),
+        ),
+      AsyncError() => const Text('Error loading avatar'),
+      _ => const CircularProgressIndicator()
+    };
   }
 
   @override
@@ -184,26 +171,21 @@ class _PostBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                post.headline,
-                textAlign: TextAlign.left,
-                style: const TextStyle(fontSize: 24),
-              ), // Need text styling
-              const Padding(padding: EdgeInsets.all(4)),
-              Text(
-                post.description,
-                textAlign: TextAlign.left,
-              ), // Get user name instead of id
-            ],
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          post.headline,
+          textAlign: TextAlign.left,
+          style: const TextStyle(fontSize: 24),
+        ), // Need text styling
+        const Padding(padding: EdgeInsets.all(4)),
+        Text(
+          post.description,
+          textAlign: TextAlign.left,
+        ), // Get user name instead of id
+      ],
     );
   }
 
