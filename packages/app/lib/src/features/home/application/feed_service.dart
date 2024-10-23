@@ -28,8 +28,8 @@ base class FeedService extends _$FeedService {
   /// Handles pagination automatically.
   /// Returns null if there are no more posts.
   Future<PostEntity?> fetch(int postIndex) async {
-    final id = ref.watch(authServiceProvider).requireValue?.$id;
-    final username = ref.watch(authServiceProvider).requireValue?.name;
+    final id = ref.watch(idProvider);
+    final username = ref.watch(usernameProvider);
     final postRepo = ref.watch(postRepositoryProvider(id, username, feed));
 
     final cachedPost = state.posts.elementAtOrNull(postIndex);

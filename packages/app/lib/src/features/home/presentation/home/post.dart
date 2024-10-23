@@ -113,10 +113,10 @@ class _PosterInfo extends StatelessWidget {
     return Row(
       children: [
         _PostAvatar(post: post),
-        const Padding(padding: EdgeInsets.all(4)),
+        const SizedBox(width: 8),
         Text(post.authorName), // Get user name instead of id
         // Text(post.author), // Get user name instead of id
-        const Padding(padding: EdgeInsets.all(4)),
+        const SizedBox(width: 8),
         Text(timePostValue),
         // Could add flair here
       ],

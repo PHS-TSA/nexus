@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
 import '../../../../gen/assets.gen.dart';
+import '../../../../utils/hooks.dart';
 import '../../../../utils/toast.dart';
 import '../../application/auth_service.dart';
 
@@ -27,7 +28,7 @@ class SignupPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formKey = useMemoized(GlobalKey<FormState>.new);
+    final formKey = useGlobalKey<FormState>();
 
     final name = useState('');
     final email = useState('');

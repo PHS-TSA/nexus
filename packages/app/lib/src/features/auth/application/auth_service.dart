@@ -54,3 +54,19 @@ base class AuthService extends _$AuthService {
 // ```dart
 // return ref.watch(authServiceProvider).requireValue;
 // ```
+
+/// Get the current user's name.
+///
+/// Named as such to prevent a naming conflict with riverpod.
+@riverpod
+String? username(UsernameRef ref) =>
+    ref.watch(authServiceProvider).requireValue?.name;
+
+/// Get the current user's email address.
+@riverpod
+String? email(EmailRef ref) =>
+    ref.watch(authServiceProvider).requireValue?.email;
+
+/// Get the current user's email address.
+@riverpod
+String? id(IdRef ref) => ref.watch(authServiceProvider).requireValue?.$id;
