@@ -37,6 +37,7 @@ class _AppState extends ConsumerState<App> with RestorationMixin {
 
   @override
   Widget build(BuildContext context) {
+    // TODO(lishaduck): Hook into FlutterNativeSplash here.
     return _EagerInitialization(
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

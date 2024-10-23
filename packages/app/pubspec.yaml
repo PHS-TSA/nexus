@@ -128,8 +128,8 @@ flutter_launcher_icons:
   web:
     generate: true
     image_path: "assets/icons/logo.png"
-    background_color: "#0a9f06"
-    theme_color: "#0a9f06"
+    background_color: "#2e2e2e"
+    theme_color: "#0281d4"
 
   windows:
     generate: true
@@ -156,7 +156,7 @@ flutter_native_splash:
   # of your splash screen to a solid color.  Use background_image to set the background of your
   # splash screen to a png image.  This is useful for gradients. The image will be stretch to the
   # size of the app. Only one parameter can be used, color and background_image cannot both be set.
-  color: "#0a9f06"
+  color: "#2e2e2e"
   #background_image: "assets/background.png"
 
   # Optional parameters are listed below.  To enable a parameter, uncomment the line by removing
@@ -180,7 +180,7 @@ flutter_native_splash:
   # parameters from above. If the image_dark parameter is specified, color_dark or
   # background_image_dark must be specified.  color_dark and background_image_dark cannot both be
   # set.
-  color_dark: "#134011"
+  color_dark: "#2e2e2e"
   #background_image_dark: "assets/dark-background.png"
   #image_dark: assets/splash-invert.png
   #branding_dark: assets/dart_dark.png
@@ -199,7 +199,7 @@ flutter_native_splash:
     #image: assets/android12splash.png
 
     # Splash screen background color.
-    #color: "#0a9f06"
+    #color: "#2e2e2e"
 
     # App icon background color.
     icon_background_color: "#111111"
@@ -211,7 +211,7 @@ flutter_native_splash:
     # apply when the device is in dark mode. If they are not specified, the app will use the
     # parameters from above.
     #image_dark: assets/android12splash-invert.png
-    #color_dark: "#134011"
+    #color_dark: "#2e2e2e"
     #icon_background_color_dark: "#eeeeee"
 
   # The android, ios and web parameters can be used to disable generating a splash screen on a given
@@ -222,12 +222,12 @@ flutter_native_splash:
 
   # Platform specific images can be specified with the following parameters, which will override
   # the respective parameter.  You may specify all, selected, or none of these parameters:
-  #color_android: "#0a9f06"
-  #color_dark_android: "#134011"
-  #color_ios: "#0a9f06"
-  #color_dark_ios: "#134011"
-  #color_web: "#0a9f06"
-  #color_dark_web: "#134011"
+  #color_android: "#2e2e2e"
+  #color_dark_android: "#2e2e2e"
+  #color_ios: "#2e2e2e"
+  #color_dark_ios: "#2e2e2e"
+  #color_web: "#2e2e2e"
+  #color_dark_web: "#2e2e2e"
   #image_android: assets/splash-android.png
   #image_dark_android: assets/splash-invert-android.png
   #image_ios: assets/splash-ios.png
