@@ -24,11 +24,11 @@ class FeedRoutingPage extends ConsumerWidget {
       routes: const [LocalFeedRoute(), WorldFeedRoute()],
       appBarBuilder: (context, autoRouter) {
         return AppBar(
-          //TODOfix coloring
           automaticallyImplyLeading: false,
           title: NavigationBar(
             selectedIndex: autoRouter.activeIndex,
             onDestinationSelected: autoRouter.setActiveIndex,
+            backgroundColor: const Color.fromARGB(0, 0, 0, 0),
             destinations: const [
               NavigationDestination(
                 icon: Icon(Icons.pin_drop),
