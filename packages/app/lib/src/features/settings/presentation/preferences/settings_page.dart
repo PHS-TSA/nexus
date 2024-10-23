@@ -2,10 +2,16 @@
 library;
 
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:url_launcher/link.dart';
 
 import '../../../../app/router.gr.dart';
+import '../../../../gen/assets.gen.dart';
+import '../../../../gen/version.gen.dart';
+import '../../../../utils/hooks.dart';
 import '../../../auth/application/auth_service.dart';
 import '../../application/settings_service.dart';
 
@@ -35,39 +41,43 @@ class SettingsPage extends ConsumerWidget {
         // When a user selects a theme from the dropdown list, the
         // `settingsServiceProvider` is updated, which rebuilds the `MaterialApp`.
         children: [
-          Container(
-            alignment: Alignment.topLeft,
-            child: DropdownMenu(
-              // Read the selected themeMode from the controller
-              initialSelection: themeMode,
-              // Call the updateThemeMode method any time the user selects a theme.
-              onSelected: (theme) async {
-                final newTheme = theme ?? settingsService.themeMode;
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Container(
+              alignment: Alignment.topLeft,
+              child: DropdownMenu(
+                // Read the selected themeMode from the controller
+                initialSelection: themeMode,
+                // Call the updateThemeMode method any time the user selects a theme.
+                onSelected: (theme) async {
+                  final newTheme = theme ?? settingsService.themeMode;
 
-                await ref
-                    .read(settingsServiceProvider.notifier)
-                    .updateThemeMode(newTheme);
-              },
-              label: const Text('Theme'),
-              dropdownMenuEntries: const [
-                DropdownMenuEntry(
-                  value: ThemeMode.system,
-                  label: 'System Theme',
-                  leadingIcon: Icon(Icons.brightness_medium),
-                ),
-                DropdownMenuEntry(
-                  value: ThemeMode.light,
-                  label: 'Light Theme',
-                  leadingIcon: Icon(Icons.brightness_5),
-                ),
-                DropdownMenuEntry(
-                  value: ThemeMode.dark,
-                  label: 'Dark Theme',
-                  leadingIcon: Icon(Icons.brightness_3),
-                ),
-              ],
+                  await ref
+                      .read(settingsServiceProvider.notifier)
+                      .updateThemeMode(newTheme);
+                },
+                label: const Text('Theme'),
+                dropdownMenuEntries: const [
+                  DropdownMenuEntry(
+                    value: ThemeMode.system,
+                    label: 'System Theme',
+                    leadingIcon: Icon(Icons.brightness_medium),
+                  ),
+                  DropdownMenuEntry(
+                    value: ThemeMode.light,
+                    label: 'Light Theme',
+                    leadingIcon: Icon(Icons.brightness_5),
+                  ),
+                  DropdownMenuEntry(
+                    value: ThemeMode.dark,
+                    label: 'Dark Theme',
+                    leadingIcon: Icon(Icons.brightness_3),
+                  ),
+                ],
+              ),
             ),
           ),
+          const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.all(16),
             child: Container(
@@ -89,8 +99,87 @@ class SettingsPage extends ConsumerWidget {
               ),
             ),
           ),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Container(
+              alignment: Alignment.topLeft,
+              child: ElevatedButton(
+                onPressed: () {
+                  showAboutDialog(
+                    context: context,
+                    applicationIcon: Assets.icons.logo.image(width: 50),
+                    applicationName: 'Town Talk',
+                    applicationVersion: packageVersion,
+                    applicationLegalese: '© 2024 Eli D. and Matthew W.',
+                    children: [
+                      const SizedBox(height: 24),
+                      Link(
+                        uri: Uri.https('github.com', 'PHS-TSA/nexus'),
+                        target: LinkTarget.blank,
+                        builder: (context, followLink) {
+                          return _AppDescription(followLink: followLink);
+                        },
+                      ),
+                    ],
+                  );
+                },
+                child: const Text('About'),
+              ),
+            ),
+          ),
         ],
       ),
+    );
+  }
+}
+
+class _AppDescription extends HookWidget {
+  const _AppDescription({
+    this.followLink,
+    // Temporary ignore, see <dart-lang/sdk#49025>.
+    // ignore: unused_element
+    super.key,
+  });
+
+  final FollowLink? followLink;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final textStyle = theme.textTheme.bodyMedium;
+
+    final tapGestureRecognizer = useTapGestureRecognizer(
+      onTap: followLink,
+    );
+
+    return Text.rich(
+      TextSpan(
+        style: textStyle,
+        children: [
+          const TextSpan(
+            text: 'Town Talk is a new kind of public forum. '
+                'View the source at ',
+          ),
+          TextSpan(
+            style: textStyle?.copyWith(
+              color: theme.colorScheme.primary,
+            ),
+            text: 'github:PHS-TSA/nexus',
+            recognizer: tapGestureRecognizer,
+          ),
+          const TextSpan(text: '.'),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+      ObjectFlagProperty<GestureTapCallback?>.has('followLink', followLink),
     );
   }
 }

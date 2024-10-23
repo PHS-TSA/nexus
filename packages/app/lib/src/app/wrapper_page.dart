@@ -14,6 +14,7 @@ import '../features/auth/application/auth_service.dart';
 import '../features/home/application/location_service.dart';
 import '../features/home/data/post_repository.dart';
 import '../features/home/domain/feed_entity.dart';
+import '../utils/hooks.dart';
 import 'router.gr.dart';
 
 /// {@template our_democracy.app.wrapper_page}
@@ -120,11 +121,11 @@ class _Dialog extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formKey = useMemoized(GlobalKey<FormState>.new);
+    final formKey = useGlobalKey<FormState>();
     final title = useState('');
     final description = useState('');
-    final id = ref.watch(authServiceProvider).requireValue?.$id;
-    final username = ref.watch(authServiceProvider).requireValue?.name;
+    final id = ref.watch(idProvider);
+    final username = ref.watch(usernameProvider);
 
     final handleSubmit = useCallback(
       () async {
