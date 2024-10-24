@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
 import '../../../../gen/assets.gen.dart';
+import '../../../../utils/hooks.dart';
 import '../../../../utils/toast.dart';
 import '../../application/auth_service.dart';
 
@@ -27,7 +28,7 @@ class SignupPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formKey = useMemoized(GlobalKey<FormState>.new);
+    final formKey = useGlobalKey<FormState>();
 
     final name = useState('');
     final email = useState('');
@@ -71,8 +72,8 @@ class SignupPage extends HookConsumerWidget {
           // `MediaQuery`s shouldn't be cached, it makes them potentially less responsive.
           left: MediaQuery.sizeOf(context).width / 4,
           right: MediaQuery.sizeOf(context).width / 4,
-          top: 35,
-          bottom: 40,
+          top: MediaQuery.sizeOf(context).height / 6,
+          bottom: MediaQuery.sizeOf(context).height / 4,
         ),
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -92,7 +93,7 @@ class SignupPage extends HookConsumerWidget {
             child: Column(
               children: [
                 Text(
-                  'Welcome to Nexus!',
+                  'Welcome to Town Talk!',
                   style: TextStyle(
                     fontSize: 28,
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -109,7 +110,7 @@ class SignupPage extends HookConsumerWidget {
                   keyboardType: TextInputType.name,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Name',
+                    labelText: 'First and Last Name',
                   ),
                 ),
                 const SizedBox(height: 16),
