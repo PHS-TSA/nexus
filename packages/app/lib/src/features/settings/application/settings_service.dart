@@ -1,8 +1,6 @@
 /// This file provides a service to manage local user settings.
 library;
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -31,9 +29,7 @@ class SettingsService extends _$SettingsService {
     state = state.copyWith(themeMode: mode);
 
     // Persist the changes to a local database or the internet using the PreferencesRepository.
-    await ref
-        .read(preferencesRepositoryProvider)
-        .setString('prefs', json.encode(state));
+    await ref.read(preferencesRepositoryProvider).update(state);
   }
 }
 

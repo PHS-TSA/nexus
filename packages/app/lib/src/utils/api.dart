@@ -9,12 +9,24 @@ import 'package:appwrite/appwrite.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../env/env.dart';
+import '../app/bootstrap.dart';
 
 part 'api.g.dart';
 
 /// Get the Appwrite client.
 @Riverpod(keepAlive: true)
 Client client(ClientRef ref) {
+  throw UnimplementedError();
+}
+
+/// Create an Appwrite API [Client].
+///
+/// > [!WARNING]
+/// >
+/// > Do not use this!
+/// > This is used to get around a lack of Riverpod while [Bootstrap]ping.
+/// > Use [clientProvider] instead.
+Client createClient() {
   return Client()
       .setEndpoint(Env.apiEndpoint)
       .setProject(Env.projectId)
