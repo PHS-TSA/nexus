@@ -1,4 +1,4 @@
-name: "nexus"
+name: "TownTalk"
 
 packages:
   - packages/**
