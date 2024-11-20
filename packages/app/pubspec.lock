@@ -17,10 +17,11 @@ packages:
   analysis_options:
     dependency: "direct dev"
     description:
-      path: "../analysis_options"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: analysis_options
+      sha256: "83e0028a0de696ac518e70d55368df62929dc008b87b10ba2d95714f1511ef5a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   analyzer:
     dependency: transitive
     description:
@@ -797,10 +798,10 @@ packages:
     dependency: "direct dev"
     description:
       name: json_serializable
-      sha256: ea1432d167339ea9b5bb153f0571d0039607a873d6e04e0117af043f14a1fd4b
+      sha256: c2fcb3920cf2b6ae6845954186420fca40bc0a8abcc84903b7801f17d7050d7c
       url: "https://pub.dev"
     source: hosted
-    version: "6.8.0"
+    version: "6.9.0"
   latlong2:
     dependency: "direct main"
     description:
@@ -1598,14 +1599,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-  very_good_analysis:
-    dependency: transitive
-    description:
-      name: very_good_analysis
-      sha256: "1fb637c0022034b1f19ea2acb42a3603cbd8314a470646a59a2fb01f5f3a8629"
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.0.0"
   very_good_cli:
     dependency: "direct dev"
     description:

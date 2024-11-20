@@ -79,7 +79,7 @@ dev_dependencies:
     sdk: flutter
   freezed: ^2.5.7
   freezed_lint: ^0.0.5
-  json_serializable: ^6.8.0
+  json_serializable: ^6.9.0
   mocktail: ^1.0.4
   riverpod_generator: ^2.4.3
   riverpod_lint: ^2.3.13
