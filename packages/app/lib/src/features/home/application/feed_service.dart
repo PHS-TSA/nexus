@@ -11,6 +11,7 @@ import '../data/post_repository.dart';
 import '../domain/feed_entity.dart';
 import '../domain/feed_model.dart';
 import '../domain/post_entity.dart';
+import 'avatar_service.dart';
 
 part 'feed_service.g.dart';
 
@@ -51,6 +52,8 @@ base class FeedService extends _$FeedService {
 }
 
 /// Fetch a single post from the feed.
+///
+/// [postIndex] is the index of the current post user is viewing.
 @riverpod
 FutureOr<PostEntity?> singlePost(
   Ref ref,
@@ -59,7 +62,13 @@ FutureOr<PostEntity?> singlePost(
 ) async {
   // Keep previous posts in cache to make scrolling up possible.
   // Otherwise, `ListView` freaks out.
-  if (postIndex != 0) ref.watch(singlePostProvider(feed, postIndex - 1));
+  if (postIndex != 0) {
+    final post = await ref.watch(
+      singlePostProvider(feed, postIndex - 1).future,
+    );
+    // Keeps avatar in local memory
+    ref.watch(avatarServiceProvider(post?.authorName));
+  }
 
   final feedNotifier = ref.watch(feedServiceProvider(feed).notifier);
   final post = await feedNotifier.fetch(postIndex);
