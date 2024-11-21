@@ -64,6 +64,7 @@ class _PosterInfo extends StatelessWidget {
     final timeSincePost = DateTime.timestamp().difference(post.timestamp);
     int timeValue;
     String timePostValue;
+    final avatar = _PostAvatar(post: post);
     if (timeSincePost.inDays > 364) {
       //TODOwrite more efficient code with variables
       timeValue = (timeSincePost.inDays / 364).round();
@@ -112,7 +113,7 @@ class _PosterInfo extends StatelessWidget {
     }
     return Row(
       children: [
-        _PostAvatar(post: post),
+        avatar,
         const SizedBox(width: 8),
         Text(post.authorName), // Get user name instead of id
         // Text(post.author), // Get user name instead of id
