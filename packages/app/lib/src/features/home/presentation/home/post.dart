@@ -7,9 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../application/avatar_service.dart';
 import '../../domain/post_entity.dart';
 
-/// Post Widget UI
 class Post extends StatelessWidget {
-  /// Post Widget UI Constructor
   const Post({
     required this.post,
     // Temporary ignore, see <dart-lang/sdk#49025>.
@@ -17,18 +15,15 @@ class Post extends StatelessWidget {
     super.key,
   });
 
-  /// PostEntity variable with values of current post
   final PostEntity post;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Card(
       margin: const EdgeInsets.all(4),
-      padding: const EdgeInsets.all(16),
-      height: _textSize(post.description, const TextStyle()).height +
-          _textSize(post.headline, const TextStyle(fontSize: 24)).height +
-          150,
-      child: Card(
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 220, maxHeight: 300),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -41,16 +36,6 @@ class Post extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Size _textSize(String text, TextStyle style) {
-    final textPainter = TextPainter(
-      text: TextSpan(text: text, style: style),
-      maxLines: 1,
-      textDirection: TextDirection.ltr,
-    )..layout(maxWidth: 600);
-    print(textPainter.height);
-    return textPainter.size;
   }
 
   // coverage:ignore-start
@@ -191,20 +176,15 @@ class _PostBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Flexible(
-          child: Text(
-            post.headline,
-            textAlign: TextAlign.left,
-            style: const TextStyle(fontSize: 24),
-          ),
+        Text(
+          post.headline,
+          textAlign: TextAlign.left,
+          style: const TextStyle(fontSize: 24),
         ), // Need text styling
         const Padding(padding: EdgeInsets.all(4)),
-        Flexible(
-          child: Text(
-            post.description,
-            textAlign: TextAlign.left,
-            // style: const TextStyle(),
-          ),
+        Text(
+          post.description,
+          textAlign: TextAlign.left,
         ), // Get user name instead of id
       ],
     );
@@ -216,6 +196,5 @@ class _PostBody extends StatelessWidget {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<PostEntity>('post', post));
   }
-
   // coverage:ignore-end
 }
