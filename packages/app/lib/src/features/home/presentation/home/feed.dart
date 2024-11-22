@@ -31,18 +31,6 @@ class Feed extends ConsumerWidget {
       child: Container(
         constraints: const BoxConstraints(maxWidth: 600),
         child: ListView.builder(
-          shrinkWrap: true,
-          prototypeItem: Post(
-            post: PostEntity(
-              headline: '',
-              description: '',
-              lat: 0,
-              lng: 0,
-              timestamp: DateTime.fromMicrosecondsSinceEpoch(0, isUtc: true),
-              author: '',
-              authorName: '',
-            ),
-          ),
           itemBuilder: (context, index) {
             final response = ref.watch(singlePostProvider(feed, index));
 
