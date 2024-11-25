@@ -2,6 +2,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../application/avatar_service.dart';
@@ -32,6 +33,7 @@ class Post extends StatelessWidget {
             _PosterInfo(post: post),
             const Divider(color: Colors.white), //TODObase on theme
             _PostBody(post: post),
+            _PostInteractables(post: post),
           ],
         ),
       ),
@@ -197,4 +199,41 @@ class _PostBody extends StatelessWidget {
     properties.add(DiagnosticsProperty<PostEntity>('post', post));
   }
   // coverage:ignore-end
+}
+
+class _PostInteractables extends HookWidget {
+  const _PostInteractables({
+    required this.post,
+    // Temporary ignore, see <dart-lang/sdk#49025>.
+    // ignore: unused_element
+    super.key,
+  });
+
+  final PostEntity post;
+
+  @override
+  Widget build(BuildContext context) {
+    final thumbsIcon = useState(const Icon(Icons.thumb_up_outlined));
+    return Row(
+      children: [
+        Text(post.numberOfLikes.toString()),
+        IconButton(
+          onPressed: () {
+            if (thumbsIcon.value.icon == Icons.thumb_up_outlined) {
+              thumbsIcon.value = const Icon(Icons.thumb_up_sharp);
+            } else {
+              thumbsIcon.value = const Icon(Icons.thumb_up_outlined);
+            }
+          },
+          icon: thumbsIcon.value,
+        ),
+      ],
+    );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<PostEntity>('post', post));
+  }
 }

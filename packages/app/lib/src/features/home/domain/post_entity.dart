@@ -37,6 +37,9 @@ sealed class PostEntity with _$PostEntity {
     ///
     required DateTime timestamp,
 
+    ///
+    required int numberOfLikes,
+
     /// An optional media to display alongside the post.
     String? image,
 

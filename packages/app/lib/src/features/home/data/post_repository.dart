@@ -38,6 +38,7 @@ abstract interface class PostRepository {
     String? description,
     double lat,
     double lng,
+    int numberOfLikes,
     String? image,
   );
 }
@@ -95,6 +96,7 @@ final class _AppwritePostRepository implements PostRepository {
     String? description,
     double lat,
     double lng,
+    int numberOfLikes,
     String? image,
   ) async {
     await database.createDocument(
@@ -109,6 +111,7 @@ final class _AppwritePostRepository implements PostRepository {
         'authorName': authorName,
         'lat': lat,
         'lng': lng,
+        'numberOfLikes': numberOfLikes,
         'timestamp':
             DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.timestamp()),
         // TODO(MattAttack): add images
