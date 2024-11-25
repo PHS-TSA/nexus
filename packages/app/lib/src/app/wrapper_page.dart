@@ -157,6 +157,7 @@ class _Dialog extends HookConsumerWidget {
               description.value,
               lat,
               lng,
+              [],
               0,
               null,
             );

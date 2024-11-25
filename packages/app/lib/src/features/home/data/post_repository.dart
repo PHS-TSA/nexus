@@ -38,6 +38,7 @@ abstract interface class PostRepository {
     String? description,
     double lat,
     double lng,
+    List<String> likes,
     int numberOfLikes,
     String? image,
   );
@@ -96,6 +97,7 @@ final class _AppwritePostRepository implements PostRepository {
     String? description,
     double lat,
     double lng,
+    List<String> likes,
     int numberOfLikes,
     String? image,
   ) async {
@@ -111,6 +113,7 @@ final class _AppwritePostRepository implements PostRepository {
         'authorName': authorName,
         'lat': lat,
         'lng': lng,
+        'likes': likes,
         'numberOfLikes': numberOfLikes,
         'timestamp':
             DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.timestamp()),

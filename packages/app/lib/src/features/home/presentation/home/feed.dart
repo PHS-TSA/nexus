@@ -49,6 +49,7 @@ class Feed extends ConsumerWidget {
                     authorName: '',
                     lat: 0,
                     lng: 0,
+                    likes: const [],
                     numberOfLikes: 0,
                     timestamp: DateTime.timestamp(),
                   ),
