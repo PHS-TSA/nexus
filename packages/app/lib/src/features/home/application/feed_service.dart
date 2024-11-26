@@ -34,9 +34,13 @@ base class FeedService extends _$FeedService {
     final postRepo = ref.watch(postRepositoryProvider(id, username, feed));
 
     final cachedPost = state.posts.elementAtOrNull(postIndex);
-    final cachedPostId = state.ids.elementAt(postIndex);
-    final updatedCachedPost = cachedPost?.copyWith(id: cachedPostId);
-    if (cachedPost != null) return cachedPost;
+
+    if (cachedPost != null) {
+      // Updates
+      final cachedPostId = state.ids.elementAt(postIndex);
+      final updatedCachedPost = cachedPost.copyWith(id: cachedPostId);
+      return updatedCachedPost;
+    }
 
     // Get user's location.
     final posts = await postRepo.readPosts(state.cursorPos);
