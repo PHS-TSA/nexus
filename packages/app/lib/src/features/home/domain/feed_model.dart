@@ -19,6 +19,7 @@ sealed class FeedModel with _$FeedModel {
   const factory FeedModel({
     /// The posts in the feed.
     required List<PostEntity> posts,
+    required List<String> ids,
 
     /// The database pagination cursor position.
     required String? cursorPos,

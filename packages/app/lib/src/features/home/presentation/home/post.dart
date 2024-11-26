@@ -216,7 +216,7 @@ class _PostInteractables extends HookWidget {
     final thumbsIcon = useState(const Icon(Icons.thumb_up_outlined));
     return Row(
       children: [
-        Text(post.numberOfLikes.toString()),
+        Text(post.id.toString()),
         IconButton(
           onPressed: () {
             if (thumbsIcon.value.icon == Icons.thumb_up_outlined) {

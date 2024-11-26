@@ -22,7 +22,7 @@ part 'feed_service.g.dart';
 base class FeedService extends _$FeedService {
   @override
   FeedModel build(FeedEntity feed) {
-    return const FeedModel(posts: [], cursorPos: null);
+    return const FeedModel(posts: [], ids: [], cursorPos: null);
   }
 
   /// Fetch the next post in the feed.
@@ -34,20 +34,25 @@ base class FeedService extends _$FeedService {
     final postRepo = ref.watch(postRepositoryProvider(id, username, feed));
 
     final cachedPost = state.posts.elementAtOrNull(postIndex);
+    final cachedPostId = state.ids.elementAt(postIndex);
+    final updatedCachedPost = cachedPost?.copyWith(id: cachedPostId);
     if (cachedPost != null) return cachedPost;
 
     // Get user's location.
     final posts = await postRepo.readPosts(state.cursorPos);
 
     if (posts.isEmpty) return null;
-
+    // Need to figure out how to add id value to post entity
+    // posts[postIndex].entity = posts[postIndex].entity.copyWith(id: posts[postIndex].id);
+    final postId = posts[postIndex].id;
     state = state.copyWith(
       posts: [...state.posts, ...posts.map((tuple) => tuple.entity)],
+      ids: [...state.ids, ...posts.map((tuple) => tuple.id)],
       cursorPos: posts.lastOrNull?.id,
     );
-
     final post = state.posts.elementAtOrNull(postIndex);
-    return post ?? await fetch(postIndex + 1);
+    final updatedPost = post?.copyWith(id: postId);
+    return updatedPost ?? await fetch(postIndex + 1);
   }
 }
 

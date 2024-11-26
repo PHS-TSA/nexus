@@ -42,6 +42,8 @@ abstract interface class PostRepository {
     int numberOfLikes,
     String? image,
   );
+
+  Future<void> toggleLikePost(String postId, String userId);
 }
 
 final class _AppwritePostRepository implements PostRepository {
@@ -82,7 +84,6 @@ final class _AppwritePostRepository implements PostRepository {
         Query.limit(pageSize),
       ],
     );
-
     return documentList.documents.map((document) {
       return (
         entity: PostEntity.fromJson(document.data),
@@ -120,6 +121,14 @@ final class _AppwritePostRepository implements PostRepository {
         // TODO(MattAttack): add images
       },
     );
+  }
+
+  @override
+
+  /// Adds current users id to the postId likes data
+  Future<void> toggleLikePost(String postId, String userId) {
+    // TODO: implement toggleLikePost
+    throw UnimplementedError();
   }
 }
 

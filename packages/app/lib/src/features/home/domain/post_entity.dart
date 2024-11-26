@@ -46,7 +46,8 @@ sealed class PostEntity with _$PostEntity {
     /// An optional media to display alongside the post.
     String? image,
 
-    // TODO(MattsAttack): when implementing likes, add numberOfLikes here.
+    /// Post ID
+    String? id,
   }) = _PostEntity;
 
   factory PostEntity.fromJson(Map<String, dynamic> json) =>
