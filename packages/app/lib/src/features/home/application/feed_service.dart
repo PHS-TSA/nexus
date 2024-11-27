@@ -35,8 +35,9 @@ base class FeedService extends _$FeedService {
 
     final cachedPost = state.posts.elementAtOrNull(postIndex);
 
+    // If posts have been read in ....
     if (cachedPost != null) {
-      // Updates
+      // Gets post id and adds it to the post entity's id value
       final cachedPostId = state.ids.elementAt(postIndex);
       final updatedCachedPost = cachedPost.copyWith(id: cachedPostId);
       return updatedCachedPost;
@@ -46,15 +47,19 @@ base class FeedService extends _$FeedService {
     final posts = await postRepo.readPosts(state.cursorPos);
 
     if (posts.isEmpty) return null;
-    // Need to figure out how to add id value to post entity
-    // posts[postIndex].entity = posts[postIndex].entity.copyWith(id: posts[postIndex].id);
+
+    // Gets post ID from first post
     final postId = posts[postIndex].id;
+
+    // Adds posts and ids to their respective list
     state = state.copyWith(
       posts: [...state.posts, ...posts.map((tuple) => tuple.entity)],
       ids: [...state.ids, ...posts.map((tuple) => tuple.id)],
       cursorPos: posts.lastOrNull?.id,
     );
     final post = state.posts.elementAtOrNull(postIndex);
+
+    // Adds post id to post
     final updatedPost = post?.copyWith(id: postId);
     return updatedPost ?? await fetch(postIndex + 1);
   }
