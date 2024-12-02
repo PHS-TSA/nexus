@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../auth/application/auth_service.dart';
 import '../../application/avatar_service.dart';
+import '../../data/post_repository.dart';
+import '../../domain/feed_entity.dart';
 import '../../domain/post_entity.dart';
 
 class Post extends StatelessWidget {
@@ -201,7 +204,7 @@ class _PostBody extends StatelessWidget {
   // coverage:ignore-end
 }
 
-class _PostInteractables extends HookWidget {
+class _PostInteractables extends HookConsumerWidget {
   const _PostInteractables({
     required this.post,
     // Temporary ignore, see <dart-lang/sdk#49025>.
@@ -212,18 +215,62 @@ class _PostInteractables extends HookWidget {
   final PostEntity post;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    /* 
+    How to do saving like state:
+    When reading in posts, check if users name is on likes list and set a boolean variable to it
+    */
     final thumbsIcon = useState(const Icon(Icons.thumb_up_outlined));
+
+    // Gets current users id and username
+    final userId = ref.watch(idProvider);
+    final username = ref.watch(usernameProvider);
+
     return Row(
       children: [
-        Text(post.id.toString()),
+        Text(post.likes.length.toString()),
         IconButton(
-          onPressed: () {
+          onPressed: () async {
+            //User is liking the post
+            final currentLikes = post.likes;
             if (thumbsIcon.value.icon == Icons.thumb_up_outlined) {
+              //Modify likes
+              currentLikes.add(userId!);
+              await ref
+                  .read(
+                    postRepositoryProvider(
+                      userId,
+                      username,
+                      const FeedEntity.world(),
+                    ),
+                  )
+                  .toggleLikePost(
+                    post.id!,
+                    userId,
+                    currentLikes,
+                  ); //TODO find alternative to !
               thumbsIcon.value = const Icon(Icons.thumb_up_sharp);
             } else {
+              // User is removing like
+              currentLikes.remove(userId);
+              await ref
+                  .read(
+                    postRepositoryProvider(
+                      // TODO(MattsAttack): Find a way to handle null here.
+                      userId,
+                      // TODO(lishaduck): This could be a whole lot less hacky.
+                      username,
+                      const FeedEntity.world(),
+                    ),
+                  )
+                  .toggleLikePost(
+                    post.id!,
+                    userId!,
+                    currentLikes,
+                  ); //TODO find alternative to !
               thumbsIcon.value = const Icon(Icons.thumb_up_outlined);
             }
+            //TODO add code change value of local likes
           },
           icon: thumbsIcon.value,
         ),

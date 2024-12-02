@@ -43,7 +43,7 @@ abstract interface class PostRepository {
     String? image,
   );
 
-  Future<void> toggleLikePost(String postId, String userId);
+  Future<void> toggleLikePost(String postId, String userId, List<String> likes);
 }
 
 final class _AppwritePostRepository implements PostRepository {
@@ -126,9 +126,20 @@ final class _AppwritePostRepository implements PostRepository {
   @override
 
   /// Adds current users id to the postId likes data
-  Future<void> toggleLikePost(String postId, String userId) {
+  Future<void> toggleLikePost(
+    String postId,
+    String userId,
+    List<String> likes,
+  ) async {
     // TODO: implement toggleLikePost
-    throw UnimplementedError();
+    await database.updateDocument(
+      databaseId: databaseId,
+      collectionId: collectionId,
+      documentId: postId,
+      data: {
+        'likes': likes,
+      },
+    );
   }
 }
 
