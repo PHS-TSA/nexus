@@ -3,20 +3,22 @@ import 'package:checks/checks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:nexus/src/app/router.dart';
 import 'package:nexus/src/app/router.gr.dart';
-import 'package:nexus/src/app/wrapper_page.dart';
+import 'package:nexus/src/features/auth/data/auth_repository.dart';
 import 'package:nexus/src/utils/router.dart';
 
-import '../../helpers/pump_app.dart';
+import '../../helpers/mocks.dart';
 import '../../helpers/riverpod.dart';
 
-Future<BuildContext> _getContext<W extends Widget>(
+Future<BuildContext> _getContext(
   WidgetTester tester,
   ProviderContainer container,
   AppRouter router,
+  Type elementType,
 ) async {
-  await tester.pumpApp(
+  await tester.pumpWidget(
     UncontrolledProviderScope(
       container: container,
       child: MaterialApp.router(
@@ -24,7 +26,8 @@ Future<BuildContext> _getContext<W extends Widget>(
       ),
     ),
   );
-  return tester.element(find.byType(W));
+  await tester.pumpAndSettle();
+  return tester.element(find.byType(elementType));
 }
 
 // class MockRouteData extends Mock implements RouteData {}
@@ -52,17 +55,26 @@ void main() {
 
     group('path', () {
       testWidgets('should be correct for WrapperRoute.', (tester) async {
-        final container = createContainer();
+        final mockAuthRepository = MockAuthRepository();
+        when(mockAuthRepository.checkUserAuth)
+            .thenAnswer((_) => Future.value(fakeUser));
+
+        final container = createContainer(
+          overrides: [
+            authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          ],
+        );
         final routerSubscription = container.listen(routerProvider, (_, __) {});
         final router = routerSubscription.read();
-        final context = await _getContext<WrapperPage>(
+        final context = await _getContext(
           tester,
           container,
           router,
+          MaterialApp,
         );
 
         // FIXME: Hangs! Yay!
-        await context.router.push(const WrapperRoute());
+        await router.push(const WrapperRoute());
         await tester.pumpAndSettle();
 
         check(router)
