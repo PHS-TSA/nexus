@@ -62,7 +62,7 @@ dependencies:
   latlong2: ^0.9.1
   meta: ^1.15.0
   riverpod_annotation: ^2.5.3
-  shared_preferences: ^2.3.2
+  shared_preferences: ^2.3.4
 
 dev_dependencies:
   analysis_options: any
