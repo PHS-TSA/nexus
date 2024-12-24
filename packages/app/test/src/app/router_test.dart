@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:nexus/src/app/router.dart';
 import 'package:nexus/src/app/router.gr.dart';
+import 'package:nexus/src/features/auth/application/auth_service.dart';
 import 'package:nexus/src/features/auth/data/auth_repository.dart';
 import 'package:nexus/src/utils/router.dart';
 
@@ -64,18 +65,21 @@ void main() {
             authRepositoryProvider.overrideWithValue(mockAuthRepository),
           ],
         );
+        final _ = container.listen(authServiceProvider, (_, __) {})
+          ..read(); // Ensure that the auth state is flushed.
         final routerSubscription = container.listen(routerProvider, (_, __) {});
         final router = routerSubscription.read();
-        final context = await _getContext(
-          tester,
-          container,
-          router,
-          MaterialApp,
-        );
 
         // FIXME: Hangs! Yay!
         await router.push(const WrapperRoute());
         await tester.pumpAndSettle();
+
+        final context = await _getContext(
+          tester,
+          container,
+          router,
+          WrapperRoute,
+        );
 
         check(router)
           ..has((router) => router.urlState.url, 'url').equals('/')
