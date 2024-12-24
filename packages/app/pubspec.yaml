@@ -23,7 +23,7 @@ issue_tracker: https://github.com/PHS-TSA/nexus/issues
 repository: https://github.com/PHS-TSA/nexus.git
 
 environment:
-  sdk: "^3.5.0"
+  sdk: "^3.6.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -32,10 +32,11 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependency_overrides:
-  flutter_web_auth_2: 4.0.0 # Supports WASM.
+  custom_lint_builder: 0.7.0
+  flutter_web_auth_2: 4.1.0 # Supports WASM.
 
 dependencies:
-  appwrite: ^13.0.0
+  appwrite: ^13.1.1
   auto_route: ^9.2.2
   build_version: ^2.1.1
   # The following adds the Cupertino Icons font to your application.
@@ -43,7 +44,7 @@ dependencies:
   checks: ^0.3.0
   cupertino_icons: ^1.0.8 # Only required if you use Cupertino (iOS style) icons
   dio: ^5.7.0
-  envied: ^0.5.4+1
+  envied: ^1.0.0
   flutter:
     sdk: flutter
   flutter_hooks: ^0.20.5
@@ -51,39 +52,39 @@ dependencies:
     sdk: flutter
   flutter_map: ^7.0.2
   flutter_map_cancellable_tile_provider: ^3.0.2
-  flutter_native_splash: ^2.4.1
+  flutter_native_splash: ^2.4.4
   flutter_web_plugins:
     sdk: flutter
   freezed_annotation: ^2.4.4
-  geolocator: ^13.0.1
-  hooks_riverpod: ^2.5.4
+  geolocator: ^13.0.2
+  hooks_riverpod: ^2.6.1
   intl: ^0.19.0
   json_annotation: ^4.9.0
   latlong2: ^0.9.1
   meta: ^1.15.0
-  riverpod_annotation: ^2.5.3
-  shared_preferences: ^2.3.2
+  riverpod_annotation: ^2.6.1
+  shared_preferences: ^2.3.5
 
 dev_dependencies:
-  analysis_options: any
+  analysis_options: 0.0.1
   auto_route_generator: ^9.0.0
-  build_runner: ^2.4.13
-  build_web_compilers: ^4.0.11
-  custom_lint: ^0.6.8
+  build_runner: ^2.4.14
+  build_web_compilers: ^4.1.0
+  custom_lint: ^0.7.0
   dhttpd: ^4.1.0
-  envied_generator: ^0.5.4+1
+  envied_generator: ^1.0.0
   flutter_checks: ^0.1.1
   flutter_gen_runner: ^5.8.0
-  flutter_launcher_icons: ^0.14.1
+  flutter_launcher_icons: ^0.14.2
   flutter_test: # Required for a Flutter project that includes tests
     sdk: flutter
   freezed: ^2.5.7
-  freezed_lint: ^0.0.5
-  json_serializable: ^6.8.0
+  # freezed_lint: ^0.0.5
+  json_serializable: ^6.9.0
   mocktail: ^1.0.4
-  riverpod_generator: ^2.4.3
-  riverpod_lint: ^2.3.13
-  very_good_cli: ^0.22.2
+  riverpod_generator: ^2.6.3
+  riverpod_lint: ^2.6.3
+  very_good_cli: ^0.25.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

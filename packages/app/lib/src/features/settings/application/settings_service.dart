@@ -4,6 +4,7 @@ library;
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/preferences_repository.dart';
@@ -39,6 +40,6 @@ class SettingsService extends _$SettingsService {
 
 /// Load the user's settings from a local database on startup.
 @Riverpod(keepAlive: true)
-SettingsModel initialSettings(InitialSettingsRef ref) {
+SettingsModel initialSettings(Ref ref) {
   throw UnimplementedError();
 }

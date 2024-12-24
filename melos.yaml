@@ -8,7 +8,7 @@ command:
     enforceLockfile: true
 
     environment:
-      sdk: "^3.5.0"
+      sdk: "^3.6.0"
 
     hooks:
       post: melos run gen-l10n && melos run gen

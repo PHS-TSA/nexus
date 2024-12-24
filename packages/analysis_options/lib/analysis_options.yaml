@@ -38,6 +38,8 @@ linter:
     always_use_package_imports: false
     lines_longer_than_80_chars: false
     one_member_abstracts: false
+    omit_obvious_local_variable_types: true
+    omit_local_variable_types: false
 
     # Extra rules, not in VGA
     avoid_classes_with_only_static_members: true
@@ -48,7 +50,6 @@ linter:
     no_literal_bool_comparisons: true
     prefer_foreach: true
     prefer_mixin: true
-    type_literal_in_constant_pattern: true
     unnecessary_null_aware_operator_on_extension_on_nullable: true
     unreachable_from_main: true
 
@@ -60,11 +61,8 @@ linter:
     annotate_redeclares: true
 
     # New/updated rules, not yet in VGA
-    unintended_html_in_doc_comment: true
-    invalid_runtime_check_with_js_interop_types: true
-    unnecessary_library_name: true
-    document_ignores: true
-    avoid_catches_without_on_clauses: true
+    use_truncating_division: true
+    avoid_futureor_void: true
 
     # Newly (or soon-to-be) deprecated rules, still in VGA
     unnecessary_await_in_return: false

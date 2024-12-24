@@ -1,6 +1,7 @@
 /// This library provides a service to stream posts in DB to the UI.
 library;
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../auth/application/auth_service.dart';
@@ -49,7 +50,7 @@ base class FeedService extends _$FeedService {
 /// Fetch a single post from the feed.
 @riverpod
 FutureOr<PostEntity?> singlePost(
-  SinglePostRef ref,
+  Ref ref,
   FeedEntity feed,
   int postIndex,
 ) async {

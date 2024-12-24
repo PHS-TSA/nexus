@@ -53,6 +53,7 @@ dhttpd
 endtemplate
 fpdart
 fullscreen
+futureor
 genhtml
 geolocator
 Gmail

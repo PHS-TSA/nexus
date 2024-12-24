@@ -47,6 +47,7 @@ final fakeUser = User(
       providerId: '259125845563242502',
       providerType: 'email',
       identifier: 'token',
+      expired: false,
     ),
   ],
   accessedAt: '2020-10-15T06:38:00.000+00:00',

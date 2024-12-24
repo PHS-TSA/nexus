@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -116,7 +117,7 @@ final class _AppwritePostRepository implements PostRepository {
 /// Get a [PostRepository] for a specific author and feed.
 @riverpod
 PostRepository postRepository(
-  PostRepositoryRef ref,
+  Ref ref,
   String? author,
   FeedEntity feed,
 ) {
