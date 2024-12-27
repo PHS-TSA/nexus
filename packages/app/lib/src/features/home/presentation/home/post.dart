@@ -7,6 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../auth/application/auth_service.dart';
 import '../../application/avatar_service.dart';
+import '../../data/post_repository.dart';
+import '../../domain/feed_entity.dart';
 import '../../domain/post_entity.dart';
 
 class Post extends StatelessWidget {
@@ -218,7 +220,6 @@ class _PostInteractables extends HookConsumerWidget {
     How to do saving like state:
     When reading in posts, check if users name is on likes list and set a boolean variable to it
     */
-    final thumbsIcon = useState(const Icon(Icons.thumb_up_outlined));
 
     // Gets current users id and username
     final userId = ref.watch(idProvider);
@@ -227,7 +228,15 @@ class _PostInteractables extends HookConsumerWidget {
     // maybe update to use a provider instead
     final currentLikes = useState(
       List<String>.from(post.likes),
-    ); // Create a copy of the likes list
+    );
+    //Like button logic
+    final ValueNotifier<Icon> thumbsIcon;
+    if (currentLikes.value.contains(userId)) {
+      thumbsIcon = useState(const Icon(Icons.thumb_up_sharp));
+    } else {
+      thumbsIcon = useState(const Icon(Icons.thumb_up_outlined));
+    }
+    // Create a copy of the likes list
     return Row(
       children: [
         Text(currentLikes.value.length.toString()),
@@ -239,40 +248,40 @@ class _PostInteractables extends HookConsumerWidget {
                 //Modify likes
                 currentLikes.value.add(userId);
                 print('added user id to currentLikes\n$currentLikes');
-                // await ref
-                //     .read(
-                //       postRepositoryProvider(
-                //         userId,
-                //         username,
-                //         const FeedEntity.world(),
-                //       ),
-                //     )
-                //     .toggleLikePost(
-                //       post.id!,
-                //       userId,
-                //       currentLikes,
-                //     ); //TODO find alternative to !
                 thumbsIcon.value = const Icon(Icons.thumb_up_sharp);
+                await ref
+                    .read(
+                      postRepositoryProvider(
+                        userId,
+                        username,
+                        const FeedEntity.world(),
+                      ),
+                    )
+                    .toggleLikePost(
+                      post.id!,
+                      userId,
+                      currentLikes.value,
+                    ); //TODO find alternative to !
               } else {
                 // User is removing like
                 currentLikes.value.remove(userId);
                 print('removed user id from currentLikes\n$currentLikes');
-                // await ref
-                //     .read(
-                //       postRepositoryProvider(
-                //         // TODO(MattsAttack): Find a way to handle null here.
-                //         userId,
-                //         // TODO(lishaduck): This could be a whole lot less hacky.
-                //         username,
-                //         const FeedEntity.world(),
-                //       ),
-                //     )
-                //     .toggleLikePost(
-                //       post.id!,
-                //       userId!,
-                //       currentLikes,
-                //     ); //TODO find alternative to !
                 thumbsIcon.value = const Icon(Icons.thumb_up_outlined);
+                await ref
+                    .read(
+                      postRepositoryProvider(
+                        // TODO(MattsAttack): Find a way to handle null here.
+                        userId,
+                        // TODO(lishaduck): This could be a whole lot less hacky.
+                        username,
+                        const FeedEntity.world(),
+                      ),
+                    )
+                    .toggleLikePost(
+                      post.id!,
+                      userId,
+                      currentLikes.value,
+                    ); //TODO find alternative to !
               }
               //TODO add code change value of local likes
             } else {
