@@ -225,18 +225,18 @@ class _PostInteractables extends HookConsumerWidget {
     final userId = ref.watch(idProvider);
     final username = ref.watch(usernameProvider);
 
-    // maybe update to use a provider instead
+    // Create a copy of the likes list
     final currentLikes = useState(
       List<String>.from(post.likes),
     );
+
     //Like button logic
-    final ValueNotifier<Icon> thumbsIcon;
-    if (currentLikes.value.contains(userId)) {
-      thumbsIcon = useState(const Icon(Icons.thumb_up_sharp));
-    } else {
-      thumbsIcon = useState(const Icon(Icons.thumb_up_outlined));
-    }
-    // Create a copy of the likes list
+    final thumbsIcon = useState(
+      currentLikes.value.contains(userId)
+          ? Icons.thumb_up_sharp
+          : Icons.thumb_up_outlined,
+    );
+
     return Row(
       children: [
         Text(currentLikes.value.length.toString()),
@@ -244,11 +244,10 @@ class _PostInteractables extends HookConsumerWidget {
           onPressed: () async {
             //User is liking the post
             if (userId != null) {
-              if (thumbsIcon.value.icon == Icons.thumb_up_outlined) {
+              if (thumbsIcon.value == Icons.thumb_up_outlined) {
                 //Modify likes
                 currentLikes.value.add(userId);
-                print('added user id to currentLikes\n$currentLikes');
-                thumbsIcon.value = const Icon(Icons.thumb_up_sharp);
+                thumbsIcon.value = Icons.thumb_up_sharp;
                 await ref
                     .read(
                       postRepositoryProvider(
@@ -265,14 +264,11 @@ class _PostInteractables extends HookConsumerWidget {
               } else {
                 // User is removing like
                 currentLikes.value.remove(userId);
-                print('removed user id from currentLikes\n$currentLikes');
-                thumbsIcon.value = const Icon(Icons.thumb_up_outlined);
+                thumbsIcon.value = Icons.thumb_up_outlined;
                 await ref
                     .read(
                       postRepositoryProvider(
-                        // TODO(MattsAttack): Find a way to handle null here.
                         userId,
-                        // TODO(lishaduck): This could be a whole lot less hacky.
                         username,
                         const FeedEntity.world(),
                       ),
@@ -289,7 +285,7 @@ class _PostInteractables extends HookConsumerWidget {
               //maybe send user back to login page
             }
           },
-          icon: thumbsIcon.value,
+          icon: Icon(thumbsIcon.value),
         ),
       ],
     );
