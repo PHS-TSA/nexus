@@ -67,6 +67,6 @@ String? username(UsernameRef ref) =>
 String? email(EmailRef ref) =>
     ref.watch(authServiceProvider).requireValue?.email;
 
-/// Get the current user's email address.
+/// Get the current user's id.
 @riverpod
 String? id(IdRef ref) => ref.watch(authServiceProvider).requireValue?.$id;
