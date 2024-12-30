@@ -13,7 +13,6 @@ class PostViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('this is building');
     return Scaffold(
       body: Column(
         children: [

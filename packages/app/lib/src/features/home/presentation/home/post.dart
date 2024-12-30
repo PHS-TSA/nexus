@@ -28,9 +28,10 @@ class Post extends StatelessWidget {
     //TODO implment hero widget
     return GestureDetector(
       onTap: () async {
-        // print(context.router.stack);
-        await context.router.push(PostViewRoute(post: post));
-        print(context.router.stack);
+        if (context.router.current.name == 'WrapperRoute') {
+          // Prevents user from clicking on post in in post view
+          await context.router.push(PostViewRoute(post: post));
+        }
       },
       child: Card(
         margin: const EdgeInsets.all(4),
