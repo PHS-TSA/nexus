@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_expression_function_bodies
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../app/router.gr.dart';
 import '../../../auth/application/auth_service.dart';
 import '../../application/avatar_service.dart';
 import '../../data/post_repository.dart';
@@ -23,21 +25,29 @@ class Post extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(4),
-      child: Container(
-        // constraints: const BoxConstraints(minHeight: 220, maxHeight: 300),
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Have sections of post in here. Poster info and post content
-            _PosterInfo(post: post),
-            const Divider(color: Colors.white), //TODObase on theme
-            _PostBody(post: post),
-            _PostInteractables(post: post),
-          ],
+    //TODO implment hero widget
+    return GestureDetector(
+      onTap: () async {
+        // print(context.router.stack);
+        await context.router.push(PostViewRoute(post: post));
+        print(context.router.stack);
+      },
+      child: Card(
+        margin: const EdgeInsets.all(4),
+        child: Container(
+          // constraints: const BoxConstraints(minHeight: 220, maxHeight: 300),
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Have sections of post in here. Poster info and post content
+              _PosterInfo(post: post),
+              const Divider(color: Colors.white), //TODObase on theme
+              _PostBody(post: post),
+              _PostInteractables(post: post),
+            ],
+          ),
         ),
       ),
     );

@@ -62,6 +62,11 @@ class AppRouter extends RootStackRouter {
           ],
         ),
         AutoRoute(
+          page: PostViewRoute.page,
+          path: '/post',
+          title: (context, data) => 'Post',
+        ),
+        AutoRoute(
           // TODO(lishaduck): Add a guard to prevent logged in users from accessing this page.
           page: LoginRoute.page,
           path: '/log-in',
