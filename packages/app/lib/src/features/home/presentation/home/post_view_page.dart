@@ -14,10 +14,20 @@ class PostViewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Post(post: post),
-        ],
+      appBar: AppBar(
+        title:
+            const Text('Post View'), // Could update this to be more intresting
+      ),
+      body: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 1000),
+          child: Column(
+            children: [
+              Post(post: post),
+              // Implement comments here
+            ],
+          ),
+        ),
       ),
     );
   }
