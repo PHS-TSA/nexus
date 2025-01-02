@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:checks/checks.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_checks/flutter_checks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
@@ -22,8 +21,8 @@ import '../../helpers/riverpod.dart';
 extension _WidgetTesterX on WidgetTester {
   Future<AppRouter> pumpWidgetPage(
     List<PageRouteInfo<Object?>> routeStack,
-    Type pageWidget,
   ) async {
+    final mockSharedPreferences = MockSharedPreferences();
     final mockAuthRepository = MockAuthRepository();
     when(mockAuthRepository.checkUserAuth)
         .thenAnswer((_) => Future.value(fakeUser));
@@ -31,6 +30,8 @@ extension _WidgetTesterX on WidgetTester {
     final container = createContainer(
       overrides: [
         authRepositoryProvider.overrideWithValue(mockAuthRepository),
+        sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
+        initialSettingsProvider.overrideWithValue(defaultSettings),
       ],
     )
       // Prime the authServiceProvider to ensure the state is flushed.
@@ -58,7 +59,6 @@ extension _WidgetTesterX on WidgetTester {
 
     await router.pushAll(routeStack);
     await pumpAndSettle();
-    check(find.byType(pageWidget)).findsOne();
 
     return router;
   }
@@ -89,24 +89,19 @@ void main() {
 
     group('path', () {
       testWidgets('should be correct for WrapperRoute.', (tester) async {
-        final router = await tester.pumpWidgetPage(
-          const [WrapperRoute()],
-          WrapperPage,
-        );
+        final router = await tester.pumpWidgetPage(const [WrapperRoute()]);
 
         final context = tester.element(find.byType(WrapperPage));
 
         check(router)
-          ..has((router) => router.urlState.path, 'path').equals('/')
+          ..has((router) => router.urlState.path, 'path').equals('/feed/local')
           ..has((router) => router.topRoute.title(context), 'title')
-              .equals('Test');
+              .equals('Local Feed');
       });
       testWidgets('should be correct for SampleItemsListRoute.',
           (tester) async {
-        final router = await tester.pumpWidgetPage(
-          const [SampleItemsListRoute()],
-          SampleItemsListPage,
-        );
+        final router =
+            await tester.pumpWidgetPage(const [SampleItemsListRoute()]);
 
         final context = tester.element(find.byType(SampleItemsListPage));
 
@@ -117,10 +112,8 @@ void main() {
       });
       testWidgets('should be correct for SampleItemDetailsRoute.',
           (tester) async {
-        final router = await tester.pumpWidgetPage(
-          const [SampleItemDetailsRoute()],
-          SampleItemDetailsPage,
-        );
+        final router =
+            await tester.pumpWidgetPage(const [SampleItemDetailsRoute()]);
 
         final context = tester.element(find.byType(SampleItemDetailsPage));
 
