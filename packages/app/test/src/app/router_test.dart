@@ -7,10 +7,18 @@ import 'package:mocktail/mocktail.dart';
 import 'package:nexus/src/app/router.dart';
 import 'package:nexus/src/app/router.gr.dart';
 import 'package:nexus/src/app/wrapper_page.dart';
+import 'package:nexus/src/app/wrapper_page.dart';
 import 'package:nexus/src/features/auth/application/auth_service.dart';
 import 'package:nexus/src/features/auth/data/auth_repository.dart';
+import 'package:nexus/src/features/auth/presentation/auth/login_page.dart';
+import 'package:nexus/src/features/auth/presentation/auth/signup_page.dart';
+import 'package:nexus/src/features/map/presentation/items/map_info_page.dart';
+import 'package:nexus/src/features/map/presentation/items/map_page.dart';
 import 'package:nexus/src/features/sample/presentation/items/sample_item_details_page.dart';
 import 'package:nexus/src/features/sample/presentation/items/sample_items_list_page.dart';
+import 'package:nexus/src/features/settings/application/settings_service.dart';
+import 'package:nexus/src/features/settings/data/preferences_repository.dart';
+import 'package:nexus/src/features/settings/presentation/preferences/settings_page.dart';
 import 'package:nexus/src/l10n/l10n.dart';
 import 'package:nexus/src/utils/design.dart';
 import 'package:nexus/src/utils/router.dart';
@@ -60,6 +68,8 @@ extension _WidgetTesterX on WidgetTester {
     await router.pushAll(routeStack);
     await pumpAndSettle();
 
+    debugDumpApp();
+
     return router;
   }
 }
@@ -90,14 +100,30 @@ void main() {
     group('path', () {
       testWidgets('should be correct for WrapperRoute.', (tester) async {
         final router = await tester.pumpWidgetPage(const [WrapperRoute()]);
+        final router = await tester.pumpWidgetPage(const [WrapperRoute()]);
 
+        final context = tester.element(find.byType(WrapperPage));
         final context = tester.element(find.byType(WrapperPage));
 
         check(router)
           ..has((router) => router.urlState.path, 'path').equals('/feed/local')
           ..has((router) => router.topRoute.title(context), 'title')
               .equals('Local Feed');
+          ..has((router) => router.urlState.path, 'path').equals('/feed/local')
+          ..has((router) => router.topRoute.title(context), 'title')
+              .equals('Local Feed');
       });
+      testWidgets('should be correct for SampleItemsListRoute.',
+          (tester) async {
+        final router =
+            await tester.pumpWidgetPage(const [SampleItemsListRoute()]);
+
+        final context = tester.element(find.byType(SampleItemsListPage));
+
+        check(router)
+          ..has((router) => router.urlState.path, 'path').equals('/sample')
+          ..has((router) => router.topRoute.title(context), 'title')
+              .equals('Sample Items');
       testWidgets('should be correct for SampleItemsListRoute.',
           (tester) async {
         final router =
@@ -121,70 +147,76 @@ void main() {
           ..has((router) => router.urlState.path, 'path').equals('/sample-item')
           ..has((router) => router.topRoute.title(context), 'title')
               .equals('Item Details');
-      });
-      test('should be correct for MapRoute.', () {
-        final container = createContainer();
-        final routerSubscription = container.listen(
-          routerProvider,
-          (_, __) {},
-        );
-        final tested = routerSubscription.read();
+      testWidgets('should be correct for SampleItemDetailsRoute.',
+          (tester) async {
+        final router =
+            await tester.pumpWidgetPage(const [SampleItemDetailsRoute()]);
 
-        final mapRoute = tested.routes[0].children?.routes.toList()[0];
-        check(mapRoute?.path).equals('');
-      });
-      test('should be correct for MapInfoRoute.', () {
-        final container = createContainer();
-        final routerSubscription = container.listen(
-          routerProvider,
-          (_, __) {},
-        );
-        final tested = routerSubscription.read();
+        final context = tester.element(find.byType(SampleItemDetailsPage));
 
-        final sampleItemDetailsRoute =
-            tested.routes[0].children?.routes.toList()[1];
-        check(sampleItemDetailsRoute?.path).equals('info');
+        check(router)
+          ..has((router) => router.urlState.path, 'path').equals('/sample-item')
+          ..has((router) => router.topRoute.title(context), 'title')
+              .equals('Item Details');
       });
-      test('should be correct for SettingsRoute.', () {
-        final container = createContainer();
-        final routerSubscription = container.listen(routerProvider, (_, __) {});
-        final tested = routerSubscription.read();
+      testWidgets('should be correct for MapRoute.', (tester) async {
+        final router = await tester.pumpWidgetPage(const [MapRoute()]);
 
-        final settingsRoute = tested.routes[0].children?.routes.toList()[2];
-        check(settingsRoute?.path).equals('settings');
+        final context = tester.element(find.byType(MapPage));
+
+        check(router)
+          ..has((router) => router.urlState.path, 'path').equals('/')
+          ..has((router) => router.topRoute.title(context), 'title')
+              .equals('Map');
+
+        // Test `initial: true`.
+        await router.pushNamed('/some/path/that/does/not/exist');
+        await tester.pumpAndSettle();
+
+        check(router)
+          ..has((router) => router.urlState.path, 'path').equals('/')
+          ..has((router) => router.topRoute.title(context), 'title')
+              .equals('Map');
       });
-      test("should be correct for ShellRoute('Feed')", () {
-        final container = createContainer();
-        final routerSubscription = container.listen(routerProvider, (_, __) {});
-        final tested = routerSubscription.read();
+      testWidgets('should be correct for MapInfoRoute.', (tester) async {
+        final router = await tester.pumpWidgetPage([MapInfoRoute()]);
 
-        final sampleItemDetailsRoute =
-            tested.routes[0].children?.routes.toList()[3];
-        check(sampleItemDetailsRoute?.path).equals('local');
+        final context = tester.element(find.byType(MapInfoPage));
+
+        check(router)
+          ..has((router) => router.urlState.path, 'path').equals('/info')
+          ..has((router) => router.topRoute.title(context), 'title')
+              .equals('Location Details');
       });
-      test('should allow logging in', () {
-        final container = createContainer();
-        final routerSubscription = container.listen(routerProvider, (_, __) {});
-        final tested = routerSubscription.read();
+      testWidgets('should be correct for SettingsRoute.', (tester) async {
+        final router = await tester.pumpWidgetPage(const [SettingsRoute()]);
 
-        final redirectRoute = tested.routes[1];
-        check(redirectRoute.path).equals('/log-in');
+        final context = tester.element(find.byType(SettingsPage));
+
+        check(router)
+          ..has((router) => router.urlState.path, 'path').equals('/settings')
+          ..has((router) => router.topRoute.title(context), 'title')
+              .equals('Settings');
       });
-      test('should allow signing up', () {
-        final container = createContainer();
-        final routerSubscription = container.listen(routerProvider, (_, __) {});
-        final tested = routerSubscription.read();
+      testWidgets('should be correct for LoginRoute', (tester) async {
+        final router = await tester.pumpWidgetPage([LoginRoute()]);
 
-        final redirectRoute = tested.routes[2];
-        check(redirectRoute.path).equals('/sign-up');
+        final context = tester.element(find.byType(LoginPage));
+
+        check(router)
+          ..has((router) => router.urlState.path, 'path').equals('/log-in')
+          ..has((router) => router.topRoute.title(context), 'title')
+              .equals('Log In');
       });
-      test('should redirect on 404', () {
-        final container = createContainer();
-        final routerSubscription = container.listen(routerProvider, (_, __) {});
-        final tested = routerSubscription.read();
+      testWidgets('should be correct for SignupRoute', (tester) async {
+        final router = await tester.pumpWidgetPage([SignupRoute()]);
 
-        final redirectRoute = tested.routes[3];
-        check(redirectRoute.path).equals('/*');
+        final context = tester.element(find.byType(SignupPage));
+
+        check(router)
+          ..has((router) => router.urlState.path, 'path').equals('/sign-up')
+          ..has((router) => router.topRoute.title(context), 'title')
+              .equals('Sign Up');
       });
     });
   });
