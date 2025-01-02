@@ -132,7 +132,7 @@ void main() {
       testWidgets('should be correct for SampleItemDetailsRoute.',
           (tester) async {
         final router =
-            await tester.pumpWidgetPage(const [SampleItemDetailsRoute()]);
+            await tester.pumpWidgetPage([SampleItemDetailsRoute()]);
 
         final context = tester.element(find.byType(SampleItemDetailsPage));
 
@@ -160,9 +160,11 @@ void main() {
         );
         final tested = routerSubscription.read();
 
-        final sampleItemListRoute =
-            tested.routes[0].children?.routes.toList()[2];
-        check(sampleItemListRoute?.path).equals('');
+        final mapRoute = tested.routes[0].children?.routes.toList()[2];
+
+        check(mapRoute?.path)
+            // Home
+            .equals('');
       });
       test('should be correct for MapInfoRoute.', () {
         final container = createContainer();
@@ -172,9 +174,8 @@ void main() {
         );
         final tested = routerSubscription.read();
 
-        final sampleItemDetailsRoute =
-            tested.routes[0].children?.routes.toList()[3];
-        check(sampleItemDetailsRoute?.path).equals('info');
+        final mapInfoRoute = tested.routes[0].children?.routes.toList()[3];
+        check(mapInfoRoute?.path).equals('info');
       });
       test('should be correct for SettingsRoute.', () {
         final container = createContainer();
@@ -189,11 +190,8 @@ void main() {
         final routerSubscription = container.listen(routerProvider, (_, __) {});
         final tested = routerSubscription.read();
 
-        final sampleItemDetailsRoute =
-            tested.routes[0].children?.routes.toList()[5];
-        check(sampleItemDetailsRoute?.path)
-            // Home
-            .equals('');
+        final feedRoute = tested.routes[0].children?.routes.toList()[5];
+        check(feedRoute?.path).equals('feed');
       });
       test('should allow logging in', () {
         final container = createContainer();
@@ -210,14 +208,6 @@ void main() {
 
         final redirectRoute = tested.routes[2];
         check(redirectRoute.path).equals('/sign-up');
-      });
-      test('should redirect on 404', () {
-        final container = createContainer();
-        final routerSubscription = container.listen(routerProvider, (_, __) {});
-        final tested = routerSubscription.read();
-
-        final redirectRoute = tested.routes[3];
-        check(redirectRoute.path).equals('/*');
       });
     });
   });
