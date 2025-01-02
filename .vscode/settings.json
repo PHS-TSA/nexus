@@ -136,5 +136,8 @@
   },
 
   // Pin CI for the current branch to the status bar.
-  "github-actions.workflows.pinned.workflows": [".github/workflows/ci.yaml"]
+  "github-actions.workflows.pinned.workflows": [
+    ".github/workflows/ci.yaml"
+  ],
+  "java.compile.nullAnalysis.mode": "automatic"
 }
