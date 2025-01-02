@@ -12,6 +12,8 @@ import 'package:nexus/src/features/auth/application/auth_service.dart';
 import 'package:nexus/src/features/auth/data/auth_repository.dart';
 import 'package:nexus/src/features/sample/presentation/items/sample_item_details_page.dart';
 import 'package:nexus/src/features/sample/presentation/items/sample_items_list_page.dart';
+import 'package:nexus/src/features/settings/application/settings_service.dart';
+import 'package:nexus/src/features/settings/data/preferences_repository.dart';
 import 'package:nexus/src/l10n/l10n.dart';
 import 'package:nexus/src/utils/design.dart';
 import 'package:nexus/src/utils/router.dart';
