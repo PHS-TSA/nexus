@@ -1,5 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../utils/api.dart';
@@ -85,7 +86,7 @@ final class _AppwriteAuthRepository implements AuthRepository {
 
 /// Get the authentication repository.
 @Riverpod(keepAlive: true)
-AuthRepository authRepository(AuthRepositoryRef ref) {
+AuthRepository authRepository(Ref ref) {
   final accountService = ref.watch(accountsProvider);
 
   return _AppwriteAuthRepository(accountService);

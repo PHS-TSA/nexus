@@ -1,4 +1,5 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'location_repository.g.dart';
@@ -56,6 +57,6 @@ final class _GeolocatorLocationRepository implements LocationRepository {
 
 /// Get the user's location.
 @riverpod
-LocationRepository locationRepository(LocationRepositoryRef ref) {
+LocationRepository locationRepository(Ref ref) {
   return const _GeolocatorLocationRepository();
 }

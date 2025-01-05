@@ -1,8 +1,8 @@
 name: "nexus"
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
-  flutter: "3.24.3"
+  sdk: ">=3.6.0 <4.0.0"
+  flutter: "3.27.1"
 
 dev_dependencies:
-  melos: ^6.2.0
+  melos: ^6.3.0

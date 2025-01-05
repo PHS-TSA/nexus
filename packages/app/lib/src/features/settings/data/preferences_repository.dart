@@ -4,6 +4,7 @@ library;
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,7 +36,7 @@ final class _SharedPreferencesRepository implements PreferencesRepository {
 
 /// Get the user's preferences.
 @Riverpod(keepAlive: true)
-PreferencesRepository preferencesRepository(PreferencesRepositoryRef ref) {
+PreferencesRepository preferencesRepository(Ref ref) {
   final prefs = ref.watch(sharedPreferencesProvider);
 
   return _SharedPreferencesRepository(prefs);
@@ -55,7 +56,7 @@ Future<SettingsModel> loadSettings(
 
 /// Get a [SharedPreferencesWithCache] instance.
 @Riverpod(keepAlive: true)
-SharedPreferencesWithCache sharedPreferences(SharedPreferencesRef ref) {
+SharedPreferencesWithCache sharedPreferences(Ref ref) {
   throw UnimplementedError();
 }
 
