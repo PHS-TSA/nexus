@@ -1,6 +1,7 @@
 /// This library contains a data class for a feed of posts.
 library;
 
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'post_entity.dart';

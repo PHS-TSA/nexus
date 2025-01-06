@@ -1,6 +1,7 @@
 /// This library contains an enum for feed ranking and sorting algorithms.
 library;
 
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'feed_entity.freezed.dart';

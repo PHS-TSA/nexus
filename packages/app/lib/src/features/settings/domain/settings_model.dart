@@ -1,6 +1,7 @@
 /// This library contains a data class representing a user's settings.
 library;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

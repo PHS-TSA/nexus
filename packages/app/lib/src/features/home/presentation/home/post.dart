@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_expression_function_bodies
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +23,7 @@ class Post extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO implment hero widget
+    // TODO(MattsAttack): implement hero widget.
     return GestureDetector(
       onTap: () async {
         if (context.router.current.name == 'WrapperRoute') {
@@ -44,7 +42,9 @@ class Post extends StatelessWidget {
             children: [
               // Have sections of post in here. Poster info and post content
               _PosterInfo(post: post),
-              const Divider(color: Colors.white), //TODObase on theme
+              const Divider(
+                color: Colors.white, // TODO(MattsAttack): base color on theme.
+              ),
               _PostBody(post: post),
               _PostInteractables(post: post),
             ],
@@ -63,6 +63,34 @@ class Post extends StatelessWidget {
   // coverage:ignore-end
 }
 
+String formatTimeAgo(Duration timeSincePost) {
+  return switch (timeSincePost) {
+    final d when d.inDays > 364 => switch ((d.inDays / 364).round()) {
+        1 => '1 year ago',
+        final timeValue => '$timeValue years ago',
+      },
+    final d when d.inDays >= 1 => switch (d.inDays) {
+        1 => '1 day ago',
+        final timeValue => '$timeValue days ago',
+      },
+    final d when d.inHours >= 1 => switch (d.inHours) {
+        1 => '1 hour ago',
+        final timeValue => '$timeValue hours ago',
+      },
+    final d when d.inMinutes >= 1 => switch (d.inMinutes) {
+        1 => '1 minute ago',
+        final timeValue => '$timeValue minutes ago',
+      },
+    final d when d.inSeconds >= 1 => switch (d.inSeconds) {
+        1 => '1 second ago',
+        final timeValue => '$timeValue seconds ago',
+      },
+
+    // In case the post was made milliseconds ago.
+    _ => 'now',
+  };
+}
+
 class _PosterInfo extends StatelessWidget {
   const _PosterInfo({
     required this.post,
@@ -75,67 +103,21 @@ class _PosterInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Have post info show how long ago in bar
-    // Show actual date and time of post if you click on it
+    // TODO(MattsAttack): Show actual date and time of post when you click on it.
+
+    // Have post info show how long ago in the bar.
     final timeSincePost = DateTime.timestamp().difference(post.timestamp);
-    int timeValue;
-    String timePostValue;
-    final avatar = _PostAvatar(post: post);
-    if (timeSincePost.inDays > 364) {
-      //TODOwrite more efficient code with variables
-      timeValue = (timeSincePost.inDays / 364).round();
-      switch (timeValue) {
-        case 1:
-          timePostValue = '$timeValue year ago';
-        default:
-          timePostValue = '$timeValue years ago';
-      }
-    } else if (timeSincePost.inDays >= 1) {
-      timeValue = timeSincePost.inDays;
-      switch (timeValue) {
-        case 1:
-          timePostValue = '$timeValue day ago';
-        default:
-          timePostValue = '$timeValue days ago';
-      }
-    } else if (timeSincePost.inHours >= 1) {
-      timeValue = timeSincePost.inHours;
-      switch (timeValue) {
-        case 1:
-          timePostValue = '$timeValue hour ago';
-        default:
-          timePostValue = '$timeValue hours ago';
-      }
-    } else if (timeSincePost.inMinutes >= 1) {
-      timeValue = timeSincePost.inMinutes;
-      switch (timeValue) {
-        case 1:
-          timePostValue = '$timeValue minute ago';
-        default:
-          timePostValue = '$timeValue minutes ago';
-      }
-    } else {
-      timeValue = timeSincePost.inSeconds;
-      if (timeValue < 1) {
-        // In case post was made miliseconds ago
-        timeValue = 1;
-      }
-      switch (timeValue) {
-        case 1:
-          timePostValue = '$timeValue second ago';
-        default:
-          timePostValue = '$timeValue seconds ago';
-      }
-    }
+    final timePostValue = formatTimeAgo(timeSincePost);
+
     return Row(
       children: [
-        avatar,
+        _PostAvatar(post: post),
         const SizedBox(width: 8),
         Text(post.authorName), // Get user name instead of id
         // Text(post.author), // Get user name instead of id
         const SizedBox(width: 8),
         Text(timePostValue),
-        // Could add flair here
+        // TODO(MattsAttack): Could add flairs here.
       ],
     );
   }
@@ -152,6 +134,8 @@ class _PosterInfo extends StatelessWidget {
 class _PostAvatar extends ConsumerWidget {
   const _PostAvatar({
     required this.post,
+    // Temporary ignore, see <dart-lang/sdk#49025>.
+    // ignore: unused_element
     super.key,
   });
 
@@ -169,11 +153,13 @@ class _PostAvatar extends ConsumerWidget {
     };
   }
 
+  // coverage:ignore-start
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<PostEntity>('post', post));
   }
+  // coverage:ignore-end
 }
 
 class _PostBody extends StatelessWidget {
@@ -227,7 +213,7 @@ class _PostInteractables extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    /* 
+    /*
     How to do saving like state:
     When reading in posts, check if users name is on likes list and set a boolean variable to it
     */
@@ -253,10 +239,10 @@ class _PostInteractables extends HookConsumerWidget {
         Text(currentLikes.value.length.toString()),
         IconButton(
           onPressed: () async {
-            //User is liking the post
+            // Toggle likes.
             if (userId != null) {
               if (thumbsIcon.value == Icons.thumb_up_outlined) {
-                //Modify likes
+                // User likes the post.
                 currentLikes.value.add(userId);
                 thumbsIcon.value = Icons.thumb_up_sharp;
                 await ref
@@ -268,10 +254,10 @@ class _PostInteractables extends HookConsumerWidget {
                       ),
                     )
                     .toggleLikePost(
-                      post.id!,
+                      post.id!, // TODO(MattsAttack): find alternative to `!`.
                       userId,
                       currentLikes.value,
-                    ); //TODO find alternative to !
+                    );
               } else {
                 // User is removing like
                 currentLikes.value.remove(userId);
@@ -285,15 +271,15 @@ class _PostInteractables extends HookConsumerWidget {
                       ),
                     )
                     .toggleLikePost(
-                      post.id!,
+                      post.id!, // TODO(MattsAttack): find alternative to `!`.
                       userId,
                       currentLikes.value,
-                    ); //TODO find alternative to !
+                    );
               }
-              //TODO add code change value of local likes
+              // TODO(MattsAttack): Change local likes.
             } else {
-              print('Null user ID detected');
-              //maybe send user back to login page
+              throw Exception('Null user ID detected');
+              // TODO(MattsAttack): Send user back to login page, perhaps?
             }
           },
           icon: Icon(thumbsIcon.value),
@@ -302,9 +288,11 @@ class _PostInteractables extends HookConsumerWidget {
     );
   }
 
+  // coverage:ignore-start
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<PostEntity>('post', post));
   }
+  // coverage:ignore-end
 }

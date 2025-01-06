@@ -17,10 +17,12 @@ class Save extends StatelessWidget {
     );
   }
 
+  // coverage:ignore-start
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
         .add(ObjectFlagProperty<VoidCallback?>.has('onPressed', onPressed));
   }
+  // coverage:ignore-end
 }

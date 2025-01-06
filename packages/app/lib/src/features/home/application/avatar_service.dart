@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/avatar_repository.dart';
@@ -8,7 +9,7 @@ part 'avatar_service.g.dart';
 
 /// Get the user's avatar.
 @riverpod
-FutureOr<Uint8List> avatarService(AvatarServiceRef ref, [String? username]) {
+FutureOr<Uint8List> avatarService(Ref ref, [String? username]) {
   final avatarRepo = ref.watch(avatarProvider);
 
   return avatarRepo.getAvatar(name: username);

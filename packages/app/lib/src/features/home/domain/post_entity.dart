@@ -1,6 +1,7 @@
 /// This library contains a data class representing a singular post.
 library;
 
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'post_entity.freezed.dart';

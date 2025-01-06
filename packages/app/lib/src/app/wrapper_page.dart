@@ -1,6 +1,4 @@
 /// This library wraps the application in a shared scaffold.
-// ignore_for_file: prefer_expression_function_bodies
-
 library;
 
 import 'dart:math';

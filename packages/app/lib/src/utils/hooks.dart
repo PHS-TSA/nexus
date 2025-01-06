@@ -35,11 +35,13 @@ class _TapGestureRecognizerHook extends Hook<TapGestureRecognizer> {
   _TapGestureRecognizerHookState createState() =>
       _TapGestureRecognizerHookState();
 
+  // coverage:ignore-start
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
   }
+  // coverage:ignore-end
 }
 
 class _TapGestureRecognizerHookState
@@ -70,6 +72,7 @@ class _TapGestureRecognizerHookState
   @override
   String get debugLabel => 'useTapGestureRecognizer';
 
+  // coverage:ignore-start
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -77,4 +80,5 @@ class _TapGestureRecognizerHookState
       DiagnosticsProperty<TapGestureRecognizer>('recognizer', recognizer),
     );
   }
+  // coverage:ignore-end
 }

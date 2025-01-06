@@ -1,6 +1,4 @@
 /// This library provides a service to stream posts in DB to the UI.
-// ignore_for_file: prefer_expression_function_bodies
-
 library;
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';

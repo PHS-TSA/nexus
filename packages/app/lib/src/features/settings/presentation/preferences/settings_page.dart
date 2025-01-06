@@ -175,6 +175,7 @@ class _AppDescription extends HookWidget {
     );
   }
 
+  // coverage:ignore-start
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -182,4 +183,5 @@ class _AppDescription extends HookWidget {
       ObjectFlagProperty<GestureTapCallback?>.has('followLink', followLink),
     );
   }
+  // coverage:ignore-end
 }

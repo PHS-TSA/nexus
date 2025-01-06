@@ -57,10 +57,10 @@ class MapPage extends HookWidget {
 
 class _Dialog extends HookConsumerWidget {
   const _Dialog({
-    // Temporary ignore, see <dart-lang/sdk#49025>.
-    // ignore: unused_element
     required this.latitude,
     required this.longitude,
+    // Temporary ignore, see <dart-lang/sdk#49025>.
+    // ignore: unused_element
     super.key,
   });
 
@@ -74,10 +74,13 @@ class _Dialog extends HookConsumerWidget {
     );
   }
 
+  // coverage:ignore-start
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('latitude', latitude));
-    properties.add(DiagnosticsProperty('longitude', longitude));
+    properties
+      ..add(DiagnosticsProperty('latitude', latitude))
+      ..add(DiagnosticsProperty('longitude', longitude));
   }
+  // coverage:ignore-end
 }

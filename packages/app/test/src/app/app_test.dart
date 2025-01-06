@@ -33,7 +33,7 @@ extension _WidgetTesterX on WidgetTester {
 }
 
 void main() {
-  group('App (SKIPPED)', skip: 'Fails in CI', () {
+  group('App', skip: 'Fails in CI', () {
     testWidgets('should build MaterialApp.router', (tester) async {
       await tester.pumpWidgetPage();
       check(find.byType(MaterialApp)).findsOne();

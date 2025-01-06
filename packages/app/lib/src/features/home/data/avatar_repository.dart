@@ -4,6 +4,7 @@ library;
 import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../utils/api.dart';
@@ -30,7 +31,7 @@ base class _AppwriteAvatarRepository implements AvatarRepository {
 
 /// Get the current user's avatar.
 @Riverpod(keepAlive: true)
-AvatarRepository avatar(AvatarRef ref) {
+AvatarRepository avatar(Ref ref) {
   final avatars = ref.watch(avatarsProvider);
 
   return _AppwriteAvatarRepository(avatars);

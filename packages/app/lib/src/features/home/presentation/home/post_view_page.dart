@@ -32,9 +32,11 @@ class PostViewPage extends StatelessWidget {
     );
   }
 
+  // coverage:ignore-start
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<PostEntity>('post', post));
   }
+  // coverage:ignore-end
 }
