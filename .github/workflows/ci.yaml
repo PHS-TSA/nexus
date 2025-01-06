@@ -120,6 +120,9 @@ jobs:
         with:
           distribution: "jetbrains"
           java-version: "17"
+          cache: "gradle"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 🌐 Disable analytics
         run: flutter --disable-analytics
       - name: ⚙️ Cache generated files
