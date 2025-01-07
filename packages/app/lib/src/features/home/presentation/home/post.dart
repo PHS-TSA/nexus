@@ -21,6 +21,7 @@ class Post extends StatelessWidget {
     super.key,
   });
 
+  /// PostEntity containing data displayed in post
   final PostEntity post;
 
   @override
