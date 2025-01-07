@@ -6,9 +6,15 @@ import '../../domain/post_entity.dart';
 import 'post.dart';
 
 @RoutePage()
+
+/// Widget displayed when a user clicks on a post.
+/// Contains the post
 class PostViewPage extends StatelessWidget {
+  /// Widget displayed when a user clicks on a post.
+  /// Contains the post
   const PostViewPage({required this.post, super.key});
 
+  /// PostEntity of clicked post
   final PostEntity post;
 
   @override

@@ -43,6 +43,7 @@ abstract interface class PostRepository {
     String? image,
   );
 
+  /// Updates likes array with user ID in Appwrite based on input (adds id if liking removes id if removing like)
   Future<void> toggleLikePost(String postId, String userId, List<String> likes);
 }
 
@@ -131,7 +132,6 @@ final class _AppwritePostRepository implements PostRepository {
     String userId,
     List<String> likes,
   ) async {
-    // TODO(MattsAttack): implement toggleLikePost
     await database.updateDocument(
       databaseId: databaseId,
       collectionId: collectionId,

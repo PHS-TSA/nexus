@@ -13,7 +13,10 @@ import '../../../../app/router.gr.dart';
 // import '../features/home/domain/feed_entity.dart';
 
 @RoutePage(deferredLoading: true)
+
+/// NavigationBar that manages routing between local and world feeds
 class FeedRoutingPage extends ConsumerWidget {
+  ///  NavigationBar that manages routing between local and world feeds
   const FeedRoutingPage({super.key});
 
   @override

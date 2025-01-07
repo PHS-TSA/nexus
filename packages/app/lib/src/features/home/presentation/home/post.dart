@@ -11,7 +11,9 @@ import '../../data/post_repository.dart';
 import '../../domain/feed_entity.dart';
 import '../../domain/post_entity.dart';
 
+/// Entire Post Widget. Takes in post entity
 class Post extends StatelessWidget {
+  /// Entire Post Widget. Takes in post entity
   const Post({
     required this.post,
     // Temporary ignore, see <dart-lang/sdk#49025>.
@@ -63,6 +65,7 @@ class Post extends StatelessWidget {
   // coverage:ignore-end
 }
 
+/// Calculates unit of time to use for post widget based on timeSincePost
 String formatTimeAgo(Duration timeSincePost) {
   return switch (timeSincePost) {
     final d when d.inDays > 364 => switch ((d.inDays / 364).round()) {
@@ -276,7 +279,6 @@ class _PostInteractables extends HookConsumerWidget {
                       currentLikes.value,
                     );
               }
-              // TODO(MattsAttack): Change local likes.
             } else {
               throw Exception('Null user ID detected');
               // TODO(MattsAttack): Send user back to login page, perhaps?
