@@ -11,11 +11,11 @@ import '../utils/design.dart';
 import '../utils/router.dart';
 import 'bootstrap.dart';
 
-/// {@template our_democracy.app}
+/// {@template nexus.app}
 /// The widget that configures your application.
 /// {@endtemplate}
 class App extends ConsumerStatefulWidget with Bootstrap {
-  /// {@macro our_democracy.app}
+  /// {@macro nexus.app}
   ///
   /// Construct a new [App] widget.
   const App({
@@ -37,7 +37,6 @@ class _AppState extends ConsumerState<App> with RestorationMixin {
 
   @override
   Widget build(BuildContext context) {
-    // TODO(lishaduck): Hook into FlutterNativeSplash here.
     return _EagerInitialization(
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
@@ -103,6 +102,8 @@ class _EagerInitialization extends ConsumerWidget {
               textDirection: TextDirection.ltr,
               child: Text('Error: $error'),
             ),
+
+          // TODO(lishaduck): Hook into `FlutterNativeSplash` here.
           _ => const CircularProgressIndicator(),
         },
       ),

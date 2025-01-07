@@ -1,3 +1,6 @@
+/// This library contains the UI for viewing a post.
+library;
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -5,15 +8,20 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
+import '../../../../utils/format.dart';
 import '../../../auth/application/auth_service.dart';
 import '../../application/avatar_service.dart';
 import '../../data/post_repository.dart';
 import '../../domain/feed_entity.dart';
 import '../../domain/post_entity.dart';
 
-/// Entire Post Widget. Takes in post entity
+/// {@template nexus.features.home.presentation.home.post}
+/// View a post.
+/// {@endtemplate}
 class Post extends StatelessWidget {
-  /// Entire Post Widget. Takes in post entity
+  /// {@macro nexus.features.home.presentation.home.post}
+
+  /// Construct a new [Post] widget from a [PostEntity].
   const Post({
     required this.post,
     // Temporary ignore, see <dart-lang/sdk#49025>.
@@ -21,7 +29,7 @@ class Post extends StatelessWidget {
     super.key,
   });
 
-  /// PostEntity containing data displayed in post
+  /// [PostEntity] that contains data displayed in this post.
   final PostEntity post;
 
   @override
@@ -29,8 +37,8 @@ class Post extends StatelessWidget {
     // TODO(MattsAttack): implement hero widget.
     return GestureDetector(
       onTap: () async {
-        if (context.router.current.name == 'WrapperRoute') {
-          // Prevents user from clicking on post in in post view
+        if (context.router.current.name == WrapperRoute.name) {
+          // Prevents user from clicking on post in in post view.
           await context.router.push(PostViewRoute(post: post));
         }
       },
@@ -43,7 +51,7 @@ class Post extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Have sections of post in here. Poster info and post content
+              // The post sections are in here, like poster info and post content.
               _PosterInfo(post: post),
               const Divider(
                 color: Colors.white, // TODO(MattsAttack): base color on theme.
@@ -66,35 +74,6 @@ class Post extends StatelessWidget {
   // coverage:ignore-end
 }
 
-/// Calculates unit of time to use for post widget based on timeSincePost
-String formatTimeAgo(Duration timeSincePost) {
-  return switch (timeSincePost) {
-    final d when d.inDays > 364 => switch ((d.inDays / 364).round()) {
-        1 => '1 year ago',
-        final timeValue => '$timeValue years ago',
-      },
-    final d when d.inDays >= 1 => switch (d.inDays) {
-        1 => '1 day ago',
-        final timeValue => '$timeValue days ago',
-      },
-    final d when d.inHours >= 1 => switch (d.inHours) {
-        1 => '1 hour ago',
-        final timeValue => '$timeValue hours ago',
-      },
-    final d when d.inMinutes >= 1 => switch (d.inMinutes) {
-        1 => '1 minute ago',
-        final timeValue => '$timeValue minutes ago',
-      },
-    final d when d.inSeconds >= 1 => switch (d.inSeconds) {
-        1 => '1 second ago',
-        final timeValue => '$timeValue seconds ago',
-      },
-
-    // In case the post was made milliseconds ago.
-    _ => 'now',
-  };
-}
-
 class _PosterInfo extends StatelessWidget {
   const _PosterInfo({
     required this.post,
@@ -111,7 +90,7 @@ class _PosterInfo extends StatelessWidget {
 
     // Have post info show how long ago in the bar.
     final timeSincePost = DateTime.timestamp().difference(post.timestamp);
-    final timePostValue = formatTimeAgo(timeSincePost);
+    final timePostValue = formatDuration(timeSincePost);
 
     return Row(
       children: [
@@ -120,8 +99,8 @@ class _PosterInfo extends StatelessWidget {
         Text(post.authorName), // Get user name instead of id
         // Text(post.author), // Get user name instead of id
         const SizedBox(width: 8),
-        Text(timePostValue),
-        // TODO(MattsAttack): Could add flairs here.
+        Text('$timePostValue ago'),
+        // TODO(MattsAttack): Could put flairs here.
       ],
     );
   }
@@ -218,24 +197,17 @@ class _PostInteractables extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     /*
-    How to do saving like state:
-    When reading in posts, check if users name is on likes list and set a boolean variable to it
-    */
+     * How to save like state:
+     * When reading in posts, check if users name is on likes list and set a boolean variable to it
+     */
 
-    // Gets current users id and username
+    // Gets current user id and username
     final userId = ref.watch(idProvider);
     final username = ref.watch(usernameProvider);
 
-    // Create a copy of the likes list
     final currentLikes = useState(
+      // Create a copy of the likes list.
       List<String>.from(post.likes),
-    );
-
-    //Like button logic
-    final thumbsIcon = useState(
-      currentLikes.value.contains(userId)
-          ? Icons.thumb_up_sharp
-          : Icons.thumb_up_outlined,
     );
 
     return Row(
@@ -245,47 +217,36 @@ class _PostInteractables extends HookConsumerWidget {
           onPressed: () async {
             // Toggle likes.
             if (userId != null) {
-              if (thumbsIcon.value == Icons.thumb_up_outlined) {
+              if (!currentLikes.value.contains(userId)) {
                 // User likes the post.
                 currentLikes.value.add(userId);
-                thumbsIcon.value = Icons.thumb_up_sharp;
-                await ref
-                    .read(
-                      postRepositoryProvider(
-                        userId,
-                        username,
-                        const FeedEntity.world(),
-                      ),
-                    )
-                    .toggleLikePost(
-                      post.id!, // TODO(MattsAttack): find alternative to `!`.
-                      userId,
-                      currentLikes.value,
-                    );
               } else {
                 // User is removing like
                 currentLikes.value.remove(userId);
-                thumbsIcon.value = Icons.thumb_up_outlined;
-                await ref
-                    .read(
-                      postRepositoryProvider(
-                        userId,
-                        username,
-                        const FeedEntity.world(),
-                      ),
-                    )
-                    .toggleLikePost(
-                      post.id!, // TODO(MattsAttack): find alternative to `!`.
-                      userId,
-                      currentLikes.value,
-                    );
               }
+              await ref
+                  .read(
+                    postRepositoryProvider(
+                      userId,
+                      username,
+                      const FeedEntity.world(),
+                    ),
+                  )
+                  .toggleLikePost(
+                    post.id!, // TODO(MattsAttack): find alternative to `!`.
+                    userId,
+                    currentLikes.value,
+                  );
             } else {
               throw Exception('Null user ID detected');
               // TODO(MattsAttack): Send user back to login page, perhaps?
             }
           },
-          icon: Icon(thumbsIcon.value),
+          icon: Icon(
+            currentLikes.value.contains(userId)
+                ? Icons.thumb_up_sharp
+                : Icons.thumb_up_outlined,
+          ),
         ),
       ],
     );

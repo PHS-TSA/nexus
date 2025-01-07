@@ -7,13 +7,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'post_entity.freezed.dart';
 part 'post_entity.g.dart';
 
-/// {@template our_democracy.features.home.domain.post}
+/// {@template nexus.features.home.domain.post}
 /// Represent a post, which is a single item in a feed.
 /// {@endtemplate}
 @immutable
 @freezed
 sealed class PostEntity with _$PostEntity {
-  /// {@macro our_democracy.features.home.domain.post}
+  /// {@macro nexus.features.home.domain.post}
   ///
   /// Create a new, immutable instance of [PostEntity].
   const factory PostEntity({

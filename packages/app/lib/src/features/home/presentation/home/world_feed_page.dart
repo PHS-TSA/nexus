@@ -7,15 +7,17 @@ import 'package:flutter/material.dart';
 import '../../domain/feed_entity.dart';
 import 'feed.dart';
 
-/// {@template our_democracy.features.home.presentation.home.world_feed_page}
+/// {@template nexus.features.home.presentation.home.world_feed_page}
 /// A page that displays a feed of posts from around the world.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class WorldFeedPage extends StatelessWidget {
-  /// {@macro our_democracy.features.home.presentation.home.world_feed_page}
+  /// {@macro nexus.features.home.presentation.home.world_feed_page}
   ///
   /// Construct a new [WorldFeedPage] widget.
-  const WorldFeedPage({super.key});
+  const WorldFeedPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

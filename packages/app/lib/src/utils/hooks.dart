@@ -1,3 +1,6 @@
+/// This library provides custom [Hook]s.
+library;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +20,6 @@ GlobalKey<T> useGlobalKey<T extends State>() {
 /// - [TapGestureRecognizer]
 TapGestureRecognizer useTapGestureRecognizer({
   VoidCallback? onTap,
-  String? debugLabel,
   List<Object?>? keys,
 }) {
   return use(_TapGestureRecognizerHook(onTap: onTap, keys: keys));
@@ -25,8 +27,8 @@ TapGestureRecognizer useTapGestureRecognizer({
 
 class _TapGestureRecognizerHook extends Hook<TapGestureRecognizer> {
   const _TapGestureRecognizerHook({
-    this.onTap,
     super.keys,
+    this.onTap,
   });
 
   final VoidCallback? onTap;

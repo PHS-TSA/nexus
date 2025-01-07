@@ -1,3 +1,6 @@
+/// This library provides composable tile layers for maps.
+library;
+
 import 'package:dio/dio.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';

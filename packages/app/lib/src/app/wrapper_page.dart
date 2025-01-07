@@ -15,12 +15,12 @@ import '../features/home/domain/feed_entity.dart';
 import '../utils/hooks.dart';
 import 'router.gr.dart';
 
-/// {@template our_democracy.app.wrapper_page}
+/// {@template nexus.app.wrapper_page}
 /// Wrap the pages in a Material Design scaffold.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class WrapperPage extends ConsumerWidget {
-  /// {@macro our_democracy.app.wrapper_page}
+  /// {@macro nexus.app.wrapper_page}
   ///
   /// Construct a new [WrapperPage] widget.
   const WrapperPage({
@@ -46,26 +46,6 @@ class WrapperPage extends ConsumerWidget {
         return AppBar(
           title: Text(autoRouter.current.title(context)),
           automaticallyImplyLeading: false,
-          // leading: const AutoLeadingButton(), // @lishaduck we should discuss this back button. personally i'm for disablling it since it leads to new bugs
-          // actions: switch (autoRouter.current.path) {
-          //   '' => [
-          //       Builder(
-          //         builder: (context) => IconButton(
-          //           icon: const Icon(
-          //             Icons.settings,
-          //             semanticLabel: 'Settings',
-          //           ),
-          //           onPressed: () async {
-          //             // Navigate to the settings page. If the user leaves and returns
-          //             // to the app after it has been killed while running in the
-          //             // background, the navigation stack is restored.
-          //             await context.router.push(const SettingsRoute());
-          //           },
-          //         ),
-          //       ),
-          //     ],
-          //   _ => [],
-          // },
           bottom: switch (autoRouter.current.path) {
             // FIXME(lishaduck): This needs some work.
             '/' => TabBar(

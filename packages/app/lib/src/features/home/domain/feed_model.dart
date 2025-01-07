@@ -8,13 +8,13 @@ import 'post_entity.dart';
 
 part 'feed_model.freezed.dart';
 
-/// {@template our_democracy.features.home.domain.feed}
+/// {@template nexus.features.home.domain.feed}
 /// Represent a feed of posts.
 /// {@endtemplate}
 @immutable
 @freezed
 sealed class FeedModel with _$FeedModel {
-  /// {@macro our_democracy.features.home.domain.feed}
+  /// {@macro nexus.features.home.domain.feed}
   ///
   /// Create a new, immutable instance of [FeedModel].
   const factory FeedModel({

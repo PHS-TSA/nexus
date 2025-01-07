@@ -1,3 +1,6 @@
+/// This library contains post fetchers.
+library;
+
 import 'package:appwrite/appwrite.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -13,18 +16,10 @@ part 'post_repository.g.dart';
 /// The number of posts to fetch at a time.
 const pageSize = 10;
 
-/*
-How to do things:
-Put database and collection id in .env
-Implement post code from other branch
-For first implementation have post_repository read in all posts and then add queries and other filters down the line
-Have flutter access user location
-*/
-
 /// A tuple of a post entity and its db id.
 typedef PostEntityIdTuple = ({PostEntity entity, String id});
 
-/// Abstract PostRepository with readPosts and createNewPosts methods
+/// A repository for posts.
 abstract interface class PostRepository {
   /// Read all the posts.
   Future<List<PostEntityIdTuple>> readPosts(String? cursor);
@@ -43,7 +38,7 @@ abstract interface class PostRepository {
     String? image,
   );
 
-  /// Updates likes array with user ID in Appwrite based on input (adds id if liking removes id if removing like)
+  /// Toggle if a user is listed as having liked a post.
   Future<void> toggleLikePost(String postId, String userId, List<String> likes);
 }
 

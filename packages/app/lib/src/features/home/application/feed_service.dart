@@ -13,8 +13,6 @@ import 'avatar_service.dart';
 
 part 'feed_service.g.dart';
 
-//Load in the posts repository here as a func
-
 /// Provide the values of a feed.
 @riverpod
 base class FeedService extends _$FeedService {

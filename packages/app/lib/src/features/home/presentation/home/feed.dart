@@ -10,14 +10,17 @@ import '../../domain/feed_entity.dart';
 import '../../domain/post_entity.dart';
 import 'post.dart';
 
-/// {@template our_democracy.features.home.presentation.home.feed}
+/// {@template nexus.features.home.presentation.home.feed}
 /// An infinite loading list of posts.
 /// {@endtemplate}
 class Feed extends ConsumerWidget {
-  /// {@macro our_democracy.features.home.presentation.home.feed}
+  /// {@macro nexus.features.home.presentation.home.feed}
   ///
   /// Construct a new [Feed] widget.
-  const Feed({required this.feed, super.key});
+  const Feed({
+    required this.feed,
+    super.key,
+  });
 
   /// The feed to fetch the posts from.
   final FeedEntity feed;

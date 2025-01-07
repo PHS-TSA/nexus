@@ -1,4 +1,8 @@
+/// This library provides the UI for signing users up.
+library;
+
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,23 +12,24 @@ import '../../../../gen/assets.gen.dart';
 import '../../../../utils/hooks.dart';
 import '../../../../utils/toast.dart';
 import '../../application/auth_service.dart';
+import '../../domain/auth_callback.dart';
 
 // TODO(lishaduck): Extract most of this out to a widget that can be shared with the log in page.
-// TODO(lishaduck): Rename to `SignUpPage`.
-/// {@template our_democracy.features.auth.presentation.auth.signup_page}
+
+/// {@template nexus.features.auth.presentation.auth.sign_up_page}
 /// A page that displays an interface for signing up new users.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
-class SignupPage extends HookConsumerWidget {
-  /// {@macro our_democracy.features.auth.presentation.auth.signup_page}
+class SignUpPage extends HookConsumerWidget {
+  /// {@macro nexus.features.auth.presentation.auth.sign_up_page}
   ///
-  /// Construct a new [SignupPage] widget.
-  const SignupPage({
-    void Function({bool didLogIn})? onResult,
+  /// Construct a new [SignUpPage] widget.
+  const SignUpPage({
     super.key,
+    AuthCallback? onResult,
   }) : _onResult = onResult;
 
-  final void Function({bool didLogIn})? _onResult;
+  final AuthCallback? _onResult;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -163,7 +168,7 @@ class SignupPage extends HookConsumerWidget {
                   child: TextButton(
                     onPressed: () async {
                       await context.router
-                          .push(LoginRoute(onResult: _onResult));
+                          .push(LogInRoute(onResult: _onResult));
                     },
                     child: const Text('Back to login'),
                   ),
@@ -175,4 +180,13 @@ class SignupPage extends HookConsumerWidget {
       ),
     );
   }
+
+  // coverage:ignore-start
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(ObjectFlagProperty<AuthCallback?>.has('onResult', _onResult));
+  }
+  // coverage:ignore-end
 }

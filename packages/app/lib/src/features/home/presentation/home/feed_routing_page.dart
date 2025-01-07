@@ -7,17 +7,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
 
-// import '../../auth/application/auth_service.dart';
-// import '../features/home/application/location_service.dart';
-// import '../features/home/data/post_repository.dart';
-// import '../features/home/domain/feed_entity.dart';
-
+/// {@template nexus.features.home.presentation.home.feed_routing_page}
+/// A page that manages routing between different feeds.
+/// {@endtemplate}
 @RoutePage(deferredLoading: true)
-
-/// NavigationBar that manages routing between local and world feeds
 class FeedRoutingPage extends ConsumerWidget {
-  ///  NavigationBar that manages routing between local and world feeds
-  const FeedRoutingPage({super.key});
+  /// {@macro nexus.features.home.presentation.home.feed_routing_page}
+  ///
+  /// Construct a new [FeedRoutingPage] widget.
+  const FeedRoutingPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

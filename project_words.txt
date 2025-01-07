@@ -75,8 +75,6 @@ psdr3
 pubspec
 riverpod
 roadmap
-signup
-Signup
 tappable
 unawaited
 WCAG

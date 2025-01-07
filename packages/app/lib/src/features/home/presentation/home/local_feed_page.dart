@@ -9,15 +9,17 @@ import '../../application/location_service.dart';
 import '../../domain/feed_entity.dart';
 import 'feed.dart';
 
-/// {@template our_democracy.features.home.presentation.home.local_feed_page}
+/// {@template nexus.features.home.presentation.home.local_feed_page}
 /// A page that displays a feed of posts from the area nearby the user.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class LocalFeedPage extends ConsumerWidget {
-  /// {@macro our_democracy.features.home.presentation.home.local_feed_page}
+  /// {@macro nexus.features.home.presentation.home.local_feed_page}
   ///
   /// Construct a new [LocalFeedPage] widget.
-  const LocalFeedPage({super.key});
+  const LocalFeedPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
