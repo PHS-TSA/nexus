@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
 import '../../../../utils/format.dart';
+import '../../../../utils/toast.dart';
 import '../../../auth/application/auth_service.dart';
 import '../../application/avatar_service.dart';
 import '../../data/post_repository.dart';
@@ -89,17 +90,17 @@ class _PosterInfo extends StatelessWidget {
     // TODO(MattsAttack): Show actual date and time of post when you click on it.
 
     // Have post info show how long ago in the bar.
-    final timeSincePost = DateTime.timestamp().difference(post.timestamp);
-    final timePostValue = formatDuration(timeSincePost);
+    final durationSincePostCreated =
+        DateTime.timestamp().difference(post.timestamp);
+    final timeSincePost = formatDuration(durationSincePostCreated);
 
     return Row(
       children: [
         _PostAvatar(post: post),
         const SizedBox(width: 8),
-        Text(post.authorName), // Get user name instead of id
-        // Text(post.author), // Get user name instead of id
+        Text(post.authorName),
         const SizedBox(width: 8),
-        Text('$timePostValue ago'),
+        Text('$timeSincePost ago'),
         // TODO(MattsAttack): Could put flairs here.
       ],
     );
@@ -164,13 +165,15 @@ class _PostBody extends StatelessWidget {
         Text(
           post.headline,
           textAlign: TextAlign.left,
-          style: const TextStyle(fontSize: 24),
-        ), // Need text styling
+          style: const TextStyle(
+            fontSize: 24,
+          ), // TODO(MattsAttack): Need better text styling.
+        ),
         const Padding(padding: EdgeInsets.all(4)),
         Text(
           post.description,
           textAlign: TextAlign.left,
-        ), // Get user name instead of id
+        ),
       ],
     );
   }
@@ -182,6 +185,18 @@ class _PostBody extends StatelessWidget {
     properties.add(DiagnosticsProperty<PostEntity>('post', post));
   }
   // coverage:ignore-end
+}
+
+/// Given a list of likes and a user ID, return a new list of likes with the user ID toggled in or out of the list.
+List<String> toggleLike(List<String> currentLikes, String userId) {
+  // Toggle likes.
+  if (!currentLikes.contains(userId)) {
+    // User likes the post.
+    return [...currentLikes, userId];
+  } else {
+    // User is removing like
+    return List.from(currentLikes)..remove(userId); // TODO(lishaduck): Use FIC.
+  }
 }
 
 class _PostInteractables extends HookConsumerWidget {
@@ -215,15 +230,15 @@ class _PostInteractables extends HookConsumerWidget {
         Text(currentLikes.value.length.toString()),
         IconButton(
           onPressed: () async {
+            if (userId == null) {
+              throw Exception('Null user ID detected');
+              // TODO(MattsAttack): Send user back to login page, perhaps?
+            }
+
             // Toggle likes.
-            if (userId != null) {
-              if (!currentLikes.value.contains(userId)) {
-                // User likes the post.
-                currentLikes.value.add(userId);
-              } else {
-                // User is removing like
-                currentLikes.value.remove(userId);
-              }
+            currentLikes.value = toggleLike(currentLikes.value, userId);
+
+            try {
               await ref
                   .read(
                     postRepositoryProvider(
@@ -237,9 +252,14 @@ class _PostInteractables extends HookConsumerWidget {
                     userId,
                     currentLikes.value,
                   );
-            } else {
-              throw Exception('Null user ID detected');
-              // TODO(MattsAttack): Send user back to login page, perhaps?
+            } on Exception catch (e) {
+              // Undo like.
+              currentLikes.value = toggleLike(currentLikes.value, userId);
+
+              if (!context.mounted) return;
+              context.showSnackBar(
+                content: Text('Failed to like post: $e'),
+              );
             }
           },
           icon: Icon(
