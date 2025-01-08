@@ -10,6 +10,9 @@
 include: package:very_good_analysis/analysis_options.yaml
 
 analyzer:
+  errors:
+    unused_element_parameter: ignore
+
   exclude:
     - "lib/src/gen/**"
     - "lib/src/l10n/app_localizations*.dart"
