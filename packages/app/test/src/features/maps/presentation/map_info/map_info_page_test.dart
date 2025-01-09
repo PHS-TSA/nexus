@@ -8,7 +8,7 @@ import '../../../../../helpers/accessibility.dart';
 import '../../../../../helpers/pump_app.dart';
 
 void main() {
-  group('SampleItemListPage', () {
+  group('MapInfoPage', () {
     testWidgets('should display information for a single page', (tester) async {
       const widget = MapInfoPage();
 

@@ -11,11 +11,11 @@ import '../utils/design.dart';
 import '../utils/router.dart';
 import 'bootstrap.dart';
 
-/// {@template our_democracy.app}
+/// {@template nexus.app}
 /// The widget that configures your application.
 /// {@endtemplate}
 class App extends ConsumerStatefulWidget with Bootstrap {
-  /// {@macro our_democracy.app}
+  /// {@macro nexus.app}
   ///
   /// Construct a new [App] widget.
   const App({
@@ -39,6 +39,8 @@ class _AppState extends ConsumerState<App> with RestorationMixin {
   Widget build(BuildContext context) {
     return _EagerInitialization(
       child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+
         // Providing a `restorationScopeId` allows the Navigator built by the
         // `MaterialApp` to restore the navigation stack when a user leaves and
         // returns to the app after it has been killed while running in the
@@ -100,6 +102,8 @@ class _EagerInitialization extends ConsumerWidget {
               textDirection: TextDirection.ltr,
               child: Text('Error: $error'),
             ),
+
+          // TODO(lishaduck): Hook into `FlutterNativeSplash` here.
           _ => const CircularProgressIndicator(),
         },
       ),

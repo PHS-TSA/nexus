@@ -1,4 +1,5 @@
 import 'package:checks/checks.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_checks/flutter_checks.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,6 +10,7 @@ import 'pump_app.dart';
 
 part 'accessibility.freezed.dart';
 
+@immutable
 @freezed
 class ExpectedFailures with _$ExpectedFailures {
   const factory ExpectedFailures({

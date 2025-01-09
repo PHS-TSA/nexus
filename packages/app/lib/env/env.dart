@@ -1,3 +1,6 @@
+/// This file lists environment variables expected to be available at compile time.
+library;
+
 import 'package:envied/envied.dart';
 
 part 'env.g.dart';

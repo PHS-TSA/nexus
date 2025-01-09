@@ -2,6 +2,7 @@
 library;
 
 import 'package:appwrite/models.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/auth_repository.dart';
@@ -54,3 +55,17 @@ base class AuthService extends _$AuthService {
 // ```dart
 // return ref.watch(authServiceProvider).requireValue;
 // ```
+
+/// Get the current user's name.
+///
+/// Named as such to prevent a naming conflict with riverpod.
+@riverpod
+String? username(Ref ref) => ref.watch(authServiceProvider).requireValue?.name;
+
+/// Get the current user's email address.
+@riverpod
+String? email(Ref ref) => ref.watch(authServiceProvider).requireValue?.email;
+
+/// Get the current user's id.
+@riverpod
+String? id(Ref ref) => ref.watch(authServiceProvider).requireValue?.$id;

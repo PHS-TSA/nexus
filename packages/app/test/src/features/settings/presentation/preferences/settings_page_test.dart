@@ -42,7 +42,7 @@ void main() {
       await tester.tap(find.byType(DropdownMenu<ThemeMode>));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.brightness_3));
+      await tester.tap(find.textContaining('Dark'));
       await tester.pumpAndSettle();
 
       check(find.text('Dark Theme')).findsOne();

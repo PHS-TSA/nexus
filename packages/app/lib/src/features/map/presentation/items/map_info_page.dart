@@ -1,3 +1,6 @@
+/// This library provides a page that hooks up a [Feed] with coordinates.
+library;
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -5,18 +8,18 @@ import 'package:flutter/material.dart';
 import '../../../home/domain/feed_entity.dart';
 import '../../../home/presentation/home/feed.dart';
 
-/// {@template our_democracy.features.map.presentation.items.map_info_page}
-/// Displays detailed information about a location on the map.
+/// {@template nexus.features.map.presentation.items.map_info_page}
+/// Displays a feed of posts from the area nearby the user.
 /// {@endtemplate}
-@RoutePage()
+@RoutePage(deferredLoading: true)
 class MapInfoPage extends StatelessWidget {
-  /// {@macro our_democracy.features.map.presentation.items.map_info_page}
+  /// {@macro nexus.features.map.presentation.items.map_info_page}
   ///
   /// Construct a new [MapInfoPage] widget.
   const MapInfoPage({
+    super.key,
     @queryParam this.latitude = 0,
     @queryParam this.longitude = 0,
-    super.key,
   });
 
   /// The latitude of a location.

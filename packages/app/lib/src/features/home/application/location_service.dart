@@ -1,3 +1,6 @@
+/// This library provides a service to get the user’s current location.
+library;
+
 import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

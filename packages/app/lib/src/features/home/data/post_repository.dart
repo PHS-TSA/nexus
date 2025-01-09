@@ -1,3 +1,6 @@
+/// This library contains post fetchers.
+library;
+
 import 'package:appwrite/appwrite.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -13,18 +16,10 @@ part 'post_repository.g.dart';
 /// The number of posts to fetch at a time.
 const pageSize = 10;
 
-/*
-How to do things:
-Put database and collection id in .env
-Implement post code from other branch
-For first implementation have post_repository read in all posts and then add queries and other filters down the line
-Have flutter access user location
-*/
-
 /// A tuple of a post entity and its db id.
 typedef PostEntityIdTuple = ({PostEntity entity, String id});
 
-/// Abstract PostRepository with readPosts and createNewPosts methods
+/// A repository for posts.
 abstract interface class PostRepository {
   /// Read all the posts.
   Future<List<PostEntityIdTuple>> readPosts(String? cursor);
@@ -38,8 +33,13 @@ abstract interface class PostRepository {
     String? description,
     double lat,
     double lng,
+    List<String> likes,
+    int numberOfLikes,
     String? image,
   );
+
+  /// Toggle if a user is listed as having liked a post.
+  Future<void> toggleLikePost(String postId, String userId, List<String> likes);
 }
 
 final class _AppwritePostRepository implements PostRepository {
@@ -48,6 +48,7 @@ final class _AppwritePostRepository implements PostRepository {
     required this.databaseId,
     required this.collectionId,
     required this.author,
+    required this.authorName,
     // required this.feed,
     required this.feed,
   });
@@ -58,6 +59,7 @@ final class _AppwritePostRepository implements PostRepository {
   final String collectionId;
 
   final String? author;
+  final String? authorName;
   final FeedEntity feed;
 
   @override
@@ -66,20 +68,18 @@ final class _AppwritePostRepository implements PostRepository {
       databaseId: databaseId,
       collectionId: collectionId,
       queries: [
+        Query.orderDesc('timestamp'),
         ...switch (feed) {
           LocalFeed(:final lat, :final lng) => [
               Query.between('lat', lat - 2, lat + 2),
               Query.between('lng', lng - 2, lng + 2),
             ],
-          WorldFeed() => [
-              // No filter.
-            ],
+          WorldFeed() => [],
         },
         if (cursor != null) Query.cursorAfter(cursor),
         Query.limit(pageSize),
       ],
     );
-
     return documentList.documents.map((document) {
       return (
         entity: PostEntity.fromJson(document.data),
@@ -94,6 +94,8 @@ final class _AppwritePostRepository implements PostRepository {
     String? description,
     double lat,
     double lng,
+    List<String> likes,
+    int numberOfLikes,
     String? image,
   ) async {
     await database.createDocument(
@@ -105,10 +107,32 @@ final class _AppwritePostRepository implements PostRepository {
         'headline': headline,
         'description': description,
         'author': author,
+        'authorName': authorName,
         'lat': lat,
         'lng': lng,
-        'timestamp': DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()),
+        'likes': likes,
+        'numberOfLikes': numberOfLikes,
+        'timestamp':
+            DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.timestamp()),
         // TODO(MattAttack): add images
+      },
+    );
+  }
+
+  @override
+
+  /// Adds current users id to the postId likes data
+  Future<void> toggleLikePost(
+    String postId,
+    String userId,
+    List<String> likes,
+  ) async {
+    await database.updateDocument(
+      databaseId: databaseId,
+      collectionId: collectionId,
+      documentId: postId,
+      data: {
+        'likes': likes,
       },
     );
   }
@@ -119,12 +143,14 @@ final class _AppwritePostRepository implements PostRepository {
 PostRepository postRepository(
   Ref ref,
   String? author,
+  String? authorName,
   FeedEntity feed,
 ) {
   final database = ref.watch(databasesProvider);
 
   return _AppwritePostRepository(
     author: author,
+    authorName: authorName,
     feed: feed,
     database: database,
     databaseId: Env.databaseId,

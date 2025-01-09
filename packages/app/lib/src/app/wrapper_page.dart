@@ -1,6 +1,4 @@
 /// This library wraps the application in a shared scaffold.
-// ignore_for_file: prefer_expression_function_bodies
-
 library;
 
 import 'dart:math';
@@ -14,14 +12,15 @@ import '../features/auth/application/auth_service.dart';
 import '../features/home/application/location_service.dart';
 import '../features/home/data/post_repository.dart';
 import '../features/home/domain/feed_entity.dart';
+import '../utils/hooks.dart';
 import 'router.gr.dart';
 
-/// {@template our_democracy.app.wrapper_page}
+/// {@template nexus.app.wrapper_page}
 /// Wrap the pages in a Material Design scaffold.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class WrapperPage extends ConsumerWidget {
-  /// {@macro our_democracy.app.wrapper_page}
+  /// {@macro nexus.app.wrapper_page}
   ///
   /// Construct a new [WrapperPage] widget.
   const WrapperPage({
@@ -32,9 +31,9 @@ class WrapperPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AutoTabsScaffold(
       routes: const [
-        LocalFeedRoute(),
+        FeedRoutingRoute(),
         MapRoute(),
-        SettingsRoute(),
+        SettingsRoute(), // Make a new feed route page that has an app bar that routes between local and world
       ],
       floatingActionButton: FloatingActionButton(
         onPressed: () async => showDialog<void>(
@@ -47,26 +46,6 @@ class WrapperPage extends ConsumerWidget {
         return AppBar(
           title: Text(autoRouter.current.title(context)),
           automaticallyImplyLeading: false,
-          // leading: const AutoLeadingButton(), // @lishaduck we should discuss this back button. personally i'm for disablling it since it leads to new bugs
-          // actions: switch (autoRouter.current.path) {
-          //   '' => [
-          //       Builder(
-          //         builder: (context) => IconButton(
-          //           icon: const Icon(
-          //             Icons.settings,
-          //             semanticLabel: 'Settings',
-          //           ),
-          //           onPressed: () async {
-          //             // Navigate to the settings page. If the user leaves and returns
-          //             // to the app after it has been killed while running in the
-          //             // background, the navigation stack is restored.
-          //             await context.router.push(const SettingsRoute());
-          //           },
-          //         ),
-          //       ),
-          //     ],
-          //   _ => [],
-          // },
           bottom: switch (autoRouter.current.path) {
             // FIXME(lishaduck): This needs some work.
             '/' => TabBar(
@@ -96,7 +75,7 @@ class WrapperPage extends ConsumerWidget {
               label: 'Feeds',
             ),
             NavigationDestination(
-              icon: Icon(Icons.location_on),
+              icon: Icon(Icons.map_outlined),
               label: 'Discover',
             ),
             NavigationDestination(
@@ -120,10 +99,11 @@ class _Dialog extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formKey = useMemoized(GlobalKey<FormState>.new);
+    final formKey = useGlobalKey<FormState>();
     final title = useState('');
     final description = useState('');
-    final id = ref.watch(authServiceProvider).requireValue?.$id;
+    final id = ref.watch(idProvider);
+    final username = ref.watch(usernameProvider);
 
     final handleSubmit = useCallback(
       () async {
@@ -146,6 +126,7 @@ class _Dialog extends HookConsumerWidget {
                 // TODO(MattsAttack): Find a way to handle null here.
                 id,
                 // TODO(lishaduck): This could be a whole lot less hacky.
+                username,
                 const FeedEntity.world(),
               ),
             )
@@ -154,6 +135,8 @@ class _Dialog extends HookConsumerWidget {
               description.value,
               lat,
               lng,
+              [],
+              0,
               null,
             );
 
@@ -169,41 +152,48 @@ class _Dialog extends HookConsumerWidget {
     );
 
     return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 64, vertical: 32),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Create a New Post'),
-        ),
-        body: Form(
-          key: formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                TextFormField(
-                  initialValue: title.value,
-                  onSaved: (value) {
-                    if (value == null) return;
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.sizeOf(context).width / 8,
+        vertical: MediaQuery.sizeOf(context).height / 8,
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(40),
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Create a New Post'),
+          ),
+          body: Form(
+            key: formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  TextFormField(
+                    initialValue: title.value,
+                    onSaved: (value) {
+                      if (value == null) return;
 
-                    title.value = value;
-                  },
-                  decoration: const InputDecoration(label: Text('Title')),
-                ),
-                TextFormField(
-                  initialValue: description.value,
-                  onSaved: (value) {
-                    if (value == null) return;
+                      title.value = value;
+                    },
+                    decoration: const InputDecoration(label: Text('Title')),
+                  ),
+                  TextFormField(
+                    initialValue: description.value,
+                    onSaved: (value) {
+                      if (value == null) return;
 
-                    description.value = value;
-                  },
-                  decoration: const InputDecoration(label: Text('Description')),
-                ),
-                ElevatedButton(
-                  onPressed: handleSubmit,
-                  child: const Text('Create Post'),
-                ),
-              ],
+                      description.value = value;
+                    },
+                    decoration:
+                        const InputDecoration(label: Text('Description')),
+                  ),
+                  ElevatedButton(
+                    onPressed: handleSubmit,
+                    child: const Text('Create Post'),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
