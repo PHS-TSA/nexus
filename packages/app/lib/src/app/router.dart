@@ -43,17 +43,17 @@ class AppRouter extends RootStackRouter {
             ),
             AutoRoute(
               page: const EmptyShellRoute('Feeds'),
-              path: '',
+              path: 'feed',
               children: [
                 AutoRoute(
                   page: LocalFeedRoute.page,
                   path: 'local',
-                  title: (context, data) => 'Test',
+                  title: (context, data) => 'Local Feed',
                 ),
                 AutoRoute(
                   page: WorldFeedRoute.page,
                   path: 'world',
-                  title: (context, data) => 'Test',
+                  title: (context, data) => 'World Feed',
                 ),
                 RedirectRoute(path: '*', redirectTo: 'local'),
               ],
@@ -64,7 +64,7 @@ class AppRouter extends RootStackRouter {
           // TODO(lishaduck): Add a guard to prevent logged in users from accessing this page.
           page: LoginRoute.page,
           path: '/log-in',
-          title: (context, data) => 'Login',
+          title: (context, data) => 'Log In',
           keepHistory: false,
         ),
         AutoRoute(
@@ -73,7 +73,6 @@ class AppRouter extends RootStackRouter {
           path: '/sign-up',
           title: (context, data) => 'Sign Up',
         ),
-        RedirectRoute(path: '/*', redirectTo: '/local'),
       ];
 
   @override

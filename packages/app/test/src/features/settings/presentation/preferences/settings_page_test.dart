@@ -54,7 +54,7 @@ void main() {
     testAccessibilityGuidelines(
       const Material(child: SettingsPage()),
       overrides: [
-        sharedPreferencesProvider.overrideWithValue(MockSharedPreferences()),
+        sharedPreferencesProvider.overrideWith((_) => MockSharedPreferences()),
         initialSettingsProvider.overrideWithValue(defaultSettings),
       ],
     );

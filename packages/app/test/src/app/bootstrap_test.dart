@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helpers/mocks.dart';
 
-Future<SharedPreferencesWithCache> getSharedPreferences({
+Future<SharedPreferencesWithCache> _getSharedPreferences({
   required SharedPreferencesWithCacheOptions cacheOptions,
   Map<String, Object?>? cache,
 }) async {
@@ -23,7 +23,7 @@ void main() {
     const app = App();
     final env = (
       runApp: (_) {},
-      getSharedPreferences: getSharedPreferences,
+      getSharedPreferences: _getSharedPreferences,
     );
 
     await check(app.bootstrap(env)).completes();

@@ -1,4 +1,5 @@
 import 'package:appwrite/models.dart';
+import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:nexus/src/features/auth/data/auth_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +8,8 @@ class MockSharedPreferences extends Mock
     implements SharedPreferencesWithCache {}
 
 class MockAuthRepository extends Mock implements AuthRepository {}
+
+class MockDioAdapter extends Mock implements HttpClientAdapter {}
 
 /// A fake user.
 /// Taken from the [Appwrite docs](https://appwrite.io/docs/references/cloud/models/user).

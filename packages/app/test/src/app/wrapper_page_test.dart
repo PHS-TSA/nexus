@@ -44,11 +44,11 @@ extension _WidgetTesterX on WidgetTester {
       ),
     );
 
-    await router.pushAll([
-      const WrapperRoute(),
+    await router.pushAll(const [
+      WrapperRoute(),
     ]);
     await pumpAndSettle();
-    check(router.urlState.url).equals('/');
+    check(router.urlState.url).equals('/feed/local');
     check(find.byType(WrapperPage)).findsOne();
   }
 }
