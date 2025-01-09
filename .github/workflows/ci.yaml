@@ -16,6 +16,8 @@ on:
 
 env:
   CI: true
+  FLUTTER_CHANNEL: master
+  FLUTTER_VERSION: "4a4eb2a320" # TODO: Prefer flutter-version-file once back on beta.
 
 permissions:
   contents: read
@@ -40,9 +42,10 @@ jobs:
           set-safe-directory: true
       - name: 🐦 Set up Flutter
         id: flutter
-        uses: subosito/flutter-action@44ac965b96f18d999802d4b807e3256d5a3f9fa1 # v2.16.0
+        uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff # v2.18.0
         with:
-          flutter-version-file: pubspec.yaml
+          channel: ${{ env.FLUTTER_CHANNEL }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
       - name: 🌐 Disable analytics
         run: flutter --disable-analytics
@@ -110,9 +113,10 @@ jobs:
           set-safe-directory: true
       - name: 🐦 Set up Flutter
         id: flutter
-        uses: subosito/flutter-action@44ac965b96f18d999802d4b807e3256d5a3f9fa1 # v2.16.0
+        uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff # v2.18.0
         with:
-          flutter-version-file: pubspec.yaml
+          channel: ${{ env.FLUTTER_CHANNEL }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
       - name: ☕ Setup Java
         if: ${{ matrix.target == 'appbundle' }}
@@ -172,9 +176,10 @@ jobs:
           set-safe-directory: true
       - name: 🐦 Set up Flutter
         id: flutter
-        uses: subosito/flutter-action@44ac965b96f18d999802d4b807e3256d5a3f9fa1 # v2.16.0
+        uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff # v2.18.0
         with:
-          flutter-version-file: pubspec.yaml
+          channel: ${{ env.FLUTTER_CHANNEL }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
       - name: 🌐 Disable analytics
         run: flutter --disable-analytics
@@ -218,9 +223,10 @@ jobs:
           set-safe-directory: true
       - name: 🐦 Set up Flutter
         id: flutter
-        uses: subosito/flutter-action@44ac965b96f18d999802d4b807e3256d5a3f9fa1 # v2.16.0
+        uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff # v2.18.0
         with:
-          flutter-version-file: pubspec.yaml
+          channel: ${{ env.FLUTTER_CHANNEL }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
       - name: 🌐 Disable analytics
         run: flutter --disable-analytics
@@ -274,9 +280,10 @@ jobs:
           set-safe-directory: true
       - name: 🐦 Set up Flutter
         id: flutter
-        uses: subosito/flutter-action@44ac965b96f18d999802d4b807e3256d5a3f9fa1 # v2.16.0
+        uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff # v2.18.0
         with:
-          flutter-version-file: pubspec.yaml
+          channel: ${{ env.FLUTTER_CHANNEL }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
       - name: 🌐 Disable analytics
         run: flutter --disable-analytics
