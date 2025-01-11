@@ -80,8 +80,6 @@ class Feed extends ConsumerWidget {
 class _Post extends StatelessWidget {
   const _Post({
     required this.post,
-    // Temporary ignore, see <dart-lang/sdk#49025>.
-    // ignore: unused_element
     super.key,
   });
   final PostEntity post;
