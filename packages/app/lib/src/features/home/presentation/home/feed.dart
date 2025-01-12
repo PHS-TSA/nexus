@@ -28,24 +28,36 @@ class Feed extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Maybe change to scaffold with floating action button and list view as child
-    return Center(
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 600),
+    return Container(
+      alignment: Alignment.center,
+      constraints: const BoxConstraints(maxWidth: 600),
+      child: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(feedServiceProvider(feed));
+          return await ref.refresh(singlePostProvider(feed, 0).future);
+        },
         child: ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
           itemBuilder: (context, index) {
             final response = ref.watch(singlePostProvider(feed, index));
 
             return switch (response) {
               AsyncData(:final value) when value != null => Post(post: value),
 
+              // If we have no, return a placeholder.
+              AsyncData() when index == 0 => const Expanded(
+                  child: Center(
+                    child: Text('No posts yet!'),
+                  ),
+                ),
               // If we run out of items, return null.
               AsyncData() => null,
 
               // If there's an error, display it as another post.
-              AsyncError(:final error) => Post(
+              AsyncError(:final error, :final stackTrace) => Post(
                   post: PostEntity(
                     headline: 'Error',
-                    description: error.toString(),
+                    description: '$error, $stackTrace',
                     author: '',
                     authorName: '',
                     lat: 0,
