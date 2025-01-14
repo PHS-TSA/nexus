@@ -30,12 +30,12 @@ class Feed extends ConsumerWidget {
       child: RefreshIndicator(
         onRefresh: () async {
           ref.invalidate(feedServiceProvider(feed));
-          return await ref.refresh(singlePostProvider(feed, 0).future);
+          return await ref.refresh(feedPostProvider(feed, 0).future);
         },
         child: ListView.builder(
           physics: const AlwaysScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            final response = ref.watch(singlePostProvider(feed, index));
+            final response = ref.watch(feedPostProvider(feed, index));
 
             return switch (response) {
               AsyncData(:final value) when value != null => Post(postId: value),
@@ -51,7 +51,6 @@ class Feed extends ConsumerWidget {
               AsyncError(:final error, :final stackTrace) => Card(
                 margin: const EdgeInsets.all(4),
                 child: Container(
-                  // constraints: const BoxConstraints(minHeight: 220, maxHeight: 300),
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,6 +69,8 @@ class Feed extends ConsumerWidget {
                   ),
                 ),
               ),
+
+              // If we're loading, display a loading indicator.
               _ => null,
             };
           },

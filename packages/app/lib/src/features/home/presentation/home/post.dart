@@ -76,7 +76,7 @@ class _PosterInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // TODO(lishaduck): Better support async loading, to remove the need for non-null assertion.
-    final post = ref.watch(wipPostProvider(postId))!;
+    final post = ref.watch(singlePostProvider(postId))!;
 
     // TODO(MattsAttack): Show actual date and time of post when you click on it.
 
@@ -135,7 +135,7 @@ class _PostBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final post = ref.watch(wipPostProvider(postId))!;
+    final post = ref.watch(singlePostProvider(postId))!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,7 +173,7 @@ class _PostImages extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final post = ref.watch(wipPostProvider(postId));
+    final post = ref.watch(singlePostProvider(postId));
 
     if (post == null || post.imageIds.isEmpty) {
       return const SizedBox(height: 0);
@@ -240,7 +240,7 @@ class _PostInteractables extends HookConsumerWidget {
     // Get current user id.
     final userId = ref.watch(idProvider);
 
-    final post = ref.watch(wipPostProvider(postId))!;
+    final post = ref.watch(singlePostProvider(postId))!;
 
     return Row(
       children: [
@@ -256,7 +256,7 @@ class _PostInteractables extends HookConsumerWidget {
 
             // Toggle likes.
             ref
-                .read(wipPostProvider(post.id).notifier)
+                .read(singlePostProvider(post.id).notifier)
                 .setPost(post.copyWith(likes: newLikes));
 
             try {
@@ -266,7 +266,7 @@ class _PostInteractables extends HookConsumerWidget {
             } on Exception catch (e) {
               // Undo like.
               ref
-                  .read(wipPostProvider(post.id).notifier)
+                  .read(singlePostProvider(post.id).notifier)
                   .setPost(post); // This is still the old post.
 
               if (!context.mounted) return;
