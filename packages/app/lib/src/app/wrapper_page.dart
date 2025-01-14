@@ -11,7 +11,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../features/auth/application/auth_service.dart';
 import '../features/home/application/location_service.dart';
 import '../features/home/data/post_repository.dart';
-import '../features/home/domain/feed_entity.dart';
 import '../utils/hooks.dart';
 import 'router.gr.dart';
 
@@ -120,24 +119,16 @@ class _Dialog extends HookConsumerWidget {
 
         formKey.currentState?.save();
 
-        await ref
-            .read(
-              postRepositoryProvider(
-                // TODO(MattsAttack): Find a way to handle null here.
-                id,
-                // TODO(lishaduck): This could be a whole lot less hacky.
-                username,
-                const FeedEntity.world(),
-              ),
-            )
-            .createNewPost(
+        await ref.read(postRepositoryProvider).createNewPost(
               title.value,
               description.value,
               lat,
               lng,
               [],
-              0,
               null,
+              id!, // TODO(MattsAttack): Find a way to handle null here.
+              username!, // TODO(MattsAttack): Find a way to handle null here.
+              DateTime.timestamp(),
             );
 
         if (!context.mounted) return;

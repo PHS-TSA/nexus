@@ -18,11 +18,10 @@ sealed class FeedModel with _$FeedModel {
   ///
   /// Create a new, immutable instance of [FeedModel].
   const factory FeedModel({
-    /// The posts in the feed.
-    required List<PostEntity> posts,
-    required List<String> ids,
+    /// The IDs of the posts in the feed.
+    required List<PostId> ids,
 
     /// The database pagination cursor position.
-    required String? cursorPos,
+    required PostId? cursorPos,
   }) = _FeedModel;
 }

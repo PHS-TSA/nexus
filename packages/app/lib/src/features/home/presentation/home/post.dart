@@ -4,7 +4,6 @@ library;
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
@@ -12,8 +11,8 @@ import '../../../../utils/format.dart';
 import '../../../../utils/toast.dart';
 import '../../../auth/application/auth_service.dart';
 import '../../application/avatar_service.dart';
+import '../../application/feed_service.dart';
 import '../../data/post_repository.dart';
-import '../../domain/feed_entity.dart';
 import '../../domain/post_entity.dart';
 
 /// {@template nexus.features.home.presentation.home.post}
@@ -22,16 +21,16 @@ import '../../domain/post_entity.dart';
 class Post extends StatelessWidget {
   /// {@macro nexus.features.home.presentation.home.post}
 
-  /// Construct a new [Post] widget from a [PostEntity].
+  /// Construct a new [Post] widget for a [PostId].
   const Post({
-    required this.post,
+    required this.postId,
     // Temporary ignore, see <dart-lang/sdk#49025>.
     // ignore: unused_element
     super.key,
   });
 
-  /// [PostEntity] that contains data displayed in this post.
-  final PostEntity post;
+  /// [PostId] for this post.
+  final PostId postId;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +39,7 @@ class Post extends StatelessWidget {
       onTap: () async {
         if (context.router.current.name == WrapperRoute.name) {
           // Prevents user from clicking on post in in post view.
-          await context.router.push(PostViewRoute(post: post));
+          await context.router.push(PostViewRoute(postId: postId));
         }
       },
       child: Card(
@@ -53,12 +52,12 @@ class Post extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               // The post sections are in here, like poster info and post content.
-              _PosterInfo(post: post),
+              _PosterInfo(postId: postId),
               const Divider(
                 color: Colors.white, // TODO(MattsAttack): base color on theme.
               ),
-              _PostBody(post: post),
-              _PostInteractables(post: post),
+              _PostBody(postId: postId),
+              _PostInteractables(postId: postId),
             ],
           ),
         ),
@@ -70,23 +69,26 @@ class Post extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<PostEntity>('post', post));
+    properties.add(StringProperty('postId', postId.id));
   }
   // coverage:ignore-end
 }
 
-class _PosterInfo extends StatelessWidget {
+class _PosterInfo extends ConsumerWidget {
   const _PosterInfo({
-    required this.post,
+    required this.postId,
     // Temporary ignore, see <dart-lang/sdk#49025>.
     // ignore: unused_element
     super.key,
   });
 
-  final PostEntity post;
+  final PostId postId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // TODO(lishaduck): Better support async loading, to remove the need for non-null assertion.
+    final post = ref.watch(wipPostProvider(postId))!;
+
     // TODO(MattsAttack): Show actual date and time of post when you click on it.
 
     // Have post info show how long ago in the bar.
@@ -95,11 +97,10 @@ class _PosterInfo extends StatelessWidget {
     final timeSincePost = formatDuration(durationSincePostCreated);
 
     return Row(
+      spacing: 8,
       children: [
-        _PostAvatar(post: post),
-        const SizedBox(width: 8),
+        _PostAvatar(authorName: post.authorName),
         Text(post.authorName),
-        const SizedBox(width: 8),
         Text('$timeSincePost ago'),
         // TODO(MattsAttack): Could put flairs here.
       ],
@@ -110,23 +111,23 @@ class _PosterInfo extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<PostEntity>('post', post));
+    properties.add(StringProperty('postId', postId.id));
   }
   // coverage:ignore-end
 }
 
 class _PostAvatar extends ConsumerWidget {
   const _PostAvatar({
-    required this.post,
+    required this.authorName,
     // Temporary ignore, see <dart-lang/sdk#49025>.
     // ignore: unused_element
     super.key,
   });
 
-  final PostEntity post;
+  final String authorName;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final avatar = ref.watch(avatarServiceProvider(post.authorName));
+    final avatar = ref.watch(avatarServiceProvider(authorName));
 
     return switch (avatar) {
       AsyncData(:final value) => CircleAvatar(
@@ -141,26 +142,29 @@ class _PostAvatar extends ConsumerWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<PostEntity>('post', post));
+    properties.add(StringProperty('authorName', authorName));
   }
   // coverage:ignore-end
 }
 
-class _PostBody extends StatelessWidget {
+class _PostBody extends ConsumerWidget {
   const _PostBody({
-    required this.post,
+    required this.postId,
     // Temporary ignore, see <dart-lang/sdk#49025>.
     // ignore: unused_element
     super.key,
   });
 
-  final PostEntity post;
+  final PostId postId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final post = ref.watch(wipPostProvider(postId))!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
+      spacing: 8,
       children: [
         Text(
           post.headline,
@@ -169,7 +173,6 @@ class _PostBody extends StatelessWidget {
             fontSize: 24,
           ), // TODO(MattsAttack): Need better text styling.
         ),
-        const Padding(padding: EdgeInsets.all(4)),
         Text(
           post.description,
           textAlign: TextAlign.left,
@@ -182,7 +185,7 @@ class _PostBody extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<PostEntity>('post', post));
+    properties.add(StringProperty('postId', postId.id));
   }
   // coverage:ignore-end
 }
@@ -201,13 +204,13 @@ List<String> toggleLike(List<String> currentLikes, String userId) {
 
 class _PostInteractables extends HookConsumerWidget {
   const _PostInteractables({
-    required this.post,
+    required this.postId,
     // Temporary ignore, see <dart-lang/sdk#49025>.
     // ignore: unused_element
     super.key,
   });
 
-  final PostEntity post;
+  final PostId postId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -216,18 +219,14 @@ class _PostInteractables extends HookConsumerWidget {
      * When reading in posts, check if users name is on likes list and set a boolean variable to it
      */
 
-    // Gets current user id and username
+    // Get current user id.
     final userId = ref.watch(idProvider);
-    final username = ref.watch(usernameProvider);
 
-    final currentLikes = useState(
-      // Create a copy of the likes list.
-      List<String>.from(post.likes),
-    );
+    final post = ref.watch(wipPostProvider(postId))!;
 
     return Row(
       children: [
-        Text(currentLikes.value.length.toString()),
+        Text(post.likes.length.toString()),
         IconButton(
           onPressed: () async {
             if (userId == null) {
@@ -235,26 +234,22 @@ class _PostInteractables extends HookConsumerWidget {
               // TODO(MattsAttack): Send user back to login page, perhaps?
             }
 
+            final newLikes = toggleLike(post.likes, userId);
+
             // Toggle likes.
-            currentLikes.value = toggleLike(currentLikes.value, userId);
+            ref
+                .read(wipPostProvider(post.id).notifier)
+                .setPost(post.copyWith(likes: newLikes));
 
             try {
               await ref
-                  .read(
-                    postRepositoryProvider(
-                      userId,
-                      username,
-                      const FeedEntity.world(),
-                    ),
-                  )
-                  .toggleLikePost(
-                    post.id!, // TODO(MattsAttack): find alternative to `!`.
-                    userId,
-                    currentLikes.value,
-                  );
+                  .read(postRepositoryProvider)
+                  .toggleLikePost(post.id, userId, newLikes);
             } on Exception catch (e) {
               // Undo like.
-              currentLikes.value = toggleLike(currentLikes.value, userId);
+              ref
+                  .read(wipPostProvider(post.id).notifier)
+                  .setPost(post); // This is still the old post.
 
               if (!context.mounted) return;
               context.showSnackBar(
@@ -263,7 +258,7 @@ class _PostInteractables extends HookConsumerWidget {
             }
           },
           icon: Icon(
-            currentLikes.value.contains(userId)
+            post.likes.contains(userId)
                 ? Icons.thumb_up_sharp
                 : Icons.thumb_up_outlined,
           ),
@@ -276,7 +271,7 @@ class _PostInteractables extends HookConsumerWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<PostEntity>('post', post));
+    properties.add(StringProperty('postId', postId.id));
   }
   // coverage:ignore-end
 }

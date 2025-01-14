@@ -7,7 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../application/feed_service.dart';
 import '../../domain/feed_entity.dart';
-import '../../domain/post_entity.dart';
 import 'post.dart';
 
 /// {@template nexus.features.home.presentation.home.feed}
@@ -42,9 +41,9 @@ class Feed extends ConsumerWidget {
             final response = ref.watch(singlePostProvider(feed, index));
 
             return switch (response) {
-              AsyncData(:final value) when value != null => Post(post: value),
+              AsyncData(:final value) when value != null => Post(postId: value),
 
-              // If we have no, return a placeholder.
+              // If we have none, return a placeholder.
               AsyncData() when index == 0 => const Expanded(
                   child: Center(
                     child: Text('No posts yet!'),
@@ -54,19 +53,45 @@ class Feed extends ConsumerWidget {
               AsyncData() => null,
 
               // If there's an error, display it as another post.
-              AsyncError(:final error, :final stackTrace) => Post(
-                  post: PostEntity(
-                    headline: 'Error',
-                    description: '$error, $stackTrace',
-                    author: '',
-                    authorName: '',
-                    lat: 0,
-                    lng: 0,
-                    likes: const [],
-                    numberOfLikes: 0,
-                    timestamp: DateTime.timestamp(),
+              AsyncError(:final error, :final stackTrace) => Card(
+                  margin: const EdgeInsets.all(4),
+                  child: Container(
+                    // constraints: const BoxConstraints(minHeight: 220, maxHeight: 300),
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: 8,
+                      children: [
+                        const Text(
+                          'Error',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 24,
+                          ), // TODO(MattsAttack): Need better text styling.
+                        ),
+                        Text(
+                          '$error\n$stackTrace',
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
+
+              // Post(
+              //     postId: PostEntity(
+              //       headline: 'Error',
+              //       description: ,
+              //       author: '',
+              //       authorName: '',
+              //       lat: 0,
+              //       lng: 0,
+              //       likes: const [],
+              //       timestamp: DateTime.timestamp(),
+              //       id: const PostId(''),
+              //     ),
+              //   ),
 
               // If we're loading, display a loading indicator.
               _ => null,
