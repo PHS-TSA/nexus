@@ -60,7 +60,7 @@ base class AuthService extends _$AuthService {
 ///
 /// Named as such to prevent a naming conflict with riverpod.
 @riverpod
-String? username(Ref ref) => ref.watch(authServiceProvider).requireValue?.name;
+String? userName(Ref ref) => ref.watch(authServiceProvider).requireValue?.name;
 
 /// Get the current user's email address.
 @riverpod

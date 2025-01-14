@@ -3,7 +3,6 @@ library;
 
 import 'package:appwrite/appwrite.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../env/env.dart';
@@ -24,18 +23,7 @@ abstract interface class PostRepository {
   /// Create a new post.
   ///
   /// Returns the created post.
-  Future<void> createNewPost(
-    // TODO(lishaduck): Take a PostEntity.
-    String? headline,
-    String? description,
-    double lat,
-    double lng,
-    List<String> likes,
-    String? image,
-    String author,
-    String authorName,
-    DateTime timestamp,
-  );
+  Future<void> createNewPost(PostEntity post);
 
   /// Toggle if a user is listed as having liked a post.
   Future<void> toggleLikePost(PostId postId, String userId, List<String> likes);
@@ -84,33 +72,12 @@ final class _AppwritePostRepository implements PostRepository {
   }
 
   @override
-  Future<void> createNewPost(
-    String? headline,
-    String? description,
-    double lat,
-    double lng,
-    List<String> likes,
-    String? image,
-    String userId,
-    String username,
-    DateTime timestamp,
-  ) async {
+  Future<void> createNewPost(PostEntity post) async {
     await database.createDocument(
       databaseId: databaseId,
       collectionId: collectionId,
-      documentId: ID.unique(),
-      data: {
-        // TODO(lishaduck): Use native JSON serialization.
-        'headline': headline,
-        'description': description,
-        'author': userId,
-        'authorName': username,
-        'lat': lat,
-        'lng': lng,
-        'likes': likes,
-        'timestamp': DateFormat('yyyy-MM-ddTHH:mm:ss').format(timestamp),
-        // TODO(MattAttack): add images
-      },
+      documentId: post.id.id,
+      data: post.toJson(),
     );
   }
 
