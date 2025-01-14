@@ -10,6 +10,7 @@ import '../../../../app/router.gr.dart';
 import '../../../../utils/format.dart';
 import '../../../../utils/toast.dart';
 import '../../../auth/application/auth_service.dart';
+import '../../../auth/domain/user.dart';
 import '../../application/avatar_service.dart';
 import '../../application/feed_service.dart';
 import '../../data/post_repository.dart';
@@ -191,7 +192,7 @@ class _PostBody extends ConsumerWidget {
 }
 
 /// Given a list of likes and a user ID, return a new list of likes with the user ID toggled in or out of the list.
-List<String> toggleLike(List<String> currentLikes, String userId) {
+Likes toggleLike(Likes currentLikes, UserId userId) {
   // Toggle likes.
   if (!currentLikes.contains(userId)) {
     // User likes the post.

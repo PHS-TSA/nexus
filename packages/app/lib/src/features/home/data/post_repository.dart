@@ -7,6 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../env/env.dart';
 import '../../../utils/api.dart';
+import '../../auth/domain/user.dart';
 import '../domain/feed_entity.dart';
 import '../domain/post_entity.dart';
 
@@ -26,7 +27,7 @@ abstract interface class PostRepository {
   Future<void> createNewPost(PostEntity post);
 
   /// Toggle if a user is listed as having liked a post.
-  Future<void> toggleLikePost(PostId postId, String userId, List<String> likes);
+  Future<void> toggleLikePost(PostId postId, UserId userId, Likes likes);
 }
 
 final class _AppwritePostRepository implements PostRepository {
@@ -84,8 +85,8 @@ final class _AppwritePostRepository implements PostRepository {
   @override
   Future<void> toggleLikePost(
     PostId postId,
-    String userId,
-    List<String> likes,
+    UserId userId,
+    Likes likes,
   ) async {
     await database.updateDocument(
       databaseId: databaseId,

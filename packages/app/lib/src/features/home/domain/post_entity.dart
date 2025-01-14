@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../utils/json.dart';
+import '../../auth/domain/user.dart';
 
 part 'post_entity.freezed.dart';
 part 'post_entity.g.dart';
@@ -25,8 +26,8 @@ sealed class PostEntity with _$PostEntity {
     /// The textual content of the post.
     required String description,
 
-    /// The author of the post.
-    required String author,
+    /// The Id of the author of the post.
+    required UserId author,
 
     /// The author of the post’s display name.
     required String authorName,
@@ -41,7 +42,7 @@ sealed class PostEntity with _$PostEntity {
     @DataTimeJsonConverter() required DateTime timestamp,
 
     /// Who likes this post.
-    required List<String> likes,
+    required Likes likes,
 
     /// Post ID
     @JsonKey(includeToJson: false) required PostId id,
@@ -64,12 +65,5 @@ extension type const PostId(String id) {
   String toJson() => id;
 }
 
-/// Represent the unique id of a user.
-@immutable
-extension type const UserId(String id) {
-  /// Convert a JSON [String] to a [UserId].
-  factory UserId.fromJson(String json) => UserId(json);
-
-  /// Convert a [UserId] to a JSON [String].
-  String toJson() => id;
-}
+/// A list of users who like a post.
+typedef Likes = List<UserId>;
