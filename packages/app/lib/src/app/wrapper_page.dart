@@ -2,10 +2,12 @@
 library;
 
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -105,6 +107,7 @@ class _Dialog extends HookConsumerWidget {
     final userId = ref.watch(idProvider);
     final userName = ref.watch(userNameProvider);
 
+    Uint8List? image;
     final handleSubmit = useCallback(
       () async {
         final location = await ref.read(locationServiceProvider.future);
@@ -182,6 +185,21 @@ class _Dialog extends HookConsumerWidget {
                     decoration:
                         const InputDecoration(label: Text('Description')),
                   ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final FilePickerResult? result =
+                          await FilePicker.platform.pickFiles();
+                      if (result != null) {
+                        final Uint8List? fileBytes = result.files.first.bytes;
+                        image = fileBytes;
+                        final String fileName = result.files.first.name;
+                      } else {
+                        // User canceled the picker
+                      }
+                    },
+                    child: const Text('Upload Image'),
+                  ),
+                  if (image != null) Image.memory(image!),
                   ElevatedButton(
                     onPressed: handleSubmit,
                     child: const Text('Create Post'),

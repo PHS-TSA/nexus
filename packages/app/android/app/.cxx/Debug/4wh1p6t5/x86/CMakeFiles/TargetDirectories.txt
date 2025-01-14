@@ -1,0 +1,2 @@
+/Users/wasserm/coding_stuff/Computer_Science/Capstone/CAC/nexus/nexus/packages/app/android/app/.cxx/Debug/4wh1p6t5/x86/CMakeFiles/edit_cache.dir
+/Users/wasserm/coding_stuff/Computer_Science/Capstone/CAC/nexus/nexus/packages/app/android/app/.cxx/Debug/4wh1p6t5/x86/CMakeFiles/rebuild_cache.dir
