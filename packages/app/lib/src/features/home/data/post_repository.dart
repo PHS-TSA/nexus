@@ -29,16 +29,20 @@ abstract interface class PostRepository {
 
   /// Toggle if a user is listed as having liked a post.
   Future<void> toggleLikePost(PostId postId, UserId userId, Likes likes);
+
+  Future<void> uploadImage(String imagePath);
 }
 
 final class _AppwritePostRepository implements PostRepository {
   const _AppwritePostRepository({
     required this.database,
+    required this.storage,
     required this.databaseId,
     required this.collectionId,
   });
 
   final Databases database;
+  final Storage storage;
 
   final String databaseId;
   final String collectionId;
@@ -98,15 +102,31 @@ final class _AppwritePostRepository implements PostRepository {
       },
     );
   }
+
+  @override
+  Future<void> uploadImage(String imagePath) async {
+    //might combine with create post
+    final fileName = '${DateTime.now().microsecondsSinceEpoch}'
+        "${imagePath.split(".").last}";
+
+    final file = await storage.createFile(
+      bucketId: 'post-media', //maybe change to env variable
+      fileId: ID
+          .unique(), // maybe make into post id so theyre easy to link. would have to pass post id in
+      file: InputFile.fromPath(path: imagePath, filename: fileName),
+    );
+  }
 }
 
 /// Get a [PostRepository] for a specific author and feed.
 @riverpod
 PostRepository postRepository(Ref ref) {
   final database = ref.watch(databasesProvider);
+  final storage = ref.watch(storageProvider);
 
   return _AppwritePostRepository(
     database: database,
+    storage: storage,
     databaseId: Env.databaseId,
     collectionId: Env.postsCollectionId,
   );
