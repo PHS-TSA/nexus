@@ -196,10 +196,10 @@ Likes toggleLike(Likes currentLikes, UserId userId) {
   // Toggle likes.
   if (!currentLikes.contains(userId)) {
     // User likes the post.
-    return [...currentLikes, userId];
+    return currentLikes.add(userId);
   } else {
     // User is removing like
-    return List.from(currentLikes)..remove(userId); // TODO(lishaduck): Use FIC.
+    return currentLikes.remove(userId);
   }
 }
 

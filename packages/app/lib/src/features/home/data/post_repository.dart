@@ -2,6 +2,7 @@
 library;
 
 import 'package:appwrite/appwrite.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -19,7 +20,7 @@ abstract interface class PostRepository {
   static const pageSize = 10;
 
   /// Read all the posts.
-  Future<List<PostEntity>> readPosts(FeedEntity feed, PostId? cursor);
+  Future<IList<PostEntity>> readPosts(FeedEntity feed, PostId? cursor);
 
   /// Create a new post.
   ///
@@ -43,7 +44,7 @@ final class _AppwritePostRepository implements PostRepository {
   final String collectionId;
 
   @override
-  Future<List<PostEntity>> readPosts(FeedEntity feed, PostId? cursor) async {
+  Future<IList<PostEntity>> readPosts(FeedEntity feed, PostId? cursor) async {
     final documentList = await database.listDocuments(
       databaseId: databaseId,
       collectionId: collectionId,
@@ -69,7 +70,7 @@ final class _AppwritePostRepository implements PostRepository {
       document.data['id'] = document.$id;
 
       return PostEntity.fromJson(document.data);
-    }).toList();
+    }).toIList();
   }
 
   @override
@@ -93,7 +94,7 @@ final class _AppwritePostRepository implements PostRepository {
       collectionId: collectionId,
       documentId: postId.id,
       data: {
-        'likes': likes,
+        'likes': likes.unlockLazy,
       },
     );
   }

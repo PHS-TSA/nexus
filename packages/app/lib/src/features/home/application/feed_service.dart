@@ -1,6 +1,7 @@
 /// This library provides a service to stream posts in DB to the UI.
 library;
 
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -17,7 +18,7 @@ part 'feed_service.g.dart';
 base class FeedService extends _$FeedService {
   @override
   FeedModel build(FeedEntity feed) {
-    return const FeedModel(ids: [], cursorPos: null);
+    return const FeedModel(ids: IList.empty(), cursorPos: null);
   }
 
   /// Fetch the next posts for a given [feed].
@@ -44,7 +45,7 @@ base class FeedService extends _$FeedService {
 
     // Update the state with the new batch of post IDs and cursor
     state = state.copyWith(
-      ids: [...state.ids, ...newPostIds],
+      ids: state.ids.addAll(newPostIds),
       cursorPos: newPostIds.lastOrNull,
     );
 
