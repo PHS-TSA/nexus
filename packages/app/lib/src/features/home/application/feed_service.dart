@@ -35,11 +35,11 @@ base class FeedService extends _$FeedService {
 
     if (fetchedPosts.isEmpty) return false;
 
-    // Store each fetched post in WipPost and collect their IDs
+    // Store each fetched post in the provider without directly calling setPost
     final newPostIds = <PostId>[];
     for (final post in fetchedPosts) {
-      // Store the post in WipPost
-      ref.read(wipPostProvider(post.id).notifier).setPost(post);
+      // Store the post in the provider
+      ref.watch(singlePostProvider(post.id).notifier).setPost(post);
 
       // Collect the post ID
       newPostIds.add(post.id);
@@ -59,17 +59,17 @@ base class FeedService extends _$FeedService {
 ///
 /// [postIndex] is the index of the current post the user is viewing.
 @riverpod
-FutureOr<PostId?> singlePost(Ref ref, FeedEntity feed, int postIndex) async {
+FutureOr<PostId?> feedPost(Ref ref, FeedEntity feed, int postIndex) async {
   // Keep previous posts in cache to make scrolling up possible.
   // Otherwise, the `ListView` freaks out.
   if (postIndex != 0) {
     final lastPost = await ref.watch(
-      singlePostProvider(feed, postIndex - 1).future,
+      feedPostProvider(feed, postIndex - 1).future,
     );
 
     if (lastPost != null) {
       final imageIds = ref.watch(
-        wipPostProvider(lastPost).select((s) => s?.imageIds),
+        singlePostProvider(lastPost).select((s) => s?.imageIds),
       );
 
       for (final imageId in imageIds ?? const IList<String>.empty()) {
@@ -94,8 +94,8 @@ FutureOr<PostId?> singlePost(Ref ref, FeedEntity feed, int postIndex) async {
 /// Store a post independently of any feed for memory efficiency.
 ///
 /// [id] is the unique identifier for the post.
-@Riverpod(keepAlive: true)
-base class WipPost extends _$WipPost {
+@riverpod
+base class SinglePost extends _$SinglePost {
   @override
   PostEntity? build(PostId id) {
     // Initially, the post is null. It will be set when fetched.
