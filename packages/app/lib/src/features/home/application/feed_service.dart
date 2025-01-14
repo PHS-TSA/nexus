@@ -1,6 +1,8 @@
 /// This library provides a service to stream posts in DB to the UI.
 library;
 
+import 'dart:typed_data';
+
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -96,4 +98,13 @@ base class WipPost extends _$WipPost {
   void setPost(PostEntity post) {
     state = post;
   }
+}
+
+@riverpod
+Future<Uint8List> image(Ref ref, String id) {
+  return ref
+      .watch(
+        postRepositoryProvider,
+      )
+      .getImages(id);
 }

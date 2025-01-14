@@ -65,7 +65,8 @@ final class _AppwriteAuthRepository implements AuthRepository {
         email: email,
         password: password,
       );
-    } on AppwriteException {
+    } on AppwriteException catch (e) {
+      print(e);
       return null;
     }
   }
