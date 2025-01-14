@@ -25,8 +25,6 @@ class Post extends StatelessWidget {
   /// Construct a new [Post] widget for a [PostId].
   const Post({
     required this.postId,
-    // Temporary ignore, see <dart-lang/sdk#49025>.
-    // ignore: unused_element
     super.key,
   });
 
@@ -46,7 +44,6 @@ class Post extends StatelessWidget {
       child: Card(
         margin: const EdgeInsets.all(4),
         child: Container(
-          // constraints: const BoxConstraints(minHeight: 220, maxHeight: 300),
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,9 +51,7 @@ class Post extends StatelessWidget {
             children: [
               // The post sections are in here, like poster info and post content.
               _PosterInfo(postId: postId),
-              const Divider(
-                color: Colors.white, // TODO(MattsAttack): base color on theme.
-              ),
+              const Divider(),
               _PostBody(postId: postId),
               _PostInteractables(postId: postId),
             ],
@@ -78,8 +73,6 @@ class Post extends StatelessWidget {
 class _PosterInfo extends ConsumerWidget {
   const _PosterInfo({
     required this.postId,
-    // Temporary ignore, see <dart-lang/sdk#49025>.
-    // ignore: unused_element
     super.key,
   });
 
@@ -120,8 +113,6 @@ class _PosterInfo extends ConsumerWidget {
 class _PostAvatar extends ConsumerWidget {
   const _PostAvatar({
     required this.authorName,
-    // Temporary ignore, see <dart-lang/sdk#49025>.
-    // ignore: unused_element
     super.key,
   });
 
@@ -151,8 +142,6 @@ class _PostAvatar extends ConsumerWidget {
 class _PostBody extends ConsumerWidget {
   const _PostBody({
     required this.postId,
-    // Temporary ignore, see <dart-lang/sdk#49025>.
-    // ignore: unused_element
     super.key,
   });
 
@@ -206,8 +195,6 @@ Likes toggleLike(Likes currentLikes, UserId userId) {
 class _PostInteractables extends HookConsumerWidget {
   const _PostInteractables({
     required this.postId,
-    // Temporary ignore, see <dart-lang/sdk#49025>.
-    // ignore: unused_element
     super.key,
   });
 

@@ -137,8 +137,6 @@ class SettingsPage extends ConsumerWidget {
 
 class _AppDescription extends HookWidget {
   const _AppDescription({
-    // Temporary ignore, see <dart-lang/sdk#49025>.
-    // ignore: unused_element
     super.key,
     this.followLink,
   });

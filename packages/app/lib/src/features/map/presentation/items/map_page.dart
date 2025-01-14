@@ -52,8 +52,6 @@ class _Dialog extends HookConsumerWidget {
   const _Dialog({
     required this.latitude,
     required this.longitude,
-    // Temporary ignore, see <dart-lang/sdk#49025>.
-    // ignore: unused_element
     super.key,
   });
 

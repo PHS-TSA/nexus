@@ -94,8 +94,6 @@ class WrapperPage extends ConsumerWidget {
 // May want to separate to a different file
 class _Dialog extends HookConsumerWidget {
   const _Dialog({
-    // Temporary ignore, see <dart-lang/sdk#49025>.
-    // ignore: unused_element
     super.key,
   });
 
