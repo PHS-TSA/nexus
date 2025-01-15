@@ -32,16 +32,17 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Glue the `settingsServiceProvider` to the theme selection `DropdownMenu`.
+    //
+    // When a user selects a theme from the dropdown list, the
+    // `settingsServiceProvider` is updated, which rebuilds the `MaterialApp`.
     final settingsService = ref.watch(settingsServiceProvider);
     final themeMode = settingsService.themeMode;
 
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
-        // Glue the `settingsServiceProvider` to the theme selection `DropdownMenu`.
-        //
-        // When a user selects a theme from the dropdown list, the
-        // `settingsServiceProvider` is updated, which rebuilds the `MaterialApp`.
+        spacing: 8,
         children: [
           Padding(
             padding: const EdgeInsets.all(16),
@@ -79,7 +80,6 @@ class SettingsPage extends ConsumerWidget {
               ),
             ),
           ),
-          const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.all(16),
             child: Container(
@@ -101,7 +101,6 @@ class SettingsPage extends ConsumerWidget {
               ),
             ),
           ),
-          const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.all(16),
             child: Container(
@@ -138,8 +137,6 @@ class SettingsPage extends ConsumerWidget {
 
 class _AppDescription extends HookWidget {
   const _AppDescription({
-    // Temporary ignore, see <dart-lang/sdk#49025>.
-    // ignore: unused_element
     super.key,
     this.followLink,
   });

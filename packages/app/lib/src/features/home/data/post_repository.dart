@@ -2,44 +2,33 @@
 library;
 
 import 'package:appwrite/appwrite.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../env/env.dart';
 import '../../../utils/api.dart';
+import '../../auth/domain/user.dart';
 import '../domain/feed_entity.dart';
 import '../domain/post_entity.dart';
 
 part 'post_repository.g.dart';
 
-/// The number of posts to fetch at a time.
-const pageSize = 10;
-
-/// A tuple of a post entity and its db id.
-typedef PostEntityIdTuple = ({PostEntity entity, String id});
-
 /// A repository for posts.
 abstract interface class PostRepository {
+  /// The number of posts to fetch at a time.
+  static const pageSize = 10;
+
   /// Read all the posts.
-  Future<List<PostEntityIdTuple>> readPosts(String? cursor);
+  Future<IList<PostEntity>> readPosts(FeedEntity feed, PostId? cursor);
 
   /// Create a new post.
   ///
   /// Returns the created post.
-  Future<void> createNewPost(
-    // TODO(lishaduck): Take a PostEntity.
-    String? headline,
-    String? description,
-    double lat,
-    double lng,
-    List<String> likes,
-    int numberOfLikes,
-    String? image,
-  );
+  Future<void> createNewPost(PostEntity post);
 
   /// Toggle if a user is listed as having liked a post.
-  Future<void> toggleLikePost(String postId, String userId, List<String> likes);
+  Future<void> toggleLikePost(PostId postId, UserId userId, Likes likes);
 }
 
 final class _AppwritePostRepository implements PostRepository {
@@ -47,10 +36,6 @@ final class _AppwritePostRepository implements PostRepository {
     required this.database,
     required this.databaseId,
     required this.collectionId,
-    required this.author,
-    required this.authorName,
-    // required this.feed,
-    required this.feed,
   });
 
   final Databases database;
@@ -58,12 +43,8 @@ final class _AppwritePostRepository implements PostRepository {
   final String databaseId;
   final String collectionId;
 
-  final String? author;
-  final String? authorName;
-  final FeedEntity feed;
-
   @override
-  Future<List<PostEntityIdTuple>> readPosts(String? cursor) async {
+  Future<IList<PostEntity>> readPosts(FeedEntity feed, PostId? cursor) async {
     final documentList = await database.listDocuments(
       databaseId: databaseId,
       collectionId: collectionId,
@@ -76,63 +57,44 @@ final class _AppwritePostRepository implements PostRepository {
             ],
           WorldFeed() => [],
         },
-        if (cursor != null) Query.cursorAfter(cursor),
-        Query.limit(pageSize),
+        if (cursor != null) Query.cursorAfter(cursor.id),
+        Query.limit(PostRepository.pageSize),
       ],
     );
     return documentList.documents.map((document) {
-      return (
-        entity: PostEntity.fromJson(document.data),
-        id: document.$id,
+      assert(
+        !document.data.containsKey('id'),
+        'ID should not have been redundantly stored.',
       );
-    }).toList();
+
+      document.data['id'] = document.$id;
+
+      return PostEntity.fromJson(document.data);
+    }).toIList();
   }
 
   @override
-  Future<void> createNewPost(
-    String? headline,
-    String? description,
-    double lat,
-    double lng,
-    List<String> likes,
-    int numberOfLikes,
-    String? image,
-  ) async {
+  Future<void> createNewPost(PostEntity post) async {
     await database.createDocument(
       databaseId: databaseId,
       collectionId: collectionId,
-      documentId: ID.unique(),
-      data: {
-        // TODO(lishaduck): Use native JSON serialization.
-        'headline': headline,
-        'description': description,
-        'author': author,
-        'authorName': authorName,
-        'lat': lat,
-        'lng': lng,
-        'likes': likes,
-        'numberOfLikes': numberOfLikes,
-        'timestamp':
-            DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.timestamp()),
-        // TODO(MattAttack): add images
-      },
+      documentId: post.id.id,
+      data: post.toJson(),
     );
   }
 
   @override
-
-  /// Adds current users id to the postId likes data
   Future<void> toggleLikePost(
-    String postId,
-    String userId,
-    List<String> likes,
+    PostId postId,
+    UserId userId,
+    Likes likes,
   ) async {
     await database.updateDocument(
       databaseId: databaseId,
       collectionId: collectionId,
-      documentId: postId,
+      documentId: postId.id,
       data: {
-        'likes': likes,
+        'likes': likes.unlockLazy,
       },
     );
   }
@@ -140,18 +102,10 @@ final class _AppwritePostRepository implements PostRepository {
 
 /// Get a [PostRepository] for a specific author and feed.
 @riverpod
-PostRepository postRepository(
-  Ref ref,
-  String? author,
-  String? authorName,
-  FeedEntity feed,
-) {
+PostRepository postRepository(Ref ref) {
   final database = ref.watch(databasesProvider);
 
   return _AppwritePostRepository(
-    author: author,
-    authorName: authorName,
-    feed: feed,
     database: database,
     databaseId: Env.databaseId,
     collectionId: Env.postsCollectionId,

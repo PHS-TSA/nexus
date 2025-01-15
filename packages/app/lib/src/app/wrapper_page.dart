@@ -3,7 +3,9 @@ library;
 
 import 'dart:math';
 
+import 'package:appwrite/appwrite.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,7 +13,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../features/auth/application/auth_service.dart';
 import '../features/home/application/location_service.dart';
 import '../features/home/data/post_repository.dart';
-import '../features/home/domain/feed_entity.dart';
+import '../features/home/domain/post_entity.dart';
 import '../utils/hooks.dart';
 import 'router.gr.dart';
 
@@ -92,8 +94,6 @@ class WrapperPage extends ConsumerWidget {
 // May want to separate to a different file
 class _Dialog extends HookConsumerWidget {
   const _Dialog({
-    // Temporary ignore, see <dart-lang/sdk#49025>.
-    // ignore: unused_element
     super.key,
   });
 
@@ -102,8 +102,8 @@ class _Dialog extends HookConsumerWidget {
     final formKey = useGlobalKey<FormState>();
     final title = useState('');
     final description = useState('');
-    final id = ref.watch(idProvider);
-    final username = ref.watch(usernameProvider);
+    final userId = ref.watch(idProvider);
+    final userName = ref.watch(userNameProvider);
 
     final handleSubmit = useCallback(
       () async {
@@ -120,24 +120,18 @@ class _Dialog extends HookConsumerWidget {
 
         formKey.currentState?.save();
 
-        await ref
-            .read(
-              postRepositoryProvider(
-                // TODO(MattsAttack): Find a way to handle null here.
-                id,
-                // TODO(lishaduck): This could be a whole lot less hacky.
-                username,
-                const FeedEntity.world(),
+        await ref.read(postRepositoryProvider).createNewPost(
+              PostEntity(
+                headline: title.value,
+                description: description.value,
+                author: userId!,
+                authorName: userName!,
+                lat: lat,
+                lng: lng,
+                timestamp: DateTime.timestamp(),
+                likes: const IList.empty(),
+                id: PostId(ID.unique()),
               ),
-            )
-            .createNewPost(
-              title.value,
-              description.value,
-              lat,
-              lng,
-              [],
-              0,
-              null,
             );
 
         if (!context.mounted) return;

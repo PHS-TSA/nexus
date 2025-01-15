@@ -1,6 +1,7 @@
 /// This library contains a data class for a feed of posts.
 library;
 
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -18,11 +19,10 @@ sealed class FeedModel with _$FeedModel {
   ///
   /// Create a new, immutable instance of [FeedModel].
   const factory FeedModel({
-    /// The posts in the feed.
-    required List<PostEntity> posts,
-    required List<String> ids,
+    /// The IDs of the posts in the feed.
+    required IList<PostId> ids,
 
     /// The database pagination cursor position.
-    required String? cursorPos,
+    required PostId? cursorPos,
   }) = _FeedModel;
 }

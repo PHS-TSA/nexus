@@ -1,8 +1,12 @@
 /// This library contains a data class representing a singular post.
 library;
 
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../utils/json.dart';
+import '../../auth/domain/user.dart';
 
 part 'post_entity.freezed.dart';
 part 'post_entity.g.dart';
@@ -23,34 +27,44 @@ sealed class PostEntity with _$PostEntity {
     /// The textual content of the post.
     required String description,
 
-    /// The author of the post.
-    required String author,
+    /// The Id of the author of the post.
+    required UserId author,
 
-    /// The username of the author of the post
+    /// The author of the post’s display name.
     required String authorName,
 
-    ///
+    /// Salted latitude where the post was made.
     required double lat,
 
-    ///
+    /// Salted longitude where the post was made.
     required double lng,
 
-    ///
-    required DateTime timestamp,
+    /// When the post was created.
+    @DataTimeJsonConverter() required DateTime timestamp,
 
-    ///
-    required List<String> likes,
+    /// Who likes this post.
+    required Likes likes,
 
-    ///
-    required int numberOfLikes,
+    /// Post ID
+    @JsonKey(includeToJson: false) required PostId id,
 
     /// An optional media to display alongside the post.
     String? image,
-
-    /// Post ID
-    String? id,
   }) = _PostEntity;
 
   factory PostEntity.fromJson(Map<String, dynamic> json) =>
       _$PostEntityFromJson(json);
 }
+
+/// Represent the unique id of a post.
+@immutable
+extension type const PostId(String id) {
+  /// Convert a JSON [String] to a [PostId].
+  factory PostId.fromJson(String json) => PostId(json);
+
+  /// Convert a [PostId] to a JSON [String].
+  String toJson() => id;
+}
+
+/// A list of users who like a post.
+typedef Likes = IList<UserId>;

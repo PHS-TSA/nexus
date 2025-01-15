@@ -23,7 +23,7 @@ void main() {
       // Assert
 
       // Verify that the widget contains a full page of items.
-      check(find.byType(Card)).findsExactly(pageSize);
+      check(find.byType(Card)).findsExactly(PostRepository.pageSize);
     });
 
     testWidgets('handles errors by posting about it', (tester) async {
@@ -38,7 +38,8 @@ void main() {
       // Assert
 
       // Verify the widget contains an error message.
-      check(find.text('UnimplementedError')).findsExactly(pageSize);
+      check(find.text('UnimplementedError'))
+          .findsExactly(PostRepository.pageSize);
     });
   });
 
