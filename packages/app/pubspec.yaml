@@ -44,7 +44,7 @@ dependencies:
   checks: ^0.3.0
   cupertino_icons: ^1.0.8 # Only required if you use Cupertino (iOS style) icons
   dio: ^5.7.0
-  envied: ^1.0.0
+  envied: ^1.0.1
   flutter:
     sdk: flutter
   flutter_hooks: ^0.20.5
@@ -67,13 +67,13 @@ dependencies:
   url_launcher: ^6.3.1
 
 dev_dependencies:
-  analysis_options: 0.0.1
+  analysis_options: 2.0.1
   auto_route_generator: ^9.0.0
   build_runner: ^2.4.14
   build_web_compilers: ^4.1.0
   custom_lint: ^0.7.0
   dhttpd: ^4.1.0
-  envied_generator: ^1.0.0
+  envied_generator: ^1.0.1
   flutter_checks: ^0.1.1
   flutter_gen_runner: ^5.8.0
   flutter_launcher_icons: ^0.14.2
