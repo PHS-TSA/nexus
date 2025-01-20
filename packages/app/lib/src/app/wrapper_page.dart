@@ -10,7 +10,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../features/auth/application/auth_service.dart';
 import '../features/home/application/location_service.dart';
@@ -18,6 +17,8 @@ import '../features/home/data/post_repository.dart';
 import '../features/home/domain/post_entity.dart';
 import '../utils/hooks.dart';
 import 'router.gr.dart';
+
+// import "package:flutter/foundation.dart" show kIsWeb;
 
 /// {@template nexus.app.wrapper_page}
 /// Wrap the pages in a Material Design scaffold.
@@ -136,6 +137,8 @@ class _Dialog extends HookConsumerWidget {
                 timestamp: DateTime.timestamp(),
                 likes: const IList.empty(),
                 id: PostId(ID.unique()),
+                image:
+                    imagePath, // In appwrite check if image path is null then upload
               ),
             );
 
@@ -189,12 +192,19 @@ class _Dialog extends HookConsumerWidget {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      final picker = ImagePicker();
-                      final pickedFile =
-                          await picker.pickImage(source: ImageSource.gallery);
-                      if (pickedFile == null) {
-                        throw Exception('No file selection');
-                      }
+                      final result = await FilePicker.platform
+                          .pickFiles(); //TODOadd limitations here so users cant upload files other than images
+                      if (result == null) return;
+                      final selectedfile = result.files.first;
+                      imagePath = selectedfile.path;
+                      print(imagePath);
+
+                      // final picker = ImagePicker();
+                      // final pickedFile =
+                      //     await picker.pickImage(source: ImageSource.gallery);
+                      // if (pickedFile == null) {
+                      //   throw Exception('No file selection');
+                      // }
                       // final Uint8List fileBytes =
                       //     await pickedFile.readAsBytes();
                       // image = fileBytes;

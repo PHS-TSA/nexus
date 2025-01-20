@@ -79,6 +79,10 @@ final class _AppwritePostRepository implements PostRepository {
 
   @override
   Future<void> createNewPost(PostEntity post) async {
+    print(post.image);
+    if (post.image != null) {
+      await uploadImage(post.image!);
+    }
     await database.createDocument(
       databaseId: databaseId,
       collectionId: collectionId,
