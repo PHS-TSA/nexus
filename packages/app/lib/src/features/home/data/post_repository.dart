@@ -30,7 +30,7 @@ abstract interface class PostRepository {
   /// Toggle if a user is listed as having liked a post.
   Future<void> toggleLikePost(PostId postId, UserId userId, Likes likes);
 
-  Future<void> uploadImage(String imagePath);
+  Future<void> uploadImage(String imagePath, PostEntity post);
 }
 
 final class _AppwritePostRepository implements PostRepository {
@@ -81,7 +81,10 @@ final class _AppwritePostRepository implements PostRepository {
   Future<void> createNewPost(PostEntity post) async {
     print(post.image);
     if (post.image != null) {
-      await uploadImage(post.image!);
+      await uploadImage(
+        post.image!,
+        post,
+      );
     }
     await database.createDocument(
       databaseId: databaseId,
@@ -108,15 +111,15 @@ final class _AppwritePostRepository implements PostRepository {
   }
 
   @override
-  Future<void> uploadImage(String imagePath) async {
+  Future<void> uploadImage(String imagePath, PostEntity post) async {
     //might combine with create post
     final fileName = '${DateTime.now().microsecondsSinceEpoch}'
         "${imagePath.split(".").last}";
 
     final file = await storage.createFile(
       bucketId: 'post-media', //maybe change to env variable
-      fileId: ID
-          .unique(), // maybe make into post id so theyre easy to link. would have to pass post id in
+      fileId: post.id
+          .toJson(), // @lishaduck what do you think about linking them this way?
       file: InputFile.fromPath(path: imagePath, filename: fileName),
     );
   }
