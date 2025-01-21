@@ -192,11 +192,8 @@ class _PostImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final image = ref
-        .watch(
-          postRepositoryProvider,
-        )
-        .getImages('679004682612efd1d354'); // Edit this to post id
+    final image = imageProvider('679004682612efd1d354');
+
     return switch (image) {
       AsyncData(:final value) => Image.memory(value as Uint8List),
       AsyncError() => const Text('Error loading image'),
