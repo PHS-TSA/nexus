@@ -41,6 +41,8 @@ abstract interface class PostRepository {
     Uint8List? imageBytes,
     String? imagePath,
   );
+
+  Future<Uint8List> getImages(String id);
 }
 
 final class _AppwritePostRepository implements PostRepository {
@@ -85,6 +87,11 @@ final class _AppwritePostRepository implements PostRepository {
 
       return PostEntity.fromJson(document.data);
     }).toIList();
+  }
+
+  @override
+  Future<Uint8List> getImages(String id) async {
+    return storage.getFileDownload(bucketId: 'post-media', fileId: id);
   }
 
   @override
