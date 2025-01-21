@@ -3,6 +3,7 @@ library;
 
 import 'package:appwrite/appwrite.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -25,12 +26,21 @@ abstract interface class PostRepository {
   /// Create a new post.
   ///
   /// Returns the created post.
-  Future<void> createNewPost(PostEntity post);
+  Future<void> createNewPost(
+    PostEntity post,
+    Uint8List? imageBytes,
+    String? imagePath,
+  );
 
   /// Toggle if a user is listed as having liked a post.
   Future<void> toggleLikePost(PostId postId, UserId userId, Likes likes);
 
-  Future<void> uploadImage(String imagePath, PostEntity post);
+  ///Uploads image to Appwrite and returns id
+  Future<String> uploadImage(
+    PostEntity post,
+    Uint8List? imageBytes,
+    String? imagePath,
+  );
 }
 
 final class _AppwritePostRepository implements PostRepository {
@@ -78,14 +88,22 @@ final class _AppwritePostRepository implements PostRepository {
   }
 
   @override
-  Future<void> createNewPost(PostEntity post) async {
-    print(post.image);
-    if (post.image != null) {
-      await uploadImage(
-        post.image!,
-        post,
+  Future<void> createNewPost(
+    PostEntity post,
+    Uint8List? imageBytes,
+    String? imagePath,
+  ) async {
+    print('Printing image id pre uploading image: ${post.imageID}');
+    if (imageBytes != null || imagePath != null) {
+      post = post.copyWith(
+        imageID: await uploadImage(
+          post,
+          imageBytes,
+          imagePath,
+        ),
       );
     }
+    print('Printing image id pre creating doc: ${post.imageID}');
     await database.createDocument(
       databaseId: databaseId,
       collectionId: collectionId,
@@ -111,17 +129,38 @@ final class _AppwritePostRepository implements PostRepository {
   }
 
   @override
-  Future<void> uploadImage(String imagePath, PostEntity post) async {
-    //might combine with create post
-    final fileName = '${DateTime.now().microsecondsSinceEpoch}'
-        "${imagePath.split(".").last}";
+  Future<String> uploadImage(
+    // For multi image change to return list
+    PostEntity post,
+    Uint8List? imageBytes,
+    String? imagePath,
+  ) async {
+    // might be able to remove post param here
 
-    final file = await storage.createFile(
-      bucketId: 'post-media', //maybe change to env variable
-      fileId: post.id
-          .toJson(), // @lishaduck what do you think about linking them this way?
-      file: InputFile.fromPath(path: imagePath, filename: fileName),
-    );
+    final imageID = ID.unique();
+    print(imageID);
+    if (imagePath != null) {
+      // Upload via path
+      final fileName = '${DateTime.now().microsecondsSinceEpoch}'
+          "${imagePath.split(".").last}";
+
+      final file = await storage.createFile(
+        bucketId: 'post-media', //maybe change to env variable
+        fileId: imageID,
+        file: InputFile.fromPath(path: imagePath, filename: fileName),
+      );
+    } else if (imageBytes != null) {
+      // Upload via bytes
+      const fileName = 'makeMeUniqueOrSomething';
+      final file = await storage.createFile(
+        bucketId: 'post-media', //maybe change to env variable
+        fileId: imageID,
+        file: InputFile.fromBytes(bytes: imageBytes, filename: fileName),
+      );
+    } else {
+      return 'error'; //TODO better error handeling here
+    }
+    return imageID;
   }
 }
 

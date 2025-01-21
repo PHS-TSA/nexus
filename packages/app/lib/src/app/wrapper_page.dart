@@ -7,6 +7,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -17,8 +18,6 @@ import '../features/home/data/post_repository.dart';
 import '../features/home/domain/post_entity.dart';
 import '../utils/hooks.dart';
 import 'router.gr.dart';
-
-// import "package:flutter/foundation.dart" show kIsWeb;
 
 /// {@template nexus.app.wrapper_page}
 /// Wrap the pages in a Material Design scaffold.
@@ -108,8 +107,11 @@ class _Dialog extends HookConsumerWidget {
     final userId = ref.watch(idProvider);
     final userName = ref.watch(userNameProvider);
 
+    /// Specifies image path for non web uploads
     String? imagePath;
-    // Uint8List? image;
+
+    /// Contains image bytes for web uploads
+    Uint8List? imageBytes;
 
     final handleSubmit = useCallback(
       () async {
@@ -137,9 +139,9 @@ class _Dialog extends HookConsumerWidget {
                 timestamp: DateTime.timestamp(),
                 likes: const IList.empty(),
                 id: PostId(ID.unique()),
-                image:
-                    imagePath, // In appwrite check if image path is null then upload
               ),
+              imageBytes,
+              imagePath,
             );
 
         if (!context.mounted) return;
@@ -192,26 +194,21 @@ class _Dialog extends HookConsumerWidget {
                   ),
                   ElevatedButton(
                     onPressed: () async {
+                      print(
+                        kIsWeb,
+                      ); // Need to update this to use file bytes instead of path for web uploads
+                      //Would also need to update post entity
                       final result = await FilePicker.platform
                           .pickFiles(); //TODOadd limitations here so users cant upload files other than images
                       if (result == null) return;
-                      final selectedfile = result.files.first;
-                      imagePath = selectedfile.path;
-                      print(imagePath);
-
-                      // final picker = ImagePicker();
-                      // final pickedFile =
-                      //     await picker.pickImage(source: ImageSource.gallery);
-                      // if (pickedFile == null) {
-                      //   throw Exception('No file selection');
-                      // }
-                      // final Uint8List fileBytes =
-                      //     await pickedFile.readAsBytes();
-                      // image = fileBytes;
-                      //   final String fileName = result.files.first.name;
-                      // } else {
-                      //   // User canceled the picker
-                      // }
+                      final selectedfile = result
+                          .files.first; // Change this for multi image support
+                      if (kIsWeb) {
+                        imageBytes = selectedfile.bytes;
+                      } else {
+                        imagePath = selectedfile.path;
+                        print(imagePath);
+                      }
                     },
                     child: const Text('Upload Image'),
                   ),
