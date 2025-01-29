@@ -43,7 +43,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   checks: ^0.3.0
   cupertino_icons: ^1.0.8 # Only required if you use Cupertino (iOS style) icons
-  dio: ^5.7.0
+  dio: ^5.8.0+1
   envied: ^1.0.0
   fast_immutable_collections: ^11.0.3
   flutter:
@@ -68,7 +68,7 @@ dependencies:
   url_launcher: ^6.3.1
 
 dev_dependencies:
-  analysis_options: 0.0.1
+  analysis_options: 2.0.1
   auto_route_generator: ^9.0.0
   build_runner: ^2.4.14
   build_web_compilers: ^4.1.0
