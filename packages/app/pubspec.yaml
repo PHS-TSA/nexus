@@ -64,11 +64,11 @@ dependencies:
   latlong2: ^0.9.1
   meta: ^1.15.0
   riverpod_annotation: ^2.6.1
-  shared_preferences: ^2.3.5
+  shared_preferences: ^2.5.1
   url_launcher: ^6.3.1
 
 dev_dependencies:
-  analysis_options: 0.0.1
+  analysis_options: 2.0.1
   auto_route_generator: ^9.0.0
   build_runner: ^2.4.14
   build_web_compilers: ^4.1.0
