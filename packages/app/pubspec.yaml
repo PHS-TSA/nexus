@@ -51,8 +51,8 @@ dependencies:
   flutter_hooks: ^0.20.5
   flutter_localizations: # Required to enable localization
     sdk: flutter
-  flutter_map: ^7.0.2
-  flutter_map_cancellable_tile_provider: ^3.0.2
+  flutter_map: ^8.0.0
+  flutter_map_cancellable_tile_provider: ^3.1.0
   flutter_native_splash: ^2.4.4
   flutter_web_plugins:
     sdk: flutter
@@ -68,7 +68,7 @@ dependencies:
   url_launcher: ^6.3.1
 
 dev_dependencies:
-  analysis_options: 0.0.1
+  analysis_options: 2.0.1
   auto_route_generator: ^9.0.0
   build_runner: ^2.4.14
   build_web_compilers: ^4.1.0
