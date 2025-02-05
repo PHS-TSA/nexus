@@ -68,7 +68,7 @@ dependencies:
   url_launcher: ^6.3.1
 
 dev_dependencies:
-  analysis_options: 0.0.1
+  analysis_options: 2.0.1
   auto_route_generator: ^9.0.0
   build_runner: ^2.4.14
   build_web_compilers: ^4.1.0
@@ -76,7 +76,7 @@ dev_dependencies:
   dhttpd: ^4.1.0
   envied_generator: ^1.0.0
   flutter_checks: ^0.1.1
-  flutter_gen_runner: ^5.8.0
+  flutter_gen_runner: ^5.9.0
   flutter_launcher_icons: ^0.14.2
   flutter_test: # Required for a Flutter project that includes tests
     sdk: flutter
