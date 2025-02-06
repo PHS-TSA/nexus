@@ -192,13 +192,20 @@ class _PostImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final image = imageProvider('679004682612efd1d354');
+    final post = ref.watch(wipPostProvider(postId))!;
+    if (post.imageID != null) {
+      final image = ref.watch(imageProvider(post.imageID!));
 
-    return switch (image) {
-      AsyncData(:final value) => Image.memory(value as Uint8List),
-      AsyncError() => const Text('Error loading image'),
-      _ => const CircularProgressIndicator()
-    };
+      return switch (image) {
+        AsyncData(:final value) => Image.memory(value),
+        AsyncError() => const Text('Error loading image'),
+        _ => const CircularProgressIndicator()
+      };
+    } else {
+      return const SizedBox(
+        height: 1,
+      );
+    }
   }
 
   @override

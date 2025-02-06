@@ -91,7 +91,9 @@ final class _AppwritePostRepository implements PostRepository {
 
   @override
   Future<Uint8List> getImages(String id) async {
-    return storage.getFileDownload(bucketId: 'post-media', fileId: id);
+    final response =
+        await storage.getFileView(bucketId: 'post-media', fileId: id);
+    return response;
   }
 
   @override
