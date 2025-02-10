@@ -46,6 +46,7 @@ dependencies:
   dio: ^5.7.0
   envied: ^1.0.0
   fast_immutable_collections: ^11.0.3
+  file_picker: ^8.1.7
   flutter:
     sdk: flutter
   flutter_hooks: ^0.20.5
@@ -59,6 +60,7 @@ dependencies:
   freezed_annotation: ^2.4.4
   geolocator: ^13.0.2
   hooks_riverpod: ^2.6.1
+  image_picker: ^1.1.2
   intl: ^0.19.0
   json_annotation: ^4.9.0
   latlong2: ^0.9.1

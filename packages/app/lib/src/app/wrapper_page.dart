@@ -6,6 +6,8 @@ import 'dart:math';
 import 'package:appwrite/appwrite.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -105,6 +107,12 @@ class _Dialog extends HookConsumerWidget {
     final userId = ref.watch(idProvider);
     final userName = ref.watch(userNameProvider);
 
+    /// Specifies image path for non web uploads
+    String? imagePath;
+
+    /// Contains image bytes for web uploads
+    Uint8List? imageBytes;
+
     final handleSubmit = useCallback(
       () async {
         final location = await ref.read(locationServiceProvider.future);
@@ -132,6 +140,8 @@ class _Dialog extends HookConsumerWidget {
                 likes: const IList.empty(),
                 id: PostId(ID.unique()),
               ),
+              imageBytes,
+              imagePath,
             );
 
         if (!context.mounted) return;
@@ -182,6 +192,27 @@ class _Dialog extends HookConsumerWidget {
                     decoration:
                         const InputDecoration(label: Text('Description')),
                   ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      print(
+                        kIsWeb,
+                      ); // Need to update this to use file bytes instead of path for web uploads
+                      //Would also need to update post entity
+                      final result = await FilePicker.platform
+                          .pickFiles(); //TODOadd limitations here so users cant upload files other than images
+                      if (result == null) return;
+                      final selectedfile = result
+                          .files.first; // Change this for multi image support
+                      if (kIsWeb) {
+                        imageBytes = selectedfile.bytes;
+                      } else {
+                        imagePath = selectedfile.path;
+                        print(imagePath);
+                      }
+                    },
+                    child: const Text('Upload Image'),
+                  ),
+                  // if (image != null) Image.memory(image!),
                   ElevatedButton(
                     onPressed: handleSubmit,
                     child: const Text('Create Post'),

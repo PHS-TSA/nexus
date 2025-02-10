@@ -3,6 +3,7 @@ library;
 
 import 'package:appwrite/appwrite.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -25,20 +26,35 @@ abstract interface class PostRepository {
   /// Create a new post.
   ///
   /// Returns the created post.
-  Future<void> createNewPost(PostEntity post);
+  Future<void> createNewPost(
+    PostEntity post,
+    Uint8List? imageBytes,
+    String? imagePath,
+  );
 
   /// Toggle if a user is listed as having liked a post.
   Future<void> toggleLikePost(PostId postId, UserId userId, Likes likes);
+
+  ///Uploads image to Appwrite and returns id
+  Future<String> uploadImage(
+    PostEntity post,
+    Uint8List? imageBytes,
+    String? imagePath,
+  );
+
+  Future<Uint8List> getImages(String id);
 }
 
 final class _AppwritePostRepository implements PostRepository {
   const _AppwritePostRepository({
     required this.database,
+    required this.storage,
     required this.databaseId,
     required this.collectionId,
   });
 
   final Databases database;
+  final Storage storage;
 
   final String databaseId;
   final String collectionId;
@@ -74,7 +90,29 @@ final class _AppwritePostRepository implements PostRepository {
   }
 
   @override
-  Future<void> createNewPost(PostEntity post) async {
+  Future<Uint8List> getImages(String id) async {
+    final response =
+        await storage.getFileView(bucketId: 'post-media', fileId: id);
+    return response;
+  }
+
+  @override
+  Future<void> createNewPost(
+    PostEntity post,
+    Uint8List? imageBytes,
+    String? imagePath,
+  ) async {
+    print('Printing image id pre uploading image: ${post.imageID}');
+    if (imageBytes != null || imagePath != null) {
+      post = post.copyWith(
+        imageID: await uploadImage(
+          post,
+          imageBytes,
+          imagePath,
+        ),
+      );
+    }
+    print('Printing image id pre creating doc: ${post.imageID}');
     await database.createDocument(
       databaseId: databaseId,
       collectionId: collectionId,
@@ -98,15 +136,52 @@ final class _AppwritePostRepository implements PostRepository {
       },
     );
   }
+
+  @override
+  Future<String> uploadImage(
+    // For multi image change to return list
+    PostEntity post,
+    Uint8List? imageBytes,
+    String? imagePath,
+  ) async {
+    // might be able to remove post param here
+
+    final imageID = ID.unique();
+    print(imageID);
+    if (imagePath != null) {
+      // Upload via path
+      final fileName = '${DateTime.now().microsecondsSinceEpoch}'
+          "${imagePath.split(".").last}";
+
+      final file = await storage.createFile(
+        bucketId: 'post-media', //maybe change to env variable
+        fileId: imageID,
+        file: InputFile.fromPath(path: imagePath, filename: fileName),
+      );
+    } else if (imageBytes != null) {
+      // Upload via bytes
+      const fileName = 'makeMeUniqueOrSomething';
+      final file = await storage.createFile(
+        bucketId: 'post-media', //maybe change to env variable
+        fileId: imageID,
+        file: InputFile.fromBytes(bytes: imageBytes, filename: fileName),
+      );
+    } else {
+      return 'error'; //TODO better error handeling here
+    }
+    return imageID;
+  }
 }
 
 /// Get a [PostRepository] for a specific author and feed.
 @riverpod
 PostRepository postRepository(Ref ref) {
   final database = ref.watch(databasesProvider);
+  final storage = ref.watch(storageProvider);
 
   return _AppwritePostRepository(
     database: database,
+    storage: storage,
     databaseId: Env.databaseId,
     collectionId: Env.postsCollectionId,
   );

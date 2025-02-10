@@ -48,8 +48,8 @@ sealed class PostEntity with _$PostEntity {
     /// Post ID
     @JsonKey(includeToJson: false) required PostId id,
 
-    /// An optional media to display alongside the post.
-    String? image,
+    /// Contains ID of image in bucket
+    String? imageID, // Change to list if we want multi image suppot
   }) = _PostEntity;
 
   factory PostEntity.fromJson(Map<String, dynamic> json) =>

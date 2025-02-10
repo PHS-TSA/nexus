@@ -167,6 +167,8 @@ class _PostBody extends ConsumerWidget {
           post.description,
           textAlign: TextAlign.left,
         ),
+        // Call storage from in here so the rest of the post loads first
+        _PostImage(postId: postId),
       ],
     );
   }
@@ -178,6 +180,39 @@ class _PostBody extends ConsumerWidget {
     properties.add(StringProperty('postId', postId.id));
   }
   // coverage:ignore-end
+}
+
+class _PostImage extends ConsumerWidget {
+  const _PostImage({
+    required this.postId,
+    super.key,
+  });
+
+  final PostId postId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final post = ref.watch(wipPostProvider(postId))!;
+    if (post.imageID != null) {
+      final image = ref.watch(imageProvider(post.imageID!));
+
+      return switch (image) {
+        AsyncData(:final value) => Image.memory(value),
+        AsyncError() => const Text('Error loading image'),
+        _ => const CircularProgressIndicator()
+      };
+    } else {
+      return const SizedBox(
+        height: 1,
+      );
+    }
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<PostId>('postId', postId));
+  }
 }
 
 /// Given a list of likes and a user ID, return a new list of likes with the user ID toggled in or out of the list.
