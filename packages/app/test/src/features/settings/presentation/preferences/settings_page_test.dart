@@ -16,18 +16,18 @@ import '../../../../../helpers/pump_app.dart';
 
 void main() {
   group('SettingsPage', () {
-    testWidgets('changing the dropdown value should save the theme',
-        (tester) async {
+    testWidgets('changing the dropdown value should save the theme', (
+      tester,
+    ) async {
       final mockSharedPreferences = MockSharedPreferences();
 
       final darkMode = json.encode(
-        const SettingsModel(
-          themeMode: ThemeMode.dark,
-        ).toJson(),
+        const SettingsModel(themeMode: ThemeMode.dark).toJson(),
       );
 
-      when(() => mockSharedPreferences.setString('prefs', darkMode))
-          .thenAnswer((_) async {});
+      when(
+        () => mockSharedPreferences.setString('prefs', darkMode),
+      ).thenAnswer((_) async {});
 
       when(() => mockSharedPreferences.getString('prefs')).thenReturn(darkMode);
 
@@ -47,8 +47,9 @@ void main() {
 
       check(find.text('Dark Theme')).findsOne();
 
-      verify(() => mockSharedPreferences.setString('prefs', darkMode))
-          .called(1);
+      verify(
+        () => mockSharedPreferences.setString('prefs', darkMode),
+      ).called(1);
     });
 
     testAccessibilityGuidelines(

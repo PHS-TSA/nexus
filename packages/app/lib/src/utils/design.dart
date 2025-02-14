@@ -15,10 +15,7 @@ final ColorScheme darkScheme = ColorScheme.fromSeed(
 );
 
 /// The app's theme.
-final ThemeData theme = ThemeData(
-  useMaterial3: true,
-  colorScheme: scheme,
-);
+final ThemeData theme = ThemeData(useMaterial3: true, colorScheme: scheme);
 
 /// The app's dark theme.
 final ThemeData darkTheme = ThemeData(

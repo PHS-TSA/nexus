@@ -70,5 +70,6 @@ linter:
 
     # Newly (or soon-to-be) deprecated rules, still in VGA
     unnecessary_await_in_return: false
+    require_trailing_commas: false
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

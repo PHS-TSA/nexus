@@ -41,5 +41,6 @@ class MapInfoPage extends StatelessWidget {
       ..add(DoubleProperty('x', latitude))
       ..add(DoubleProperty('y', longitude));
   }
+
   // coverage:ignore-end
 }

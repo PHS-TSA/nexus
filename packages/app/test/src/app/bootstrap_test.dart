@@ -21,10 +21,7 @@ void main() {
 
   test('main does not throw', () async {
     const app = App();
-    final env = (
-      runApp: (_) {},
-      getSharedPreferences: getSharedPreferences,
-    );
+    final env = (runApp: (_) {}, getSharedPreferences: getSharedPreferences);
 
     await check(app.bootstrap(env)).completes();
   });

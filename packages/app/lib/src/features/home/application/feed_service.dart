@@ -57,11 +57,7 @@ base class FeedService extends _$FeedService {
 ///
 /// [postIndex] is the index of the current post the user is viewing.
 @riverpod
-FutureOr<PostId?> singlePost(
-  Ref ref,
-  FeedEntity feed,
-  int postIndex,
-) async {
+FutureOr<PostId?> singlePost(Ref ref, FeedEntity feed, int postIndex) async {
   // Keep previous posts in cache to make scrolling up possible.
   // Otherwise, the `ListView` freaks out.
   if (postIndex != 0) {

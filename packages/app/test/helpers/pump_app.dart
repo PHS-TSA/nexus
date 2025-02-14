@@ -21,9 +21,7 @@ extension PumpApp on WidgetTester {
       ProviderScope(
         overrides: overrides,
         observers: observers,
-        child: _Widget(
-          child: child,
-        ),
+        child: _Widget(child: child),
       ),
     );
 
@@ -32,9 +30,7 @@ extension PumpApp on WidgetTester {
 }
 
 class _Widget extends StatelessWidget {
-  const _Widget({
-    required this.child,
-  });
+  const _Widget({required this.child});
 
   final Widget child;
 

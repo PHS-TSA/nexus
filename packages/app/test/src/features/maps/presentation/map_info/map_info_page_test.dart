@@ -21,10 +21,6 @@ void main() {
       check(find.text('Your coordinates are (0.0000, 0.0000).')).findsOne();
     });
 
-    testAccessibilityGuidelines(
-      const Material(
-        child: MapInfoPage(),
-      ),
-    );
+    testAccessibilityGuidelines(const Material(child: MapInfoPage()));
   });
 }

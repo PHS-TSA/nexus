@@ -17,10 +17,7 @@ class PostViewPage extends ConsumerWidget {
   /// {@macro nexus.features.home.presentation.home.post_view_page}
   ///
   /// Construct a new [PostViewPage] widget.
-  const PostViewPage({
-    required this.postId,
-    super.key,
-  });
+  const PostViewPage({required this.postId, super.key});
 
   /// ID for this post.
   final PostId postId;
@@ -52,5 +49,6 @@ class PostViewPage extends ConsumerWidget {
     super.debugFillProperties(properties);
     properties.add(StringProperty('postId', postId.id));
   }
+
   // coverage:ignore-end
 }

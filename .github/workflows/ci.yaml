@@ -16,8 +16,7 @@ on:
 
 env:
   CI: true
-  FLUTTER_CHANNEL: master
-  FLUTTER_VERSION: "4a4eb2a320" # TODO: Prefer flutter-version-file once back on beta.
+  FLUTTER_CHANNEL: stable
 
 permissions:
   contents: read
@@ -45,7 +44,7 @@ jobs:
         uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff # v2.18.0
         with:
           channel: ${{ env.FLUTTER_CHANNEL }}
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          flutter-version-file: pubspec.yaml
           cache: true
       - name: 🌐 Disable analytics
         run: flutter --disable-analytics
@@ -54,7 +53,7 @@ jobs:
         with:
           path: |
             .dart_tool/
-            lib/gen/*.gen.dart
+            lib/src/gen/*.gen.dart
             lib/src/features/**/*.g.dart
             lib/src/features/**/*.freezed.dart
             lib/src/utils/*.g.dart
@@ -68,6 +67,7 @@ jobs:
         uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
         with:
           run-bootstrap: true
+          enforce-lockfile: true
 
   build:
     name: Build
@@ -116,7 +116,7 @@ jobs:
         uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff # v2.18.0
         with:
           channel: ${{ env.FLUTTER_CHANNEL }}
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          flutter-version-file: pubspec.yaml
           cache: true
       - name: ☕ Setup Java
         if: ${{ matrix.target == 'appbundle' }}
@@ -134,7 +134,7 @@ jobs:
         with:
           path: |
             .dart_tool/
-            lib/gen/*.gen.dart
+            lib/src/gen/*.gen.dart
             lib/src/features/**/*.g.dart
             lib/src/features/**/*.freezed.dart
             lib/src/utils/*.g.dart
@@ -148,6 +148,7 @@ jobs:
         uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
         with:
           run-bootstrap: true
+          enforce-lockfile: true
       - name: 🔧 Build
         run: |
           flutter build ${{ matrix.target }} ${{ matrix.flutter-flags }}
@@ -179,7 +180,7 @@ jobs:
         uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff # v2.18.0
         with:
           channel: ${{ env.FLUTTER_CHANNEL }}
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          flutter-version-file: pubspec.yaml
           cache: true
       - name: 🌐 Disable analytics
         run: flutter --disable-analytics
@@ -188,7 +189,7 @@ jobs:
         with:
           path: |
             .dart_tool/
-            lib/gen/*.gen.dart
+            lib/src/gen/*.gen.dart
             lib/src/features/**/*.g.dart
             lib/src/features/**/*.freezed.dart
             lib/src/utils/*.g.dart
@@ -202,6 +203,7 @@ jobs:
         uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
         with:
           run-bootstrap: true
+          enforce-lockfile: true
       - name: 🕵️ Analyze project source
         run: melos analyze --fatal-infos --concurrency=5
       - name: 🕵️ Run Custom Lint Rules
@@ -226,7 +228,7 @@ jobs:
         uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff # v2.18.0
         with:
           channel: ${{ env.FLUTTER_CHANNEL }}
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          flutter-version-file: pubspec.yaml
           cache: true
       - name: 🌐 Disable analytics
         run: flutter --disable-analytics
@@ -235,7 +237,7 @@ jobs:
         with:
           path: |
             .dart_tool/
-            lib/gen/*.gen.dart
+            lib/src/gen/*.gen.dart
             lib/src/features/**/*.g.dart
             lib/src/features/**/*.freezed.dart
             lib/src/utils/*.g.dart
@@ -252,6 +254,7 @@ jobs:
         uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
         with:
           run-bootstrap: true
+          enforce-lockfile: true
       - name: 🧪 Run tests
         run: melos run test
         continue-on-error: true
@@ -283,12 +286,12 @@ jobs:
         uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff # v2.18.0
         with:
           channel: ${{ env.FLUTTER_CHANNEL }}
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          flutter-version-file: pubspec.yaml
           cache: true
       - name: 🌐 Disable analytics
         run: flutter --disable-analytics
       - name: ✨ Verify formatting
-        run: melos format --output=none --set-exit-if-changed --concurrency=5
+        run: dart format . --output=none --set-exit-if-changed
 
   spell-check:
     name: Check Spelling

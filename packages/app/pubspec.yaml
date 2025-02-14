@@ -23,7 +23,7 @@ issue_tracker: https://github.com/PHS-TSA/nexus/issues
 repository: https://github.com/PHS-TSA/nexus.git
 
 environment:
-  sdk: "^3.6.0"
+  sdk: ^3.7.0
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -32,27 +32,25 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependency_overrides:
-  custom_lint_builder: 0.7.0
   flutter_web_auth_2: 4.1.0 # Supports WASM.
+  pana: 0.22.18
 
 dependencies:
-  appwrite: ^13.1.1
-  auto_route: ^9.2.2
-  build_version: ^2.1.1
+  appwrite: ^14.0.0
+  auto_route: ^9.3.0+1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  checks: ^0.3.0
   cupertino_icons: ^1.0.8 # Only required if you use Cupertino (iOS style) icons
-  dio: ^5.7.0
-  envied: ^1.0.0
+  dio: ^5.8.0+1
+  envied: ^1.1.1
   fast_immutable_collections: ^11.0.3
   flutter:
     sdk: flutter
-  flutter_hooks: ^0.20.5
+  flutter_hooks: ^0.21.1-pre.4
   flutter_localizations: # Required to enable localization
     sdk: flutter
-  flutter_map: ^7.0.2
-  flutter_map_cancellable_tile_provider: ^3.0.2
+  flutter_map: ^8.0.0
+  flutter_map_cancellable_tile_provider: ^3.1.0
   flutter_native_splash: ^2.4.4
   flutter_web_plugins:
     sdk: flutter
@@ -62,30 +60,31 @@ dependencies:
   intl: ^0.19.0
   json_annotation: ^4.9.0
   latlong2: ^0.9.1
-  meta: ^1.15.0
+  meta: ^1.16.0
   riverpod_annotation: ^2.6.1
-  shared_preferences: ^2.3.5
+  shared_preferences: ^2.5.2
   url_launcher: ^6.3.1
 
 dev_dependencies:
   analysis_options: 0.0.1
-  auto_route_generator: ^9.0.0
-  build_runner: ^2.4.14
-  build_web_compilers: ^4.1.0
-  custom_lint: ^0.7.0
+  auto_route_generator: ^9.3.1
+  build_runner: ^2.4.15
+  build_version: ^2.1.1
+  checks: ^0.3.0
+  custom_lint: ^0.7.3
   dhttpd: ^4.1.0
-  envied_generator: ^1.0.0
+  envied_generator: ^1.1.1
   flutter_checks: ^0.1.1
-  flutter_gen_runner: ^5.8.0
-  flutter_launcher_icons: ^0.14.2
+  flutter_gen_runner: ^5.9.0
+  flutter_launcher_icons: ^0.14.3
   flutter_test: # Required for a Flutter project that includes tests
     sdk: flutter
-  freezed: ^2.5.7
-  # freezed_lint: ^0.0.5
-  json_serializable: ^6.9.0
+  freezed: ^2.5.8
+  freezed_lint: ^0.0.7
+  json_serializable: ^6.9.4
   mocktail: ^1.0.4
-  riverpod_generator: ^2.6.3
-  riverpod_lint: ^2.6.3
+  riverpod_generator: ^2.6.4
+  riverpod_lint: ^2.6.4
   very_good_cli: ^0.25.0
 
 # For information on the generic Dart part of this file, see the
@@ -111,6 +110,9 @@ flutter:
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
+
+flutter_gen:
+  output: lib/src/gen/
 
 # dart run flutter_launcher_icons
 flutter_launcher_icons:
