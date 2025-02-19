@@ -51,6 +51,8 @@ targets:
           - lib/src/features/*/application/*_service.dart
       flutter_gen_runner:
         # configs for the flutter.assets generator
+        options:
+          output: lib/src/gen/
         generate_for:
           - $package$
       build_version:
