@@ -157,7 +157,7 @@ class _PostBody extends ConsumerWidget {
         ),
         Text(post.description, textAlign: TextAlign.left),
         // Call storage from in here so the rest of the post loads first
-        _PostImage(postId: postId),
+        _PostImages(postId: postId),
       ],
     );
   }
@@ -172,31 +172,41 @@ class _PostBody extends ConsumerWidget {
   // coverage:ignore-end
 }
 
-class _PostImage extends ConsumerWidget {
-  const _PostImage({required this.postId, super.key});
+class _PostImages extends ConsumerWidget {
+  const _PostImages({required this.postId, super.key});
 
   final PostId postId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO(lishaduck): fix images not caching correctly.
-    final post = ref.watch(wipPostProvider(postId))!;
-    if (post.imageIds.isEmpty) {
+    final post = ref.watch(wipPostProvider(postId));
+
+    if (post == null || post.imageIds.isEmpty) {
       return const SizedBox(height: 0);
     }
+
     return SizedBox(
       height: 500,
       width: MediaQuery.sizeOf(context).width / 1.5,
-      child: ListView(
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        children: [
-          for (final imageId in post.imageIds)
-            switch (ref.watch(imageProvider(imageId))) {
-              AsyncData(:final value) => Image.memory(value),
-              AsyncError() => const Text('Error loading image'),
-              _ => const CircularProgressIndicator(),
-            },
-        ],
+        padding: const EdgeInsets.all(8),
+        itemCount: post.imageIds.length,
+        itemBuilder: (context, index) {
+          final image = ref.watch(imageProvider(post.imageIds[index]));
+
+          return switch (image) {
+            AsyncData(:final value) => Container(
+              margin: const EdgeInsets.all(8),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.memory(value, fit: BoxFit.cover),
+              ),
+            ),
+            AsyncError() => const Text('Error loading image'),
+            _ => const CircularProgressIndicator(),
+          };
+        },
       ),
     );
   }

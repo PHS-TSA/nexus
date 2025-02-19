@@ -233,9 +233,11 @@ class _UploadedImagesView extends HookConsumerWidget {
         itemCount: uploadedImages.length,
         itemBuilder: (context, index) {
           final image = uploadedImages[index];
-          return switch (ref.watch(
+          final uploadedImage = ref.watch(
             uploadedImagesBytesProvider(image.imageId),
-          )) {
+          );
+
+          return switch (uploadedImage) {
             AsyncData(:final value) when value.isNotEmpty => Stack(
               alignment: Alignment.topRight,
               children: [
