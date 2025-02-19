@@ -69,10 +69,12 @@ FutureOr<PostId?> feedPost(Ref ref, FeedEntity feed, int postIndex) async {
 
     if (lastPost != null) {
       final imageIds = ref.watch(
-        singlePostProvider(lastPost).select((s) => s?.imageIds),
+        singlePostProvider(
+          lastPost,
+        ).select((s) => s?.imageIds ?? const IList<String>.empty()),
       );
 
-      for (final imageId in imageIds ?? const IList<String>.empty()) {
+      for (final imageId in imageIds) {
         ref.watch(imageProvider(imageId));
       }
     }
