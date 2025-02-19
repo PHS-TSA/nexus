@@ -70,22 +70,6 @@ class Feed extends ConsumerWidget {
                   ),
                 ),
               ),
-
-              // Post(
-              //     postId: PostEntity(
-              //       headline: 'Error',
-              //       description: ,
-              //       author: '',
-              //       authorName: '',
-              //       lat: 0,
-              //       lng: 0,
-              //       likes: const [],
-              //       timestamp: DateTime.timestamp(),
-              //       id: const PostId(''),
-              //     ),
-              //   ),
-
-              // If we're loading, display a loading indicator.
               _ => null,
             };
           },

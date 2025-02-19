@@ -81,12 +81,6 @@
 
   // Speed up operations on Windows by reducing file locking & watching over `.dart_tool`.
   "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true,
     "**/.dart_tool": true
   },
 
@@ -100,22 +94,69 @@
 
   // Make commit messages more consistent.
   "commitlint.config.extend.rules": {
-    "body-leading-blank": [1, "always"],
-    "body-max-line-length": [2, "always", 72],
-    "body-case": [1, "always", ["sentence-case"]],
-    "footer-leading-blank": [1, "always"],
-    "footer-max-line-length": [2, "always", 72],
-    "header-max-length": [2, "always", 50],
-    "scope-case": [2, "always", "lower-case"],
+    "body-leading-blank": [
+      1,
+      "always"
+    ],
+    "body-max-line-length": [
+      2,
+      "always",
+      72
+    ],
+    "body-case": [
+      1,
+      "always",
+      [
+        "sentence-case"
+      ]
+    ],
+    "footer-leading-blank": [
+      1,
+      "always"
+    ],
+    "footer-max-line-length": [
+      2,
+      "always",
+      72
+    ],
+    "header-max-length": [
+      2,
+      "always",
+      50
+    ],
+    "scope-case": [
+      2,
+      "always",
+      "lower-case"
+    ],
     "subject-case": [
       2,
       "never",
-      ["sentence-case", "start-case", "pascal-case", "upper-case"]
+      [
+        "sentence-case",
+        "start-case",
+        "pascal-case",
+        "upper-case"
+      ]
     ],
-    "subject-empty": [2, "never"],
-    "subject-full-stop": [2, "never", "."],
-    "type-case": [2, "always", "lower-case"],
-    "type-empty": [2, "never"],
+    "subject-empty": [
+      2,
+      "never"
+    ],
+    "subject-full-stop": [
+      2,
+      "never",
+      "."
+    ],
+    "type-case": [
+      2,
+      "always",
+      "lower-case"
+    ],
+    "type-empty": [
+      2,
+      "never"
+    ],
     "type-enum": [
       2,
       "always",
@@ -138,6 +179,5 @@
   // Pin CI for the current branch to the status bar.
   "github-actions.workflows.pinned.workflows": [
     ".github/workflows/ci.yaml"
-  ],
-  "C_Cpp.errorSquiggles": "enabled"
+  ]
 }

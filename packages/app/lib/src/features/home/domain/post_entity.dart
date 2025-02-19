@@ -2,7 +2,6 @@
 library;
 
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../utils/json.dart';
@@ -48,8 +47,8 @@ sealed class PostEntity with _$PostEntity {
     /// Post ID
     @JsonKey(includeToJson: false) required PostId id,
 
-    /// An optional media to display alongside the post.
-    String? image,
+    /// Contains ID of image in bucket
+    @JsonKey(name: 'imageID') required IList<String> imageIds,
   }) = _PostEntity;
 
   factory PostEntity.fromJson(Map<String, dynamic> json) =>

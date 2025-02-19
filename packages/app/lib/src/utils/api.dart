@@ -38,6 +38,14 @@ Databases databases(Ref ref) {
   return Databases(client);
 }
 
+/// Get the Appwrite Buckets
+@Riverpod(keepAlive: true)
+Storage storage(Ref ref) {
+  final client = ref.watch(clientProvider);
+
+  return Storage(client);
+}
+
 /// Get the Appwrite avatars.
 @Riverpod(keepAlive: true)
 Avatars avatars(Ref ref) {

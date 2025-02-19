@@ -156,6 +156,8 @@ class _PostBody extends ConsumerWidget {
           ), // TODO(MattsAttack): Need better text styling.
         ),
         Text(post.description, textAlign: TextAlign.left),
+        // Call storage from in here so the rest of the post loads first
+        _PostImages(postId: postId),
       ],
     );
   }
@@ -168,6 +170,52 @@ class _PostBody extends ConsumerWidget {
   }
 
   // coverage:ignore-end
+}
+
+class _PostImages extends ConsumerWidget {
+  const _PostImages({required this.postId, super.key});
+
+  final PostId postId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final post = ref.watch(wipPostProvider(postId));
+
+    if (post == null || post.imageIds.isEmpty) {
+      return const SizedBox(height: 0);
+    }
+
+    return SizedBox(
+      height: 500,
+      width: MediaQuery.sizeOf(context).width / 1.5,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.all(8),
+        itemCount: post.imageIds.length,
+        itemBuilder: (context, index) {
+          final image = ref.watch(imageProvider(post.imageIds[index]));
+
+          return switch (image) {
+            AsyncData(:final value) => Container(
+              margin: const EdgeInsets.all(8),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.memory(value, fit: BoxFit.cover),
+              ),
+            ),
+            AsyncError() => const Text('Error loading image'),
+            _ => const CircularProgressIndicator(),
+          };
+        },
+      ),
+    );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<PostId>('postId', postId));
+  }
 }
 
 /// Given a list of likes and a user ID, return a new list of likes with the user ID toggled in or out of the list.
@@ -201,7 +249,7 @@ class _PostInteractables extends HookConsumerWidget {
 
     return Row(
       children: [
-        Text(post.likes.length.toString()),
+        Text('${post.likes.length}'),
         IconButton(
           onPressed: () async {
             if (userId == null) {

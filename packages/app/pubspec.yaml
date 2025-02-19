@@ -57,6 +57,7 @@ dependencies:
   freezed_annotation: ^2.4.4
   geolocator: ^13.0.2
   hooks_riverpod: ^2.6.1
+  image_picker: ^1.1.2
   intl: ^0.19.0
   json_annotation: ^4.9.0
   latlong2: ^0.9.1
@@ -110,9 +111,6 @@ flutter:
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
-
-flutter_gen:
-  output: lib/src/gen/
 
 # dart run flutter_launcher_icons
 flutter_launcher_icons:

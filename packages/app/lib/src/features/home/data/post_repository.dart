@@ -3,6 +3,7 @@ library;
 
 import 'package:appwrite/appwrite.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:flutter/foundation.dart' show Uint8List;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -11,6 +12,7 @@ import '../../../utils/api.dart';
 import '../../auth/domain/user.dart';
 import '../domain/feed_entity.dart';
 import '../domain/post_entity.dart';
+import '../domain/uploaded_image_entity.dart';
 
 part 'post_repository.g.dart';
 
@@ -25,20 +27,31 @@ abstract interface class PostRepository {
   /// Create a new post.
   ///
   /// Returns the created post.
-  Future<void> createNewPost(PostEntity post);
+  Future<void> createNewPost(
+    PostEntity post,
+    IList<UploadedImageEntity> images,
+  );
 
   /// Toggle if a user is listed as having liked a post.
   Future<void> toggleLikePost(PostId postId, UserId userId, Likes likes);
+
+  /// Upload an image to Appwrite.
+  Future<void> uploadImage(UploadedImageEntity file);
+
+  /// Fetch images from Appwrite.
+  Future<Uint8List> getImages(String id);
 }
 
 final class _AppwritePostRepository implements PostRepository {
   const _AppwritePostRepository({
     required this.database,
+    required this.storage,
     required this.databaseId,
     required this.collectionId,
   });
 
   final Databases database;
+  final Storage storage;
 
   final String databaseId;
   final String collectionId;
@@ -74,7 +87,21 @@ final class _AppwritePostRepository implements PostRepository {
   }
 
   @override
-  Future<void> createNewPost(PostEntity post) async {
+  Future<Uint8List> getImages(String id) async {
+    // TODO(MattsAttack): Update for multi-image support.
+    return await storage.getFileView(bucketId: 'post-media', fileId: id);
+  }
+
+  @override
+  Future<void> createNewPost(
+    PostEntity post,
+    IList<UploadedImageEntity> images,
+  ) async {
+    // Could be cool to implement a upload status bar. Posts with 10 images will take a while and that should help
+    for (final image in images) {
+      await uploadImage(image);
+    }
+
     await database.createDocument(
       databaseId: databaseId,
       collectionId: collectionId,
@@ -92,15 +119,32 @@ final class _AppwritePostRepository implements PostRepository {
       data: {'likes': likes.unlockLazy},
     );
   }
+
+  @override
+  Future<void> uploadImage(UploadedImageEntity file) async {
+    final bytes = await file.file.readAsBytes();
+
+    // Prevent collisions by adding a timestamp to the file name.
+    final fileName =
+        '${DateTime.timestamp().microsecondsSinceEpoch}-${file.file.name}';
+
+    await storage.createFile(
+      bucketId: 'post-media', //maybe change to env variable
+      fileId: file.imageId,
+      file: InputFile.fromBytes(bytes: bytes, filename: fileName),
+    );
+  }
 }
 
 /// Get a [PostRepository] for a specific author and feed.
 @riverpod
 PostRepository postRepository(Ref ref) {
   final database = ref.watch(databasesProvider);
+  final storage = ref.watch(storageProvider);
 
   return _AppwritePostRepository(
     database: database,
+    storage: storage,
     databaseId: Env.databaseId,
     collectionId: Env.postsCollectionId,
   );

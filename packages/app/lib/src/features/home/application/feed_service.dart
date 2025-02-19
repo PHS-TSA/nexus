@@ -1,6 +1,8 @@
 /// This library provides a service to stream posts in DB to the UI.
 library;
 
+import 'dart:typed_data';
+
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -61,9 +63,19 @@ FutureOr<PostId?> singlePost(Ref ref, FeedEntity feed, int postIndex) async {
   // Keep previous posts in cache to make scrolling up possible.
   // Otherwise, the `ListView` freaks out.
   if (postIndex != 0) {
-    await ref.watch(
-      singlePostProvider(feed, postIndex - 1).selectAsync((_) {}),
+    final lastPost = await ref.watch(
+      singlePostProvider(feed, postIndex - 1).future,
     );
+
+    if (lastPost != null) {
+      final imageIds = ref.watch(
+        wipPostProvider(lastPost).select((s) => s?.imageIds),
+      );
+
+      for (final imageId in imageIds ?? const IList<String>.empty()) {
+        ref.watch(imageProvider(imageId));
+      }
+    }
   }
 
   final ids = ref.watch(feedServiceProvider(feed).select((s) => s.ids));
@@ -96,4 +108,10 @@ base class WipPost extends _$WipPost {
   void setPost(PostEntity post) {
     state = post;
   }
+}
+
+/// Image provider for posts
+@riverpod
+Future<Uint8List> image(Ref ref, String id) {
+  return ref.watch(postRepositoryProvider).getImages(id);
 }

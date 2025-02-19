@@ -9,11 +9,14 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../features/auth/application/auth_service.dart';
 import '../features/home/application/location_service.dart';
+import '../features/home/application/uploaded_image_service.dart';
 import '../features/home/data/post_repository.dart';
 import '../features/home/domain/post_entity.dart';
+import '../features/home/domain/uploaded_image_entity.dart';
 import '../utils/hooks.dart';
 import 'router.gr.dart';
 
@@ -94,6 +97,7 @@ class _Dialog extends HookConsumerWidget {
     final userName = ref.watch(userNameProvider);
 
     final handleSubmit = useCallback(() async {
+      final uploadedImages = ref.watch(uploadedImagesServiceProvider);
       final location = await ref.read(locationServiceProvider.future);
       var lat = location.latitude.roundToDouble();
       var lng = location.longitude.roundToDouble();
@@ -106,6 +110,8 @@ class _Dialog extends HookConsumerWidget {
       if (!(formKey.currentState?.validate() ?? false)) return;
 
       formKey.currentState?.save();
+
+      // Create a list off all uploaded images ids
 
       await ref
           .read(postRepositoryProvider)
@@ -120,7 +126,11 @@ class _Dialog extends HookConsumerWidget {
               timestamp: DateTime.timestamp(),
               likes: const IList.empty(),
               id: PostId(ID.unique()),
+              imageIds:
+                  // Read in the list of uploaded images ids.
+                  uploadedImages.map((image) => image.imageId).toIList(),
             ),
+            uploadedImages,
           );
 
       if (!context.mounted) return;
@@ -133,50 +143,136 @@ class _Dialog extends HookConsumerWidget {
     }, [formKey]);
 
     return Dialog(
-      insetPadding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.sizeOf(context).width / 8,
-        vertical: MediaQuery.sizeOf(context).height / 8,
-      ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
-        padding: const EdgeInsets.all(40),
-        child: Scaffold(
-          appBar: AppBar(title: const Text('Create a New Post')),
-          body: Form(
-            key: formKey,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  TextFormField(
-                    initialValue: title.value,
-                    onSaved: (value) {
-                      if (value == null) return;
+        padding: const EdgeInsets.all(16),
+        child: Form(
+          key: formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Text(
+                  'Create a new post',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 16),
 
-                      title.value = value;
-                    },
-                    decoration: const InputDecoration(label: Text('Title')),
-                  ),
-                  TextFormField(
-                    initialValue: description.value,
-                    onSaved: (value) {
-                      if (value == null) return;
+                // TODO(MattsAttack): guard against creating empty posts.
+                TextFormField(
+                  initialValue: title.value,
+                  onSaved: (value) {
+                    if (value == null) return;
 
-                      description.value = value;
-                    },
-                    decoration: const InputDecoration(
-                      label: Text('Description'),
+                    title.value = value;
+                  },
+                  decoration: const InputDecoration(label: Text('Title')),
+                ),
+                TextFormField(
+                  initialValue: description.value,
+                  onSaved: (value) {
+                    if (value == null) return;
+
+                    description.value = value;
+                  },
+                  decoration: const InputDecoration(label: Text('Description')),
+                ),
+                const _UploadedImagesView(),
+                const Spacer(),
+
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 8,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        // TODO(MattsAttack): Set a max image upload count, probably 10.
+                        final picker = ImagePicker();
+                        final pickedFiles = await picker.pickMultiImage();
+
+                        for (final pickedFile in pickedFiles) {
+                          ref
+                              .read(uploadedImagesServiceProvider.notifier)
+                              .addImage(
+                                UploadedImageEntity(
+                                  imageId: ID.unique(),
+                                  file: pickedFile,
+                                ),
+                              );
+                        }
+                      },
+                      child: const Text('Upload Image'),
                     ),
-                  ),
-                  ElevatedButton(
-                    onPressed: handleSubmit,
-                    child: const Text('Create Post'),
-                  ),
-                ],
-              ),
+                    ElevatedButton(
+                      onPressed: handleSubmit,
+                      child: const Text('Create Post'),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _UploadedImagesView extends HookConsumerWidget {
+  const _UploadedImagesView({super.key});
+  //Need to build a list of images. have it so you can horizontally scroll through images and have an x to remove them
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final uploadedImages = ref.watch(uploadedImagesServiceProvider);
+
+    return SizedBox(
+      height: 150,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.all(8),
+        itemCount: uploadedImages.length,
+        itemBuilder: (context, index) {
+          final image = uploadedImages[index];
+          final uploadedImage = ref.watch(
+            uploadedImagesBytesProvider(image.imageId),
+          );
+
+          return switch (uploadedImage) {
+            AsyncData(:final value) when value.isNotEmpty => Stack(
+              alignment: Alignment.topRight,
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(8),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.memory(value, fit: BoxFit.cover),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondaryContainer,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.close,
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                    ),
+                    onPressed: () {
+                      // Remove the specific image based on index.
+                      ref
+                          .read(uploadedImagesServiceProvider.notifier)
+                          .removeImage(image.imageId);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            AsyncLoading() => const CircularProgressIndicator(),
+            _ => const SizedBox(),
+          };
+        },
       ),
     );
   }
