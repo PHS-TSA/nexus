@@ -63,9 +63,19 @@ FutureOr<PostId?> singlePost(Ref ref, FeedEntity feed, int postIndex) async {
   // Keep previous posts in cache to make scrolling up possible.
   // Otherwise, the `ListView` freaks out.
   if (postIndex != 0) {
-    await ref.watch(
-      singlePostProvider(feed, postIndex - 1).selectAsync((_) {}),
+    final lastPost = await ref.watch(
+      singlePostProvider(feed, postIndex - 1).future,
     );
+
+    if (lastPost != null) {
+      final imageIds = ref.watch(
+        wipPostProvider(lastPost).select((s) => s?.imageIds),
+      );
+
+      for (final imageId in imageIds ?? const IList<String>.empty()) {
+        ref.watch(imageProvider(imageId));
+      }
+    }
   }
 
   final ids = ref.watch(feedServiceProvider(feed).select((s) => s.ids));
