@@ -22,10 +22,7 @@ class LogInPage extends HookConsumerWidget {
   /// {@macro nexus.features.auth.presentation.auth.login_page}
   ///
   /// Construct a new [LogInPage] widget.
-  const LogInPage({
-    super.key,
-    AuthCallback? onResult,
-  }) : _onResult = onResult;
+  const LogInPage({super.key, AuthCallback? onResult}) : _onResult = onResult;
 
   final AuthCallback? _onResult;
 
@@ -36,38 +33,35 @@ class LogInPage extends HookConsumerWidget {
     final email = useState('');
     final password = useState('');
 
-    final handleSubmit = useCallback(
-      () async {
-        if (formKey.currentState?.validate() ?? false) {
-          formKey.currentState?.save();
+    final handleSubmit = useCallback(() async {
+      if (formKey.currentState?.validate() ?? false) {
+        formKey.currentState?.save();
 
-          // Log in the user.
-          await ref
-              .read(authServiceProvider.notifier)
-              .logInUser(email.value, password.value);
+        // Log in the user.
+        await ref
+            .read(authServiceProvider.notifier)
+            .logInUser(email.value, password.value);
 
-          // Check that the widget still exists after the async operation.
-          if (!context.mounted) return;
+        // Check that the widget still exists after the async operation.
+        if (!context.mounted) return;
 
-          if (ref.read(authServiceProvider).requireValue != null) {
-            if (_onResult != null) {
-              // Navigate the page the user wanted to go to.
-              // Runs the function passed in by the guard and brings user back to previous page.
-              _onResult(didLogIn: true);
-            } else {
-              // Replace the route so user won't come back to login.
-              await context.router.replace(const LocalFeedRoute());
-            }
+        if (ref.read(authServiceProvider).requireValue != null) {
+          if (_onResult != null) {
+            // Navigate the page the user wanted to go to.
+            // Runs the function passed in by the guard and brings user back to previous page.
+            _onResult(didLogIn: true);
           } else {
-            // TODO(lishaduck): Move this to the guard.
-            context.showSnackBar(
-              content: const Text('Invalid username and password'),
-            );
+            // Replace the route so user won't come back to login.
+            await context.router.replace(const LocalFeedRoute());
           }
+        } else {
+          // TODO(lishaduck): Move this to the guard.
+          context.showSnackBar(
+            content: const Text('Invalid username and password'),
+          );
         }
-      },
-      [formKey],
-    );
+      }
+    }, [formKey]);
 
     // TODO(lishaduck): Figure out how to remove nested scaffolds.
     return Scaffold(
@@ -94,8 +88,8 @@ class LogInPage extends HookConsumerWidget {
                 color: Theme.of(context).colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(15),
               ),
-//               constraints: const BoxConstraints(maxWidth: 200,
-// maxHeight              : 200,),
+              //               constraints: const BoxConstraints(maxWidth: 200,
+              // maxHeight              : 200,),
               child: Form(
                 key: formKey,
                 child: Column(
@@ -155,8 +149,9 @@ class LogInPage extends HookConsumerWidget {
                       padding: const EdgeInsets.only(top: 16),
                       child: TextButton(
                         onPressed: () async {
-                          await context.router
-                              .push(SignUpRoute(onResult: _onResult));
+                          await context.router.push(
+                            SignUpRoute(onResult: _onResult),
+                          );
                         },
                         child: const Text("Don't have an account? Sign up!"),
                       ),
@@ -175,8 +170,10 @@ class LogInPage extends HookConsumerWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-        .add(ObjectFlagProperty<AuthCallback?>.has('onResult', _onResult));
+    properties.add(
+      ObjectFlagProperty<AuthCallback?>.has('onResult', _onResult),
+    );
   }
+
   // coverage:ignore-end
 }

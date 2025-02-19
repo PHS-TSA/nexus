@@ -17,9 +17,7 @@ class LocalFeedPage extends ConsumerWidget {
   /// {@macro nexus.features.home.presentation.home.local_feed_page}
   ///
   /// Construct a new [LocalFeedPage] widget.
-  const LocalFeedPage({
-    super.key,
-  });
+  const LocalFeedPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,8 +25,8 @@ class LocalFeedPage extends ConsumerWidget {
 
     return switch (pos) {
       AsyncData(:final value) => Feed(
-          feed: FeedEntity.local(value.latitude, value.longitude),
-        ),
+        feed: FeedEntity.local(value.latitude, value.longitude),
+      ),
       AsyncError(:final error) => Center(child: Text('Error: $error')),
       _ => const Center(child: CircularProgressIndicator()),
     };

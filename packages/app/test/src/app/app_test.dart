@@ -48,8 +48,9 @@ void main() {
     testWidgets('should have correct localizationsDelegates', (tester) async {
       await tester.pumpWidgetPage();
       final app = tester.widget<MaterialApp>(find.byType(MaterialApp));
-      check(app.localizationsDelegates)
-          .equals(AppLocalizations.localizationsDelegates);
+      check(
+        app.localizationsDelegates,
+      ).equals(AppLocalizations.localizationsDelegates);
     });
 
     testWidgets('should have correct supportedLocales', (tester) async {

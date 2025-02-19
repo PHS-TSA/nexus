@@ -18,13 +18,12 @@ import '../../helpers/riverpod.dart';
 extension _WidgetTesterX on WidgetTester {
   Future<void> pumpWidgetPage() async {
     final mockAuthRepository = MockAuthRepository();
-    when(mockAuthRepository.checkUserAuth)
-        .thenAnswer((_) => Future.value(fakeUser));
+    when(
+      mockAuthRepository.checkUserAuth,
+    ).thenAnswer((_) => Future.value(fakeUser));
 
     final container = createContainer(
-      overrides: [
-        authRepositoryProvider.overrideWithValue(mockAuthRepository),
-      ],
+      overrides: [authRepositoryProvider.overrideWithValue(mockAuthRepository)],
     );
     final routerSubscription = container.listen(routerProvider, (_, __) {});
     final router = routerSubscription.read();
@@ -44,9 +43,7 @@ extension _WidgetTesterX on WidgetTester {
       ),
     );
 
-    await router.pushAll([
-      const WrapperRoute(),
-    ]);
+    await router.pushAll([const WrapperRoute()]);
     await pumpAndSettle();
     check(router.urlState.url).equals('/');
     check(find.byType(WrapperPage)).findsOne();

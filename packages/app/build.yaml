@@ -60,9 +60,6 @@ targets:
       envied_generator:envied:
         # configs for the @Envied generator
         generate_for:
-          - lib/env/env.dart
+          - lib/src/env/env.dart
         options:
           output: lib/src/env.g.dart
-      flutter_gen:
-        options:
-          output: lib/src/gen/

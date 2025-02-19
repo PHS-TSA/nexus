@@ -5,10 +5,8 @@ packages:
 
 command:
   bootstrap:
-    enforceLockfile: true
-
     environment:
-      sdk: "^3.6.0"
+      sdk: "^3.7.0"
 
     hooks:
       post: melos run gen-l10n && melos run gen

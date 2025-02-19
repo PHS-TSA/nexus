@@ -26,9 +26,7 @@ class SettingsPage extends ConsumerWidget {
   /// {@macro nexus.features.settings.presentation.preferences}
   ///
   /// Construct a new [SettingsPage] widget.
-  const SettingsPage({
-    super.key,
-  });
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -136,10 +134,7 @@ class SettingsPage extends ConsumerWidget {
 }
 
 class _AppDescription extends HookWidget {
-  const _AppDescription({
-    super.key,
-    this.followLink,
-  });
+  const _AppDescription({super.key, this.followLink});
 
   final FollowLink? followLink;
 
@@ -149,22 +144,19 @@ class _AppDescription extends HookWidget {
 
     final textStyle = theme.textTheme.bodyMedium;
 
-    final tapGestureRecognizer = useTapGestureRecognizer(
-      onTap: followLink,
-    );
+    final tapGestureRecognizer = useTapGestureRecognizer(onTap: followLink);
 
     return Text.rich(
       TextSpan(
         style: textStyle,
         children: [
           const TextSpan(
-            text: 'Town Talk is a new kind of public forum. '
+            text:
+                'Town Talk is a new kind of public forum. '
                 'View the source at ',
           ),
           TextSpan(
-            style: textStyle?.copyWith(
-              color: theme.colorScheme.primary,
-            ),
+            style: textStyle?.copyWith(color: theme.colorScheme.primary),
             text: 'github:PHS-TSA/nexus',
             recognizer: tapGestureRecognizer,
           ),
@@ -182,5 +174,6 @@ class _AppDescription extends HookWidget {
       ObjectFlagProperty<GestureTapCallback?>.has('followLink', followLink),
     );
   }
+
   // coverage:ignore-end
 }

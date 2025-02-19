@@ -24,10 +24,7 @@ class SignUpPage extends HookConsumerWidget {
   /// {@macro nexus.features.auth.presentation.auth.sign_up_page}
   ///
   /// Construct a new [SignUpPage] widget.
-  const SignUpPage({
-    super.key,
-    AuthCallback? onResult,
-  }) : _onResult = onResult;
+  const SignUpPage({super.key, AuthCallback? onResult}) : _onResult = onResult;
 
   final AuthCallback? _onResult;
 
@@ -39,36 +36,33 @@ class SignUpPage extends HookConsumerWidget {
     final email = useState('');
     final password = useState('');
 
-    final handleSubmit = useCallback(
-      () async {
-        if (formKey.currentState?.validate() ?? false) {
-          formKey.currentState?.save();
+    final handleSubmit = useCallback(() async {
+      if (formKey.currentState?.validate() ?? false) {
+        formKey.currentState?.save();
 
-          await ref
-              .read(authServiceProvider.notifier)
-              .createUser(name.value, email.value, password.value);
+        await ref
+            .read(authServiceProvider.notifier)
+            .createUser(name.value, email.value, password.value);
 
-          // Check that the widget still exists after the async operation.
-          if (!context.mounted) return;
+        // Check that the widget still exists after the async operation.
+        if (!context.mounted) return;
 
-          if (ref.read(authServiceProvider).requireValue != null) {
-            if (_onResult != null) {
-              // Navigate the page the user wanted to go to.
-              // Runs the function passed in by the guard and brings user back to previous page.
-              _onResult(didLogIn: true);
-            } else {
-              await context.router.replace(const LocalFeedRoute());
-            }
+        if (ref.read(authServiceProvider).requireValue != null) {
+          if (_onResult != null) {
+            // Navigate the page the user wanted to go to.
+            // Runs the function passed in by the guard and brings user back to previous page.
+            _onResult(didLogIn: true);
           } else {
-            // TODO(lishaduck): Move this to the guard.
-            context.showSnackBar(
-              content: const Text('Invalid username or password'),
-            );
+            await context.router.replace(const LocalFeedRoute());
           }
+        } else {
+          // TODO(lishaduck): Move this to the guard.
+          context.showSnackBar(
+            content: const Text('Invalid username or password'),
+          );
         }
-      },
-      [formKey],
-    );
+      }
+    }, [formKey]);
 
     // TODO(lishaduck): Figure out how to remove nested scaffolds.
     return Scaffold(
@@ -167,8 +161,9 @@ class SignUpPage extends HookConsumerWidget {
                   padding: const EdgeInsets.only(top: 16),
                   child: TextButton(
                     onPressed: () async {
-                      await context.router
-                          .push(LogInRoute(onResult: _onResult));
+                      await context.router.push(
+                        LogInRoute(onResult: _onResult),
+                      );
                     },
                     child: const Text('Back to login'),
                   ),
@@ -185,8 +180,10 @@ class SignUpPage extends HookConsumerWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-        .add(ObjectFlagProperty<AuthCallback?>.has('onResult', _onResult));
+    properties.add(
+      ObjectFlagProperty<AuthCallback?>.has('onResult', _onResult),
+    );
   }
+
   // coverage:ignore-end
 }

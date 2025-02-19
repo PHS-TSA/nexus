@@ -32,64 +32,68 @@ void testAccessibilityGuidelines(
 }) {
   group('is accessible', () {
     testWidgets(
-        'on Android.${expectedFailureMessage(expectedToFail: expectedFailures.androidTap)}',
-        (tester) async {
-      await tester.pumpApp(widget, overrides: overrides);
+      'on Android.${expectedFailureMessage(expectedToFail: expectedFailures.androidTap)}',
+      (tester) async {
+        await tester.pumpApp(widget, overrides: overrides);
 
-      final handle = tester.ensureSemantics();
+        final handle = tester.ensureSemantics();
 
-      if (expectedFailures.androidTap) {
-        await check(tester).doesNotMeetGuideline(androidTapTargetGuideline);
-      } else {
-        await check(tester).meetsGuideline(androidTapTargetGuideline);
-      }
+        if (expectedFailures.androidTap) {
+          await check(tester).doesNotMeetGuideline(androidTapTargetGuideline);
+        } else {
+          await check(tester).meetsGuideline(androidTapTargetGuideline);
+        }
 
-      handle.dispose();
-    });
+        handle.dispose();
+      },
+    );
     testWidgets(
-        'on iOS.${expectedFailureMessage(expectedToFail: expectedFailures.iosTap)}',
-        (tester) async {
-      await tester.pumpApp(widget, overrides: overrides);
+      'on iOS.${expectedFailureMessage(expectedToFail: expectedFailures.iosTap)}',
+      (tester) async {
+        await tester.pumpApp(widget, overrides: overrides);
 
-      final handle = tester.ensureSemantics();
+        final handle = tester.ensureSemantics();
 
-      if (expectedFailures.iosTap) {
-        await check(tester).doesNotMeetGuideline(iOSTapTargetGuideline);
-      } else {
-        await check(tester).meetsGuideline(iOSTapTargetGuideline);
-      }
+        if (expectedFailures.iosTap) {
+          await check(tester).doesNotMeetGuideline(iOSTapTargetGuideline);
+        } else {
+          await check(tester).meetsGuideline(iOSTapTargetGuideline);
+        }
 
-      handle.dispose();
-    });
+        handle.dispose();
+      },
+    );
     testWidgets(
-        'according to the WCAG.${expectedFailureMessage(expectedToFail: expectedFailures.textContrast)}',
-        (tester) async {
-      await tester.pumpApp(widget, overrides: overrides);
+      'according to the WCAG.${expectedFailureMessage(expectedToFail: expectedFailures.textContrast)}',
+      (tester) async {
+        await tester.pumpApp(widget, overrides: overrides);
 
-      final handle = tester.ensureSemantics();
+        final handle = tester.ensureSemantics();
 
-      if (expectedFailures.textContrast) {
-        await check(tester).doesNotMeetGuideline(textContrastGuideline);
-      } else {
-        await check(tester).meetsGuideline(textContrastGuideline);
-      }
+        if (expectedFailures.textContrast) {
+          await check(tester).doesNotMeetGuideline(textContrastGuideline);
+        } else {
+          await check(tester).meetsGuideline(textContrastGuideline);
+        }
 
-      handle.dispose();
-    });
+        handle.dispose();
+      },
+    );
     testWidgets(
-        'with regard to labeling buttons.${expectedFailureMessage(expectedToFail: expectedFailures.buttons)}',
-        (tester) async {
-      await tester.pumpApp(widget, overrides: overrides);
+      'with regard to labeling buttons.${expectedFailureMessage(expectedToFail: expectedFailures.buttons)}',
+      (tester) async {
+        await tester.pumpApp(widget, overrides: overrides);
 
-      final handle = tester.ensureSemantics();
+        final handle = tester.ensureSemantics();
 
-      if (expectedFailures.buttons) {
-        await check(tester).doesNotMeetGuideline(labeledTapTargetGuideline);
-      } else {
-        await check(tester).meetsGuideline(labeledTapTargetGuideline);
-      }
+        if (expectedFailures.buttons) {
+          await check(tester).doesNotMeetGuideline(labeledTapTargetGuideline);
+        } else {
+          await check(tester).meetsGuideline(labeledTapTargetGuideline);
+        }
 
-      handle.dispose();
-    });
+        handle.dispose();
+      },
+    );
   });
 }

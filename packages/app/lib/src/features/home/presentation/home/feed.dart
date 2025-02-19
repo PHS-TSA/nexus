@@ -16,10 +16,7 @@ class Feed extends ConsumerWidget {
   /// {@macro nexus.features.home.presentation.home.feed}
   ///
   /// Construct a new [Feed] widget.
-  const Feed({
-    required this.feed,
-    super.key,
-  });
+  const Feed({required this.feed, super.key});
 
   /// The feed to fetch the posts from.
   final FeedEntity feed;
@@ -45,39 +42,34 @@ class Feed extends ConsumerWidget {
 
               // If we have none, return a placeholder.
               AsyncData() when index == 0 => const Expanded(
-                  child: Center(
-                    child: Text('No posts yet!'),
-                  ),
-                ),
+                child: Center(child: Text('No posts yet!')),
+              ),
               // If we run out of items, return null.
               AsyncData() => null,
 
               // If there's an error, display it as another post.
               AsyncError(:final error, :final stackTrace) => Card(
-                  margin: const EdgeInsets.all(4),
-                  child: Container(
-                    // constraints: const BoxConstraints(minHeight: 220, maxHeight: 300),
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 8,
-                      children: [
-                        const Text(
-                          'Error',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 24,
-                          ), // TODO(MattsAttack): Need better text styling.
-                        ),
-                        Text(
-                          '$error\n$stackTrace',
-                          textAlign: TextAlign.left,
-                        ),
-                      ],
-                    ),
+                margin: const EdgeInsets.all(4),
+                child: Container(
+                  // constraints: const BoxConstraints(minHeight: 220, maxHeight: 300),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 8,
+                    children: [
+                      const Text(
+                        'Error',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 24,
+                        ), // TODO(MattsAttack): Need better text styling.
+                      ),
+                      Text('$error\n$stackTrace', textAlign: TextAlign.left),
+                    ],
                   ),
                 ),
+              ),
 
               // Post(
               //     postId: PostEntity(
@@ -108,5 +100,6 @@ class Feed extends ConsumerWidget {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<FeedEntity>('feed', feed));
   }
+
   // coverage:ignore-end
 }

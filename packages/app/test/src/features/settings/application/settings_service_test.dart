@@ -13,8 +13,9 @@ void main() {
   group('SettingsService', () {
     test('should update the theme mode', () async {
       final mockSharedPreferences = MockSharedPreferences();
-      when(() => mockSharedPreferences.setString(any(), any()))
-          .thenAnswer((_) async => true);
+      when(
+        () => mockSharedPreferences.setString(any(), any()),
+      ).thenAnswer((_) async => true);
 
       final container = createContainer(
         overrides: [

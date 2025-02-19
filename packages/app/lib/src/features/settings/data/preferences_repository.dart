@@ -43,9 +43,7 @@ PreferencesRepository preferencesRepository(Ref ref) {
 }
 
 /// Load a from a local database.
-Future<SettingsModel> loadSettings(
-  SharedPreferencesWithCache prefs,
-) async {
+Future<SettingsModel> loadSettings(SharedPreferencesWithCache prefs) async {
   final data = prefs.getString('prefs');
   final Object? decoded = data == null ? null : json.decode(data);
 

@@ -23,10 +23,7 @@ class Post extends StatelessWidget {
   /// {@macro nexus.features.home.presentation.home.post}
 
   /// Construct a new [Post] widget for a [PostId].
-  const Post({
-    required this.postId,
-    super.key,
-  });
+  const Post({required this.postId, super.key});
 
   /// [PostId] for this post.
   final PostId postId;
@@ -67,14 +64,12 @@ class Post extends StatelessWidget {
     super.debugFillProperties(properties);
     properties.add(StringProperty('postId', postId.id));
   }
+
   // coverage:ignore-end
 }
 
 class _PosterInfo extends ConsumerWidget {
-  const _PosterInfo({
-    required this.postId,
-    super.key,
-  });
+  const _PosterInfo({required this.postId, super.key});
 
   final PostId postId;
 
@@ -86,8 +81,9 @@ class _PosterInfo extends ConsumerWidget {
     // TODO(MattsAttack): Show actual date and time of post when you click on it.
 
     // Have post info show how long ago in the bar.
-    final durationSincePostCreated =
-        DateTime.timestamp().difference(post.timestamp);
+    final durationSincePostCreated = DateTime.timestamp().difference(
+      post.timestamp,
+    );
     final timeSincePost = formatDuration(durationSincePostCreated);
 
     return Row(
@@ -107,14 +103,12 @@ class _PosterInfo extends ConsumerWidget {
     super.debugFillProperties(properties);
     properties.add(StringProperty('postId', postId.id));
   }
+
   // coverage:ignore-end
 }
 
 class _PostAvatar extends ConsumerWidget {
-  const _PostAvatar({
-    required this.authorName,
-    super.key,
-  });
+  const _PostAvatar({required this.authorName, super.key});
 
   final String authorName;
   @override
@@ -123,10 +117,10 @@ class _PostAvatar extends ConsumerWidget {
 
     return switch (avatar) {
       AsyncData(:final value) => CircleAvatar(
-          backgroundImage: MemoryImage(value),
-        ),
+        backgroundImage: MemoryImage(value),
+      ),
       AsyncError() => const Text('Error loading avatar'),
-      _ => const CircularProgressIndicator()
+      _ => const CircularProgressIndicator(),
     };
   }
 
@@ -136,14 +130,12 @@ class _PostAvatar extends ConsumerWidget {
     super.debugFillProperties(properties);
     properties.add(StringProperty('authorName', authorName));
   }
+
   // coverage:ignore-end
 }
 
 class _PostBody extends ConsumerWidget {
-  const _PostBody({
-    required this.postId,
-    super.key,
-  });
+  const _PostBody({required this.postId, super.key});
 
   final PostId postId;
 
@@ -163,10 +155,7 @@ class _PostBody extends ConsumerWidget {
             fontSize: 24,
           ), // TODO(MattsAttack): Need better text styling.
         ),
-        Text(
-          post.description,
-          textAlign: TextAlign.left,
-        ),
+        Text(post.description, textAlign: TextAlign.left),
       ],
     );
   }
@@ -177,6 +166,7 @@ class _PostBody extends ConsumerWidget {
     super.debugFillProperties(properties);
     properties.add(StringProperty('postId', postId.id));
   }
+
   // coverage:ignore-end
 }
 
@@ -193,10 +183,7 @@ Likes toggleLike(Likes currentLikes, UserId userId) {
 }
 
 class _PostInteractables extends HookConsumerWidget {
-  const _PostInteractables({
-    required this.postId,
-    super.key,
-  });
+  const _PostInteractables({required this.postId, super.key});
 
   final PostId postId;
 
@@ -240,9 +227,7 @@ class _PostInteractables extends HookConsumerWidget {
                   .setPost(post); // This is still the old post.
 
               if (!context.mounted) return;
-              context.showSnackBar(
-                content: Text('Failed to like post: $e'),
-              );
+              context.showSnackBar(content: Text('Failed to like post: $e'));
             }
           },
           icon: Icon(
@@ -261,5 +246,6 @@ class _PostInteractables extends HookConsumerWidget {
     super.debugFillProperties(properties);
     properties.add(StringProperty('postId', postId.id));
   }
+
   // coverage:ignore-end
 }

@@ -38,8 +38,9 @@ void main() {
       // Assert
 
       // Verify the widget contains an error message.
-      check(find.text('UnimplementedError'))
-          .findsExactly(PostRepository.pageSize);
+      check(
+        find.text('UnimplementedError'),
+      ).findsExactly(PostRepository.pageSize);
     });
   });
 

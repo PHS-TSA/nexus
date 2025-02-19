@@ -33,8 +33,9 @@ void main() {
       // Arrange
       final mockSharedPreferences = MockSharedPreferences();
 
-      when(() => mockSharedPreferences.getString('prefs'))
-          .thenReturn('{"themeMode":"dark"}');
+      when(
+        () => mockSharedPreferences.getString('prefs'),
+      ).thenReturn('{"themeMode":"dark"}');
 
       final container = createContainer(
         overrides: [

@@ -37,10 +37,7 @@ void main() {
       });
       test('should be correct for MapRoute.', () {
         final container = createContainer();
-        final routerSubscription = container.listen(
-          routerProvider,
-          (_, __) {},
-        );
+        final routerSubscription = container.listen(routerProvider, (_, __) {});
         final tested = routerSubscription.read();
 
         final mapRoute = tested.routes[0].children?.routes.toList()[0];
@@ -48,10 +45,7 @@ void main() {
       });
       test('should be correct for MapInfoRoute.', () {
         final container = createContainer();
-        final routerSubscription = container.listen(
-          routerProvider,
-          (_, __) {},
-        );
+        final routerSubscription = container.listen(routerProvider, (_, __) {});
         final tested = routerSubscription.read();
 
         final sampleItemDetailsRoute =

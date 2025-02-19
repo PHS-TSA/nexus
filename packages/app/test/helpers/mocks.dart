@@ -27,9 +27,7 @@ final fakeUser = User(
   },
   registration: '2020-10-15T06:38:00.000+00:00',
   status: true,
-  labels: [
-    'vip',
-  ],
+  labels: ['vip'],
   passwordUpdate: '2020-10-15T06:38:00.000+00:00',
   email: 'john@appwrite.io',
   phone: '+4930901820',

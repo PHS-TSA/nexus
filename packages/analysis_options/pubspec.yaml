@@ -7,10 +7,10 @@ issue_tracker: https://github.com/PHS-TSA/nexus/issues
 repository: https://github.com/PHS-TSA/nexus.git
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.7.0
 
 dependencies:
   very_good_analysis: ^7.0.0
 
 dev_dependencies:
-  custom_lint: ^0.7.0
+  custom_lint: ^0.7.1

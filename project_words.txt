@@ -67,6 +67,7 @@ lishaduck
 localizable
 melos
 mocktail
+pana
 Pattonville
 pbxproj
 POSIX

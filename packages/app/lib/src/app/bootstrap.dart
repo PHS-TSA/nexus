@@ -18,16 +18,15 @@ import '../features/settings/data/preferences_repository.dart';
 typedef RunApp = void Function(Widget app);
 
 /// The signature of [SharedPreferencesWithCache.create].
-typedef GetSharedPreferences = Future<SharedPreferencesWithCache> Function({
-  required SharedPreferencesWithCacheOptions cacheOptions,
-  Map<String, Object?>? cache,
-});
+typedef GetSharedPreferences =
+    Future<SharedPreferencesWithCache> Function({
+      required SharedPreferencesWithCacheOptions cacheOptions,
+      Map<String, Object?>? cache,
+    });
 
 /// The environment needed to bootstrap the app.
-typedef BootstrapEnv = ({
-  RunApp runApp,
-  GetSharedPreferences getSharedPreferences,
-});
+typedef BootstrapEnv =
+    ({RunApp runApp, GetSharedPreferences getSharedPreferences});
 
 /// Turn any widget into a flow-blown app.
 mixin Bootstrap implements Widget {
@@ -68,10 +67,7 @@ mixin Bootstrap implements Widget {
           sharedPreferencesProvider.overrideWithValue(prefs),
           initialSettingsProvider.overrideWithValue(initialSettings),
         ],
-        child: RestorationScope(
-          restorationId: 'root',
-          child: this,
-        ),
+        child: RestorationScope(restorationId: 'root', child: this),
       ),
     );
   }

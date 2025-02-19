@@ -26,10 +26,7 @@ TapGestureRecognizer useTapGestureRecognizer({
 }
 
 class _TapGestureRecognizerHook extends Hook<TapGestureRecognizer> {
-  const _TapGestureRecognizerHook({
-    super.keys,
-    this.onTap,
-  });
+  const _TapGestureRecognizerHook({super.keys, this.onTap});
 
   final VoidCallback? onTap;
 
@@ -43,6 +40,7 @@ class _TapGestureRecognizerHook extends Hook<TapGestureRecognizer> {
     super.debugFillProperties(properties);
     properties.add(ObjectFlagProperty<VoidCallback?>.has('onTap', onTap));
   }
+
   // coverage:ignore-end
 }
 
@@ -82,5 +80,6 @@ class _TapGestureRecognizerHookState
       DiagnosticsProperty<TapGestureRecognizer>('recognizer', recognizer),
     );
   }
+
   // coverage:ignore-end
 }

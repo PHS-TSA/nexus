@@ -16,10 +16,7 @@ extension ShowSnackBar on BuildContext {
     required Widget content,
   }) {
     return ScaffoldMessenger.of(this).showSnackBar(
-      SnackBar(
-        content: content,
-        behavior: SnackBarBehavior.floating,
-      ),
+      SnackBar(content: content, behavior: SnackBarBehavior.floating),
     );
   }
 }

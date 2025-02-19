@@ -6,7 +6,7 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../env/env.dart';
+import '../../../env/env.dart';
 import '../../../utils/api.dart';
 import '../../auth/domain/user.dart';
 import '../domain/feed_entity.dart';
@@ -52,9 +52,9 @@ final class _AppwritePostRepository implements PostRepository {
         Query.orderDesc('timestamp'),
         ...switch (feed) {
           LocalFeed(:final lat, :final lng) => [
-              Query.between('lat', lat - 2, lat + 2),
-              Query.between('lng', lng - 2, lng + 2),
-            ],
+            Query.between('lat', lat - 2, lat + 2),
+            Query.between('lng', lng - 2, lng + 2),
+          ],
           WorldFeed() => [],
         },
         if (cursor != null) Query.cursorAfter(cursor.id),
@@ -84,18 +84,12 @@ final class _AppwritePostRepository implements PostRepository {
   }
 
   @override
-  Future<void> toggleLikePost(
-    PostId postId,
-    UserId userId,
-    Likes likes,
-  ) async {
+  Future<void> toggleLikePost(PostId postId, UserId userId, Likes likes) async {
     await database.updateDocument(
       databaseId: databaseId,
       collectionId: collectionId,
       documentId: postId.id,
-      data: {
-        'likes': likes.unlockLazy,
-      },
+      data: {'likes': likes.unlockLazy},
     );
   }
 }

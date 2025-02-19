@@ -18,9 +18,7 @@ class App extends ConsumerStatefulWidget with Bootstrap {
   /// {@macro nexus.app}
   ///
   /// Construct a new [App] widget.
-  const App({
-    super.key,
-  });
+  const App({super.key});
 
   @override
   ConsumerState<App> createState() => _AppState();
@@ -98,10 +96,10 @@ class _EagerInitialization extends ConsumerWidget {
         child: switch (user) {
           AsyncData() => child,
           AsyncError(:final error) => Directionality(
-              // This is necessary because it's not wrapped in a `MaterialApp`.
-              textDirection: TextDirection.ltr,
-              child: Text('Error: $error'),
-            ),
+            // This is necessary because it's not wrapped in a `MaterialApp`.
+            textDirection: TextDirection.ltr,
+            child: Text('Error: $error'),
+          ),
 
           // TODO(lishaduck): Hook into `FlutterNativeSplash` here.
           _ => const CircularProgressIndicator(),

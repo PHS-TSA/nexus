@@ -20,7 +20,6 @@ final class _GeolocatorLocationRepository implements LocationRepository {
   const _GeolocatorLocationRepository();
 
   @override
-
   /// Uses geolocator plugin to request location permission and return a position
   Future<Position> determinePosition() async {
     // Test if location services are enabled.

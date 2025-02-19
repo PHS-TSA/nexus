@@ -15,9 +15,7 @@ class FeedRoutingPage extends ConsumerWidget {
   /// {@macro nexus.features.home.presentation.home.feed_routing_page}
   ///
   /// Construct a new [FeedRoutingPage] widget.
-  const FeedRoutingPage({
-    super.key,
-  });
+  const FeedRoutingPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,14 +29,8 @@ class FeedRoutingPage extends ConsumerWidget {
             onDestinationSelected: autoRouter.setActiveIndex,
             backgroundColor: const Color.fromARGB(0, 0, 0, 0),
             destinations: const [
-              NavigationDestination(
-                icon: Icon(Icons.pin_drop),
-                label: 'Local',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.public),
-                label: 'World',
-              ),
+              NavigationDestination(icon: Icon(Icons.pin_drop), label: 'Local'),
+              NavigationDestination(icon: Icon(Icons.public), label: 'World'),
             ],
           ),
         );

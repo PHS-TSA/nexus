@@ -21,9 +21,7 @@ class MapPage extends HookWidget {
   /// {@macro nexus.features.map.presentation.items.map_page}
   ///
   /// Construct a new [MapPage] widget.
-  const MapPage({
-    super.key,
-  });
+  const MapPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,35 +32,26 @@ class MapPage extends HookWidget {
         onTap: (_, pos) async {
           await showDialog<void>(
             context: context,
-            builder: (context) => _Dialog(
-              latitude: pos.latitude,
-              longitude: pos.longitude,
-            ),
+            builder:
+                (context) =>
+                    _Dialog(latitude: pos.latitude, longitude: pos.longitude),
           );
         },
       ),
-      children: [
-        openStreetMapLayer(),
-      ],
+      children: [openStreetMapLayer()],
     );
   }
 }
 
 class _Dialog extends HookConsumerWidget {
-  const _Dialog({
-    required this.latitude,
-    required this.longitude,
-    super.key,
-  });
+  const _Dialog({required this.latitude, required this.longitude, super.key});
 
   final double latitude;
   final double longitude;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Dialog(
-      child: Feed(feed: FeedEntity.local(latitude, longitude)),
-    );
+    return Dialog(child: Feed(feed: FeedEntity.local(latitude, longitude)));
   }
 
   // coverage:ignore-start
@@ -73,5 +62,6 @@ class _Dialog extends HookConsumerWidget {
       ..add(DiagnosticsProperty('latitude', latitude))
       ..add(DiagnosticsProperty('longitude', longitude));
   }
+
   // coverage:ignore-end
 }

@@ -25,9 +25,7 @@ class WrapperPage extends ConsumerWidget {
   /// {@macro nexus.app.wrapper_page}
   ///
   /// Construct a new [WrapperPage] widget.
-  const WrapperPage({
-    super.key,
-  });
+  const WrapperPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,10 +36,11 @@ class WrapperPage extends ConsumerWidget {
         SettingsRoute(), // Make a new feed route page that has an app bar that routes between local and world
       ],
       floatingActionButton: FloatingActionButton(
-        onPressed: () async => showDialog<void>(
-          context: context,
-          builder: (context) => const _Dialog(),
-        ),
+        onPressed:
+            () async => showDialog<void>(
+              context: context,
+              builder: (context) => const _Dialog(),
+            ),
         child: const Icon(Icons.create),
       ),
       appBarBuilder: (context, autoRouter) {
@@ -51,18 +50,12 @@ class WrapperPage extends ConsumerWidget {
           bottom: switch (autoRouter.current.path) {
             // FIXME(lishaduck): This needs some work.
             '/' => TabBar(
-                onTap: autoRouter.setActiveIndex,
-                tabs: const [
-                  Tab(
-                    icon: Icon(Icons.my_location),
-                    text: 'Local',
-                  ),
-                  Tab(
-                    icon: Icon(Icons.public),
-                    text: 'World',
-                  ),
-                ],
-              ),
+              onTap: autoRouter.setActiveIndex,
+              tabs: const [
+                Tab(icon: Icon(Icons.my_location), text: 'Local'),
+                Tab(icon: Icon(Icons.public), text: 'World'),
+              ],
+            ),
             _ => null,
           },
         );
@@ -72,10 +65,7 @@ class WrapperPage extends ConsumerWidget {
           selectedIndex: autoRouter.activeIndex,
           onDestinationSelected: autoRouter.setActiveIndex,
           destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.feed),
-              label: 'Feeds',
-            ),
+            NavigationDestination(icon: Icon(Icons.feed), label: 'Feeds'),
             NavigationDestination(
               icon: Icon(Icons.map_outlined),
               label: 'Discover',
@@ -93,9 +83,7 @@ class WrapperPage extends ConsumerWidget {
 
 // May want to separate to a different file
 class _Dialog extends HookConsumerWidget {
-  const _Dialog({
-    super.key,
-  });
+  const _Dialog({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -105,45 +93,44 @@ class _Dialog extends HookConsumerWidget {
     final userId = ref.watch(idProvider);
     final userName = ref.watch(userNameProvider);
 
-    final handleSubmit = useCallback(
-      () async {
-        final location = await ref.read(locationServiceProvider.future);
-        var lat = location.latitude.roundToDouble();
-        var lng = location.longitude.roundToDouble();
-        final random = Random();
+    final handleSubmit = useCallback(() async {
+      final location = await ref.read(locationServiceProvider.future);
+      var lat = location.latitude.roundToDouble();
+      var lng = location.longitude.roundToDouble();
+      final random = Random();
 
-        // Coords can't be greater than 180.
-        if (lat < 179) lat += random.nextDouble();
-        if (lng < 179) lng += random.nextDouble();
+      // Coords can't be greater than 180.
+      if (lat < 179) lat += random.nextDouble();
+      if (lng < 179) lng += random.nextDouble();
 
-        if (!(formKey.currentState?.validate() ?? false)) return;
+      if (!(formKey.currentState?.validate() ?? false)) return;
 
-        formKey.currentState?.save();
+      formKey.currentState?.save();
 
-        await ref.read(postRepositoryProvider).createNewPost(
-              PostEntity(
-                headline: title.value,
-                description: description.value,
-                author: userId!,
-                authorName: userName!,
-                lat: lat,
-                lng: lng,
-                timestamp: DateTime.timestamp(),
-                likes: const IList.empty(),
-                id: PostId(ID.unique()),
-              ),
-            );
+      await ref
+          .read(postRepositoryProvider)
+          .createNewPost(
+            PostEntity(
+              headline: title.value,
+              description: description.value,
+              author: userId!,
+              authorName: userName!,
+              lat: lat,
+              lng: lng,
+              timestamp: DateTime.timestamp(),
+              likes: const IList.empty(),
+              id: PostId(ID.unique()),
+            ),
+          );
 
-        if (!context.mounted) return;
-        await context.router.maybePop();
+      if (!context.mounted) return;
+      await context.router.maybePop();
 
-        if (!context.mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Post Created!')),
-        );
-      },
-      [formKey],
-    );
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Post Created!')));
+    }, [formKey]);
 
     return Dialog(
       insetPadding: EdgeInsets.symmetric(
@@ -154,9 +141,7 @@ class _Dialog extends HookConsumerWidget {
       child: Padding(
         padding: const EdgeInsets.all(40),
         child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Create a New Post'),
-          ),
+          appBar: AppBar(title: const Text('Create a New Post')),
           body: Form(
             key: formKey,
             child: Padding(
@@ -179,8 +164,9 @@ class _Dialog extends HookConsumerWidget {
 
                       description.value = value;
                     },
-                    decoration:
-                        const InputDecoration(label: Text('Description')),
+                    decoration: const InputDecoration(
+                      label: Text('Description'),
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: handleSubmit,
