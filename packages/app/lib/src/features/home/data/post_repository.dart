@@ -38,6 +38,7 @@ abstract interface class PostRepository {
   /// Upload an image to Appwrite.
   Future<void> uploadImage(UploadedImageEntity file);
 
+  ///Fetches images from appwrite
   Future<Uint8List> getImages(String id);
 }
 

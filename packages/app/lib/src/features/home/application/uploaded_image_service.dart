@@ -8,6 +8,7 @@ import '../domain/uploaded_image_entity.dart';
 
 part 'uploaded_image_service.g.dart';
 
+///Provider that contains all currently uploaded images files(XFiles) and IDs(Strings)
 @riverpod
 class UploadedImagesService extends _$UploadedImagesService {
   @override
@@ -15,10 +16,12 @@ class UploadedImagesService extends _$UploadedImagesService {
     return const IList.empty();
   }
 
+  ///Adds image to passed in image to provider
   void addImage(UploadedImageEntity image) {
     state = state.add(image);
   }
 
+  ///Removes image from provider based on passed in ID
   void removeImage(String imageId) {
     // Again, our state is immutable. So we're making a new list instead of
     // changing the existing list.
@@ -28,6 +31,7 @@ class UploadedImagesService extends _$UploadedImagesService {
   }
 }
 
+///Provider containing bytes of all currently uploaded images
 @riverpod
 Future<IList<Uint8List>> uploadedImagesBytes(Ref ref) async {
   final uploadedImages = ref.watch(uploadedImagesServiceProvider);
