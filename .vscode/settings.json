@@ -57,7 +57,7 @@
   // Clean up the project root directory by nesting related files.
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    "pubspec.yaml": ".metadata, analysis_options.yaml, pubspec.lock, build.yaml, dartdoc_options.yaml, l10n.yaml, pubspec_overrides.yaml, dart_test.yaml, melos.yaml",
+    "pubspec.yaml": ".metadata, analysis_options.yaml, pubspec.lock, build.yaml, dartdoc_options.yaml, l10n.yaml, pubspec_overrides.yaml, devtools_options.yaml, melos.yaml",
     "README.*": "*.md",
     "*.dart": "${capture}.*.dart, ${capture}_*.dart",
     "cspell.json": ".markdownlint*, project_words.txt",
