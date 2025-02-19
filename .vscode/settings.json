@@ -1,19 +1,60 @@
 {
+  // Causes the debug view to automatically appear when a breakpoint is hit. This
+  // setting is global and not configurable per-language.
   "debug.openDebug": "openOnDebugBreak",
+
+  // By default, VS Code will only switch to the Debug Console when you start
+  // debugging the first time in a session. This setting tells VS Code to always
+  // switch to the Debug Console when starting a session, so you can see the
+  // programs output.
   "debug.internalConsoleOptions": "openOnSessionStart",
+
+  // Automatically format code on save.
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit",
     "source.fixAll": "explicit"
   },
+
   "[dart]": {
+    // Automatically format code during typing of certain characters
+    // (like `;` and `}`).
     "editor.formatOnType": true,
+
+    // // Draw a guide line at 80 characters, where Dart's formatting will wrap code.
+    // "editor.rulers": [80],
+
+    // Disables built-in highlighting of words that match your selection. Without
+    // this, all instances of the selected text will be highlighted, interfering
+    // with Dart's ability to highlight only exact references to the selected variable.
     "editor.selectionHighlight": false,
+
+    // By default, VS Code prevents code completion from popping open when in
+    // "snippet mode" (editing placeholders in inserted code). Setting this option
+    // to `false` stops that and allows completion to open as normal, as if you
+    // weren't in a snippet placeholder.
     "editor.suggest.snippetsPreventQuickSuggestions": false,
+
+    // By default, VS Code will pre-select the most recently used item from code
+    // completion. This is usually not the most relevant item.
+    //
+    // "first" will always select top item
+    // "recentlyUsedByPrefix" will filter the recently used items based on the
+    //     text immediately preceding where completion was invoked.
     "editor.suggestSelection": "first",
+
+    // Allows pressing <TAB> to complete snippets such as `for` even when the
+    // completion list is not visible.
     "editor.tabCompletion": "onlySnippets",
+
+    // By default, VS Code will populate code completion with words found in the
+    // current file when a language service does not provide its own completions.
+    // This results in code completion suggesting words when editing comments and
+    // strings. This setting will prevent that.
     "editor.wordBasedSuggestions": "off"
   },
+
+  // Clean up the project root directory by nesting related files.
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     "pubspec.yaml": ".metadata, analysis_options.yaml, pubspec.lock, build.yaml, dartdoc_options.yaml, l10n.yaml, pubspec_overrides.yaml, dart_test.yaml, melos.yaml",
@@ -25,6 +66,8 @@
     ".env": ".env.*",
     "app.iml": "*.iml"
   },
+
+  // Configure the Yaml extension to add auto-completion for common Flutter files.
   "yaml.schemas": {
     "https://json.schemastore.org/github-issue-config.json": [
       ".github/ISSUE_TEMPLATE/config.yml"
@@ -35,19 +78,21 @@
       "build.*.yaml"
     ]
   },
+
+  // Speed up operations on Windows by reducing file locking & watching over `.dart_tool`.
   "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true,
     "**/.dart_tool": true
   },
+
+  // Make L10nization request context for each new l10n key.
   "l10nization.haveDescription": true,
+
+  // Configure the Dart extension to be handier.
   "dart.renameFilesWithClasses": "prompt",
   "dart.previewFlutterUiGuides": true,
-  "dart.enablePub": false,
+  "dart.enablePub": false, // We use Melos.
+
+  // Make commit messages more consistent.
   "commitlint.config.extend.rules": {
     "body-leading-blank": [
       1,
@@ -130,9 +175,9 @@
       ]
     ]
   },
+
+  // Pin CI for the current branch to the status bar.
   "github-actions.workflows.pinned.workflows": [
     ".github/workflows/ci.yaml"
-  ],
-  "C_Cpp.errorSquiggles": "enabled",
-  "C_Cpp_Runner.msvcBatchPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Auxiliary/Build/vcvarsall.bat"
+  ]
 }
