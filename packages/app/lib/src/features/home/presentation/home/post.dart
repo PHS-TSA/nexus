@@ -181,7 +181,9 @@ class _PostImage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // TODO(lishaduck): fix images not caching correctly.
     final post = ref.watch(wipPostProvider(postId))!;
-
+    if (post.imageID.isEmpty) {
+      return const SizedBox(height: 0);
+    }
     return SizedBox(
       height: 500,
       width: MediaQuery.sizeOf(context).width / 1.5,
