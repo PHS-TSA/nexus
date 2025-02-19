@@ -3,7 +3,7 @@ library;
 
 import 'package:appwrite/appwrite.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
+import 'package:flutter/foundation.dart' show Uint8List;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -121,38 +121,17 @@ final class _AppwritePostRepository implements PostRepository {
 
   @override
   Future<void> uploadImage(UploadedImageEntity file) async {
-    //Path is for non web
-    if (!kIsWeb) {
-      final path = file.file.path;
-      if (path != null) {
-        // Upload via path
-        final fileName =
-            '${DateTime.now().microsecondsSinceEpoch}'
-            "${path.split(".").last}";
+    final bytes = await file.file.readAsBytes();
 
-        await storage.createFile(
-          bucketId: 'post-media', //maybe change to env variable
-          fileId: file.imageID,
-          file: InputFile.fromPath(path: path, filename: fileName),
-        );
-      }
-    }
-    //Byte upload is for web
-    else if (kIsWeb) {
-      final bytes = file.file.bytes;
-      if (bytes != null) {
-        // Upload via bytes
-        final fileName =
-            '${DateTime.now().microsecondsSinceEpoch}'
-            '-${file.file.name}'; // TODO(MattsAttack): Add time here.
-        await storage.createFile(
-          bucketId: 'post-media', // TODO(MattsAttack): Use an dotenv variable.
-          fileId: file.imageID,
-          file: InputFile.fromBytes(bytes: bytes, filename: fileName),
-        );
-      }
-    }
-    return;
+    // Prevent collisions by adding a timestamp to the file name.
+    final fileName =
+        '${DateTime.timestamp().microsecondsSinceEpoch}-${file.file.name}';
+
+    await storage.createFile(
+      bucketId: 'post-media', //maybe change to env variable
+      fileId: file.imageID,
+      file: InputFile.fromBytes(bytes: bytes, filename: fileName),
+    );
   }
 }
 
