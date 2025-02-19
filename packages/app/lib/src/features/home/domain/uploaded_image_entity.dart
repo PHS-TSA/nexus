@@ -1,5 +1,5 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:image_picker/image_picker.dart';
 
 part 'uploaded_image_entity.freezed.dart';
 
@@ -8,6 +8,6 @@ part 'uploaded_image_entity.freezed.dart';
 class UploadedImageEntity with _$UploadedImageEntity {
   const factory UploadedImageEntity({
     required String imageID,
-    required PlatformFile file,
+    required XFile file,
   }) = _UploadedImageEntity;
 }

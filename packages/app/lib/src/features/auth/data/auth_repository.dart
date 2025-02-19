@@ -1,6 +1,8 @@
 /// This library provides authentication fetchers.
 library;
 
+import 'dart:developer';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -66,7 +68,7 @@ final class _AppwriteAuthRepository implements AuthRepository {
         password: password,
       );
     } on AppwriteException catch (e) {
-      print(e);
+      log('$e');
       return null;
     }
   }

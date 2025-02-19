@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../domain/uploaded_image_entity.dart';
@@ -23,4 +26,14 @@ class UploadedImagesService extends _$UploadedImagesService {
       state.firstWhere((element) => element.imageID == imageId),
     );
   }
+}
+
+@riverpod
+Future<IList<Uint8List>> uploadedImagesBytes(Ref ref) async {
+  final uploadedImages = ref.watch(uploadedImagesServiceProvider);
+  final bytes = await Future.wait(
+    uploadedImages.map((image) async => await image.file.readAsBytes()),
+  );
+
+  return bytes.lock;
 }

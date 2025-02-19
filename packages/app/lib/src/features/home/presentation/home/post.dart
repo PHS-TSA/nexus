@@ -237,7 +237,7 @@ class _PostInteractables extends HookConsumerWidget {
 
     return Row(
       children: [
-        Text(post.likes.length.toString()),
+        Text('${post.likes.length}'),
         IconButton(
           onPressed: () async {
             if (userId == null) {
