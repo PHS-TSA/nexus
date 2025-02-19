@@ -143,68 +143,73 @@ class _Dialog extends HookConsumerWidget {
     }, [formKey]);
 
     return Dialog(
-      // insetPadding: EdgeInsets.symmetric(
-      //   horizontal: MediaQuery.sizeOf(context).width / 8,
-      //   vertical: MediaQuery.sizeOf(context).height / 8,
-      // ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Scaffold(
-          appBar: AppBar(title: const Text('Create a New Post')),
-          body: Form(
-            key: formKey,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  // TODO(MattsAttack): guard against creating empty posts.
-                  TextFormField(
-                    initialValue: title.value,
-                    onSaved: (value) {
-                      if (value == null) return;
+        child: Form(
+          key: formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Text(
+                  'Create a new post',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 16),
 
-                      title.value = value;
-                    },
-                    decoration: const InputDecoration(label: Text('Title')),
-                  ),
-                  TextFormField(
-                    initialValue: description.value,
-                    onSaved: (value) {
-                      if (value == null) return;
+                // TODO(MattsAttack): guard against creating empty posts.
+                TextFormField(
+                  initialValue: title.value,
+                  onSaved: (value) {
+                    if (value == null) return;
 
-                      description.value = value;
-                    },
-                    decoration: const InputDecoration(
-                      label: Text('Description'),
+                    title.value = value;
+                  },
+                  decoration: const InputDecoration(label: Text('Title')),
+                ),
+                TextFormField(
+                  initialValue: description.value,
+                  onSaved: (value) {
+                    if (value == null) return;
+
+                    description.value = value;
+                  },
+                  decoration: const InputDecoration(label: Text('Description')),
+                ),
+                const _UploadedImagesView(),
+                const Spacer(),
+
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 8,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        // TODO(MattsAttack): Set a max image upload count, probably 10.
+                        final picker = ImagePicker();
+                        final pickedFiles = await picker.pickMultiImage();
+
+                        for (final pickedFile in pickedFiles) {
+                          ref
+                              .read(uploadedImagesServiceProvider.notifier)
+                              .addImage(
+                                UploadedImageEntity(
+                                  imageId: ID.unique(),
+                                  file: pickedFile,
+                                ),
+                              );
+                        }
+                      },
+                      child: const Text('Upload Image'),
                     ),
-                  ),
-                  const _UploadedImagesView(),
-                  ElevatedButton(
-                    onPressed: () async {
-                      // TODO(MattsAttack): Set a max image upload count, probably 10.
-                      final picker = ImagePicker();
-                      final pickedFiles = await picker.pickMultiImage();
-
-                      for (final pickedFile in pickedFiles) {
-                        ref
-                            .read(uploadedImagesServiceProvider.notifier)
-                            .addImage(
-                              UploadedImageEntity(
-                                imageId: ID.unique(),
-                                file: pickedFile,
-                              ),
-                            );
-                      }
-                    },
-                    child: const Text('Upload Image'),
-                  ),
-                  ElevatedButton(
-                    onPressed: handleSubmit,
-                    child: const Text('Create Post'),
-                  ),
-                ],
-              ),
+                    ElevatedButton(
+                      onPressed: handleSubmit,
+                      child: const Text('Create Post'),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
@@ -221,38 +226,51 @@ class _UploadedImagesView extends HookConsumerWidget {
     final uploadedImages = ref.watch(uploadedImagesServiceProvider);
 
     return SizedBox(
-      height: 500,
-      width: 500,
-      child: ListView(
+      height: 150,
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        children: [
-          for (final image in uploadedImages)
-            switch (ref.watch(uploadedImagesBytesProvider(image.imageId))) {
-              AsyncData(:final value) when value.isNotEmpty => Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  Image.memory(value),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.redAccent,
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () {
-                        // Remove the specific image based on index.
-                        ref
-                            .read(uploadedImagesServiceProvider.notifier)
-                            .removeImage(image.imageId);
-                      },
-                    ),
+        padding: const EdgeInsets.all(8),
+        itemCount: uploadedImages.length,
+        itemBuilder: (context, index) {
+          final image = uploadedImages[index];
+          return switch (ref.watch(
+            uploadedImagesBytesProvider(image.imageId),
+          )) {
+            AsyncData(:final value) when value.isNotEmpty => Stack(
+              alignment: Alignment.topRight,
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(8),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.memory(value, fit: BoxFit.cover),
                   ),
-                ],
-              ),
-              AsyncLoading() => const CircularProgressIndicator(),
-              _ => const SizedBox(),
-            },
-        ],
+                ),
+                Container(
+                  margin: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondaryContainer,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.close,
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                    ),
+                    onPressed: () {
+                      // Remove the specific image based on index.
+                      ref
+                          .read(uploadedImagesServiceProvider.notifier)
+                          .removeImage(image.imageId);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            AsyncLoading() => const CircularProgressIndicator(),
+            _ => const SizedBox(),
+          };
+        },
       ),
     );
   }
