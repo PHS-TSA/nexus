@@ -218,17 +218,39 @@ class _UploadedImagesView extends HookConsumerWidget {
   //Need to build a list of images. have it so you can horizontally scroll through images and have an x to remove them
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final uploadedImages = ref.watch(uploadedImagesBytesProvider);
-
-    return switch (uploadedImages) {
+    final uploadedImages = ref.watch(uploadedImagesServiceProvider);
+    final uploadedImagesBytes = ref.watch(uploadedImagesBytesProvider);
+    // @lishaduck you're going to hate me for this but it seems like the only good way to do this with how you changed the code
+    return switch (uploadedImagesBytes) {
       AsyncData(:final value) when value.isNotEmpty => SizedBox(
         height: 500,
         width: 500,
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: [
-            // TODO(MattsAttack): make this scale better
-            for (final bytes in value) Image.memory(bytes),
+            for (var index = 0; index < value.length; index++)
+              Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  Image.memory(value[index]),
+                  Container(
+                    // color: Colors.deepPurpleAccent,
+                    decoration: const BoxDecoration(
+                      color: Colors.redAccent,
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        // Remove the specific image based on index.
+                        ref
+                            .read(uploadedImagesServiceProvider.notifier)
+                            .removeImage(uploadedImages[index].imageID);
+                      },
+                    ),
+                  ),
+                ],
+              ),
           ],
         ),
       ),
