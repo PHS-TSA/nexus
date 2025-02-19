@@ -38,7 +38,7 @@ abstract interface class PostRepository {
   /// Upload an image to Appwrite.
   Future<void> uploadImage(UploadedImageEntity file);
 
-  ///Fetches images from appwrite
+  /// Fetch images from Appwrite.
   Future<Uint8List> getImages(String id);
 }
 
@@ -130,7 +130,7 @@ final class _AppwritePostRepository implements PostRepository {
 
     await storage.createFile(
       bucketId: 'post-media', //maybe change to env variable
-      fileId: file.imageID,
+      fileId: file.imageId,
       file: InputFile.fromBytes(bytes: bytes, filename: fileName),
     );
   }

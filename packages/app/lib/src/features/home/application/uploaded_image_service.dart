@@ -8,7 +8,7 @@ import '../domain/uploaded_image_entity.dart';
 
 part 'uploaded_image_service.g.dart';
 
-///Provider that contains all currently uploaded images files(XFiles) and IDs(Strings)
+/// Contains all currently [UploadedImageEntity]s.
 @riverpod
 class UploadedImagesService extends _$UploadedImagesService {
   @override
@@ -16,28 +16,24 @@ class UploadedImagesService extends _$UploadedImagesService {
     return const IList.empty();
   }
 
-  ///Adds image to passed in image to provider
+  /// Add an image to the upload queue.
   void addImage(UploadedImageEntity image) {
     state = state.add(image);
   }
 
-  ///Removes image from provider based on passed in ID
+  /// Remove image from the upload queue by id.
   void removeImage(String imageId) {
     // Again, our state is immutable. So we're making a new list instead of
     // changing the existing list.
-    state = state.remove(
-      state.firstWhere((element) => element.imageID == imageId),
-    );
+    state = state.removeWhere((element) => element.imageId == imageId);
   }
 }
 
-///Provider containing bytes of all currently uploaded images
+/// Contains the cached bytes of a currently [UploadedImageEntity] by id.
 @riverpod
-Future<IList<Uint8List>> uploadedImagesBytes(Ref ref) async {
+Future<Uint8List> uploadedImagesBytes(Ref ref, String imageId) async {
   final uploadedImages = ref.watch(uploadedImagesServiceProvider);
-  final bytes = await Future.wait(
-    uploadedImages.map((image) async => await image.file.readAsBytes()),
-  );
+  final image = uploadedImages.firstWhere((img) => img.imageId == imageId);
 
-  return bytes.lock;
+  return await image.file.readAsBytes();
 }

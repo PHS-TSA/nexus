@@ -181,7 +181,7 @@ class _PostImage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // TODO(lishaduck): fix images not caching correctly.
     final post = ref.watch(wipPostProvider(postId))!;
-    if (post.imageID.isEmpty) {
+    if (post.imageIds.isEmpty) {
       return const SizedBox(height: 0);
     }
     return SizedBox(
@@ -190,7 +190,7 @@ class _PostImage extends ConsumerWidget {
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [
-          for (final imageId in post.imageID)
+          for (final imageId in post.imageIds)
             switch (ref.watch(imageProvider(imageId))) {
               AsyncData(:final value) => Image.memory(value),
               AsyncError() => const Text('Error loading image'),

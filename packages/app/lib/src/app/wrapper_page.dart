@@ -126,9 +126,9 @@ class _Dialog extends HookConsumerWidget {
               timestamp: DateTime.timestamp(),
               likes: const IList.empty(),
               id: PostId(ID.unique()),
-              imageID:
+              imageIds:
                   // Read in the list of uploaded images ids.
-                  uploadedImages.map((image) => image.imageID).toIList(),
+                  uploadedImages.map((image) => image.imageId).toIList(),
             ),
             uploadedImages,
           );
@@ -191,7 +191,7 @@ class _Dialog extends HookConsumerWidget {
                             .read(uploadedImagesServiceProvider.notifier)
                             .addImage(
                               UploadedImageEntity(
-                                imageID: ID.unique(),
+                                imageId: ID.unique(),
                                 file: pickedFile,
                               ),
                             );
@@ -219,22 +219,20 @@ class _UploadedImagesView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final uploadedImages = ref.watch(uploadedImagesServiceProvider);
-    final uploadedImagesBytes = ref.watch(uploadedImagesBytesProvider);
-    // @lishaduck you're going to hate me for this but it seems like the only good way to do this with how you changed the code
-    return switch (uploadedImagesBytes) {
-      AsyncData(:final value) when value.isNotEmpty => SizedBox(
-        height: 500,
-        width: 500,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: [
-            for (var index = 0; index < value.length; index++)
-              Stack(
+
+    return SizedBox(
+      height: 500,
+      width: 500,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          for (final image in uploadedImages)
+            switch (ref.watch(uploadedImagesBytesProvider(image.imageId))) {
+              AsyncData(:final value) when value.isNotEmpty => Stack(
                 alignment: Alignment.topRight,
                 children: [
-                  Image.memory(value[index]),
+                  Image.memory(value),
                   Container(
-                    // color: Colors.deepPurpleAccent,
                     decoration: const BoxDecoration(
                       color: Colors.redAccent,
                       shape: BoxShape.circle,
@@ -245,17 +243,17 @@ class _UploadedImagesView extends HookConsumerWidget {
                         // Remove the specific image based on index.
                         ref
                             .read(uploadedImagesServiceProvider.notifier)
-                            .removeImage(uploadedImages[index].imageID);
+                            .removeImage(image.imageId);
                       },
                     ),
                   ),
                 ],
               ),
-          ],
-        ),
+              AsyncLoading() => const CircularProgressIndicator(),
+              _ => const SizedBox(),
+            },
+        ],
       ),
-      AsyncLoading() => const CircularProgressIndicator(),
-      _ => const SizedBox(),
-    };
+    );
   }
 }
