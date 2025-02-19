@@ -112,9 +112,6 @@ flutter:
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
 
-flutter_gen:
-  output: lib/src/gen/
-
 # dart run flutter_launcher_icons
 flutter_launcher_icons:
   image_path: "assets/icons/logo.png"
