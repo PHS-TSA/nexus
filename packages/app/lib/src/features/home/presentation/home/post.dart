@@ -179,42 +179,24 @@ class _PostImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //TODOfix images not caching correctly
+    // TODO(lishaduck): fix images not caching correctly.
     final post = ref.watch(wipPostProvider(postId))!;
-    if (post.imageID != null) {
-      final imageIDs = post.imageID;
-      final imageIDsLength = imageIDs?.length;
-      if (imageIDsLength == null) return const SizedBox(height: 1);
-      if (imageIDsLength == 1) {
-        final image = ref.watch(imageProvider(imageIDs![0]!));
-        return switch (image) {
-          AsyncData(:final value) => Image.memory(value),
-          AsyncError() => const Text('Error loading image'),
-          _ => const CircularProgressIndicator(),
-        };
-      } else if (imageIDsLength > 1) {
-        final List<AsyncValue<Uint8List>> images = [];
-        for (var i = 0; i < imageIDsLength; i++) {
-          images.add(ref.watch(imageProvider(imageIDs![i]!)));
-        }
-        return SizedBox(
-          height: 500,
-          width: MediaQuery.sizeOf(context).width / 1.5,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children:
-                images.map((image) {
-                  return switch (image) {
-                    AsyncData(:final value) => Image.memory(value),
-                    AsyncError() => const Text('Error loading image'),
-                    _ => const CircularProgressIndicator(),
-                  };
-                }).toList(),
-          ),
-        );
-      }
-    }
-    return const SizedBox(height: 1);
+
+    return SizedBox(
+      height: 500,
+      width: MediaQuery.sizeOf(context).width / 1.5,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          for (final imageId in post.imageID)
+            switch (ref.watch(imageProvider(imageId))) {
+              AsyncData(:final value) => Image.memory(value),
+              AsyncError() => const Text('Error loading image'),
+              _ => const CircularProgressIndicator(),
+            },
+        ],
+      ),
+    );
   }
 
   @override

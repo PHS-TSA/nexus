@@ -10,9 +10,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../env/env.dart';
 import '../../../utils/api.dart';
 import '../../auth/domain/user.dart';
-import '../application/uploaded_image_service.dart';
 import '../domain/feed_entity.dart';
 import '../domain/post_entity.dart';
+import '../domain/uploaded_image_entity.dart';
 
 part 'post_repository.g.dart';
 
@@ -29,15 +29,14 @@ abstract interface class PostRepository {
   /// Returns the created post.
   Future<void> createNewPost(
     PostEntity post,
+    IList<UploadedImageEntity> images,
   );
 
   /// Toggle if a user is listed as having liked a post.
   Future<void> toggleLikePost(PostId postId, UserId userId, Likes likes);
 
-  ///Uploads image to Appwrite and returns id
-  Future<void> uploadImage(
-    int index,
-  );
+  /// Upload an image to Appwrite.
+  Future<void> uploadImage(UploadedImageEntity file);
 
   Future<Uint8List> getImages(String id);
 }
@@ -48,7 +47,6 @@ final class _AppwritePostRepository implements PostRepository {
     required this.storage,
     required this.databaseId,
     required this.collectionId,
-    required this.ref,
   });
 
   final Databases database;
@@ -56,8 +54,6 @@ final class _AppwritePostRepository implements PostRepository {
 
   final String databaseId;
   final String collectionId;
-
-  final Ref ref; //@lishaduck is this the correct way to access a ref here?
 
   @override
   Future<IList<PostEntity>> readPosts(FeedEntity feed, PostId? cursor) async {
@@ -91,23 +87,18 @@ final class _AppwritePostRepository implements PostRepository {
 
   @override
   Future<Uint8List> getImages(String id) async {
-    // Update for multi image
+    // TODO(MattsAttack): Update for multi-image support.
     return await storage.getFileView(bucketId: 'post-media', fileId: id);
   }
 
   @override
   Future<void> createNewPost(
     PostEntity post,
+    IList<UploadedImageEntity> images,
   ) async {
-    //Need to figure out why images aren't uploading
-    final imageID =
-        post.imageID; // Extracting locally reduces chance for null upon access
-    if (imageID != null) {
-      for (var i = 0; i < imageID.length; i++) {
-        await uploadImage(
-          i,
-        ); // Could be cool to implement a upload status bar. Posts with 10 images will take a while and that should help
-      }
+    // Could be cool to implement a upload status bar. Posts with 10 images will take a while and that should help
+    for (final image in images) {
+      await uploadImage(image);
     }
 
     await database.createDocument(
@@ -129,37 +120,34 @@ final class _AppwritePostRepository implements PostRepository {
   }
 
   @override
-  Future<void> uploadImage(
-    int index,
-  ) async {
-    final uploadedImages = ref.watch(uploadedImagesServiceProvider);
-    final selectedFile = uploadedImages[index].file;
-
+  Future<void> uploadImage(UploadedImageEntity file) async {
     //Path is for non web
     if (!kIsWeb) {
-      final path = selectedFile.path;
+      final path = file.file.path;
       if (path != null) {
         // Upload via path
-        final fileName = '${DateTime.now().microsecondsSinceEpoch}'
+        final fileName =
+            '${DateTime.now().microsecondsSinceEpoch}'
             "${path.split(".").last}";
 
-        final file = await storage.createFile(
+        await storage.createFile(
           bucketId: 'post-media', //maybe change to env variable
-          fileId: uploadedImages[index].imageID,
+          fileId: file.imageID,
           file: InputFile.fromPath(path: path, filename: fileName),
         );
       }
     }
     //Byte upload is for web
     else if (kIsWeb) {
-      final bytes = selectedFile.bytes;
+      final bytes = file.file.bytes;
       if (bytes != null) {
         // Upload via bytes
-        final fileName = '${DateTime.now().microsecondsSinceEpoch}'
-            '-${selectedFile.name}'; //TODOimplement time here
-        final file = await storage.createFile(
-          bucketId: 'post-media', //maybe change to env variable
-          fileId: uploadedImages[index].imageID,
+        final fileName =
+            '${DateTime.now().microsecondsSinceEpoch}'
+            '-${file.file.name}'; // TODO(MattsAttack): Add time here.
+        await storage.createFile(
+          bucketId: 'post-media', // TODO(MattsAttack): Use an dotenv variable.
+          fileId: file.imageID,
           file: InputFile.fromBytes(bytes: bytes, filename: fileName),
         );
       }
@@ -179,6 +167,5 @@ PostRepository postRepository(Ref ref) {
     storage: storage,
     databaseId: Env.databaseId,
     collectionId: Env.postsCollectionId,
-    ref: ref,
   );
 }

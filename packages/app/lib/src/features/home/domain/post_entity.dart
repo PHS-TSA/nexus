@@ -48,7 +48,7 @@ sealed class PostEntity with _$PostEntity {
     @JsonKey(includeToJson: false) required PostId id,
 
     /// Contains ID of image in bucket
-    List<String?>? imageID,
+    required IList<String> imageID,
   }) = _PostEntity;
 
   factory PostEntity.fromJson(Map<String, dynamic> json) =>

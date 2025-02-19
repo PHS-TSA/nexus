@@ -6,8 +6,6 @@ part 'uploaded_image_entity.freezed.dart';
 @immutable
 @freezed
 class UploadedImageEntity with _$UploadedImageEntity {
-  // Might need to add IsWeb in here
-
   const factory UploadedImageEntity({
     required String imageID,
     required PlatformFile file,

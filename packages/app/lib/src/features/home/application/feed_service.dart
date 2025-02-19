@@ -102,9 +102,5 @@ base class WipPost extends _$WipPost {
 
 @riverpod
 Future<Uint8List> image(Ref ref, String id) {
-  return ref
-      .watch(
-        postRepositoryProvider,
-      )
-      .getImages(id);
+  return ref.watch(postRepositoryProvider).getImages(id);
 }

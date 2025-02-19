@@ -8,7 +8,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -21,8 +21,6 @@ import '../features/home/domain/post_entity.dart';
 import '../features/home/domain/uploaded_image_entity.dart';
 import '../utils/hooks.dart';
 import 'router.gr.dart';
-
-// final uploadedImageProvider = StateProvider<PlatformFile?>((ref) => null);
 
 /// {@template nexus.app.wrapper_page}
 /// Wrap the pages in a Material Design scaffold.
@@ -100,9 +98,6 @@ class _Dialog extends HookConsumerWidget {
     final userId = ref.watch(idProvider);
     final userName = ref.watch(userNameProvider);
 
-    ///
-    // PlatformFile? selectedFile;
-
     final handleSubmit = useCallback(() async {
       final uploadedImages = ref.watch(uploadedImagesServiceProvider);
       final location = await ref.read(locationServiceProvider.future);
@@ -119,8 +114,6 @@ class _Dialog extends HookConsumerWidget {
       formKey.currentState?.save();
 
       // Create a list off all uploaded images ids
-      final List<String> uploadedImageIDs =
-          uploadedImages.map((image) => image.imageID).toList();
 
       await ref
           .read(postRepositoryProvider)
@@ -135,8 +128,11 @@ class _Dialog extends HookConsumerWidget {
               timestamp: DateTime.timestamp(),
               likes: const IList.empty(),
               id: PostId(ID.unique()),
-              imageID: uploadedImageIDs, //Read in list of uploaded images ids
+              imageID:
+                  // Read in the list of uploaded images ids.
+                  uploadedImages.map((image) => image.imageID).toIList(),
             ),
+            uploadedImages,
           );
 
       if (!context.mounted) return;
@@ -257,18 +253,21 @@ class _UploadedImagesView extends HookConsumerWidget {
       width: 500,
       child: ListView(
         scrollDirection: Axis.horizontal,
-        children:
-            uploadedImages.map((image) {
-              final file = image.file;
-              //TODOadd a way to remove an image
-              if (kIsWeb && file.bytes != null) {
-                return Image.memory(file.bytes!, width: 400, height: 400);
-              } else if (file.path != null) {
-                return Image.file(File(file.path!), width: 400, height: 400);
-              }
-
-              return const Placeholder();
-            }).toList(),
+        children: [
+          for (final image in uploadedImages)
+            Builder(
+              builder: (context) {
+                final file = image.file;
+                // TODO(MattsAttack): add a way to remove an image
+                if (kIsWeb && file.bytes != null) {
+                  return Image.memory(file.bytes!, width: 400, height: 400);
+                } else if (file.path != null) {
+                  return Image.file(File(file.path!), width: 400, height: 400);
+                }
+                return const Placeholder();
+              },
+            ),
+        ],
       ),
     );
   }
