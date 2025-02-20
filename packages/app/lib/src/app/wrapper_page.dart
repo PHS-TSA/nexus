@@ -8,8 +8,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../features/auth/application/auth_service.dart';
 import '../features/home/application/location_service.dart';
@@ -187,10 +189,29 @@ class _Dialog extends HookConsumerWidget {
                     ElevatedButton(
                       onPressed: () async {
                         // TODO(MattsAttack): Set a max image upload count, probably 10.
+                        print('about to image pick');
                         final picker = ImagePicker();
                         final pickedFiles = await picker.pickMultiImage();
 
-                        for (final pickedFile in pickedFiles) {
+                        for (var pickedFile in pickedFiles) {
+                          final pickedFilePath = pickedFile.path;
+                          //Handle IOS images
+                          if (pickedFilePath.toLowerCase().contains('heic') ||
+                              pickedFilePath.toLowerCase().contains('heif')) {
+                            print('heic detected. Current value $pickedFile');
+                            final tmpDir = (await getTemporaryDirectory()).path;
+                            final target =
+                                '$tmpDir/${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+                            pickedFile =
+                                (await FlutterImageCompress.compressAndGetFile(
+                                  pickedFilePath,
+                                  target,
+                                  quality: 100,
+                                ))!;
+                            print('heic compressed. Current value $pickedFile');
+                          }
+
                           ref
                               .read(uploadedImagesServiceProvider.notifier)
                               .addImage(

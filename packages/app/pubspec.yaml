@@ -47,6 +47,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_hooks: ^0.21.1-pre.4
+  flutter_image_compress: ^2.4.0
   flutter_localizations: # Required to enable localization
     sdk: flutter
   flutter_map: ^8.0.0
