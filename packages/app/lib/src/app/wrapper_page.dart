@@ -51,54 +51,92 @@ class _DesktopWrapper extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AutoTabsScaffold(
+    return AutoTabsRouter(
       routes: const [
         FeedRoutingRoute(),
         MapRoute(),
         SettingsRoute(), // Make a new feed route page that has an app bar that routes between local and world
       ],
-      floatingActionButton: FloatingActionButton(
-        onPressed:
-            () async => showDialog<void>(
-              context: context,
-              builder: (context) => const _Dialog(),
-            ),
-        child: const Icon(Icons.create),
-      ),
-      appBarBuilder: (context, autoRouter) {
-        return AppBar(
-          title: Text(autoRouter.current.title(context)),
-          automaticallyImplyLeading: false,
-          bottom: switch (autoRouter.current.path) {
-            // FIXME(lishaduck): This needs some work.
-            '/' => TabBar(
-              onTap: autoRouter.setActiveIndex,
-              tabs: const [
-                Tab(icon: Icon(Icons.my_location), text: 'Local'),
-                Tab(icon: Icon(Icons.public), text: 'World'),
-              ],
-            ),
-            _ => null,
-          },
+      builder: (context, child) {
+        final autoRouter = AutoTabsRouter.of(context);
+        return Scaffold(
+          body: Row(
+            children: [
+              NavigationRail(
+                selectedIndex: autoRouter.activeIndex,
+                onDestinationSelected: autoRouter.setActiveIndex,
+                extended:
+                    MediaQuery.sizeOf(context).width >=
+                    800, // Might need to change to contraints
+                minExtendedWidth: 180,
+                destinations: const [
+                  NavigationRailDestination(
+                    icon: Icon(Icons.feed),
+                    label: Text('Feeds'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.map_outlined),
+                    label: Text('Discover'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.settings),
+                    label: Text('Settings'),
+                  ),
+                ],
+              ),
+              Expanded(child: child),
+            ],
+          ), // Implement rail here similar to google article
+          appBar: AppBar(
+            title: Text(autoRouter.current.title(context)),
+            automaticallyImplyLeading: false,
+            bottom: switch (autoRouter.current.path) {
+              // FIXME(lishaduck): This needs some work.
+              '/' => TabBar(
+                onTap: autoRouter.setActiveIndex,
+                tabs: const [
+                  Tab(icon: Icon(Icons.my_location), text: 'Local'),
+                  Tab(icon: Icon(Icons.public), text: 'World'),
+                ],
+              ),
+              _ => null,
+            },
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed:
+                () async => showDialog<void>(
+                  context: context,
+                  builder: (context) => const _Dialog(),
+                ),
+            child: const Icon(Icons.create),
+          ), // Change to form on top of feed for desktop
         );
       },
-      bottomNavigationBuilder: (context, autoRouter) {
-        return NavigationBar(
-          selectedIndex: autoRouter.activeIndex,
-          onDestinationSelected: autoRouter.setActiveIndex,
-          destinations: const [
-            NavigationDestination(icon: Icon(Icons.feed), label: 'Feeds'),
-            NavigationDestination(
-              icon: Icon(Icons.map_outlined),
-              label: 'Discover',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
-        );
-      },
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed:
+      //       () async => showDialog<void>(
+      //         context: context,
+      //         builder: (context) => const _Dialog(),
+      //       ),
+      //   child: const Icon(Icons.create),
+      // ),
+      // bottomNavigationBuilder: (context, autoRouter) {
+      //   return NavigationBar(
+      //     selectedIndex: autoRouter.activeIndex,
+      //     onDestinationSelected: autoRouter.setActiveIndex,
+      //     destinations: const [
+      //       NavigationDestination(icon: Icon(Icons.feed), label: 'Feeds'),
+      //       NavigationDestination(
+      //         icon: Icon(Icons.map_outlined),
+      //         label: 'Discover',
+      //       ),
+      //       NavigationDestination(
+      //         icon: Icon(Icons.settings),
+      //         label: 'Settings',
+      //       ),
+      //     ],
+      //   );
+      // },
     );
   }
 }
