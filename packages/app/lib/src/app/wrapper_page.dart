@@ -34,6 +34,80 @@ class WrapperPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 680) {
+          return const _DesktopWrapper();
+        } else {
+          return const _MobileWrapper();
+        }
+      },
+    );
+  }
+}
+
+class _DesktopWrapper extends ConsumerWidget {
+  const _DesktopWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AutoTabsScaffold(
+      routes: const [
+        FeedRoutingRoute(),
+        MapRoute(),
+        SettingsRoute(), // Make a new feed route page that has an app bar that routes between local and world
+      ],
+      floatingActionButton: FloatingActionButton(
+        onPressed:
+            () async => showDialog<void>(
+              context: context,
+              builder: (context) => const _Dialog(),
+            ),
+        child: const Icon(Icons.create),
+      ),
+      appBarBuilder: (context, autoRouter) {
+        return AppBar(
+          title: Text(autoRouter.current.title(context)),
+          automaticallyImplyLeading: false,
+          bottom: switch (autoRouter.current.path) {
+            // FIXME(lishaduck): This needs some work.
+            '/' => TabBar(
+              onTap: autoRouter.setActiveIndex,
+              tabs: const [
+                Tab(icon: Icon(Icons.my_location), text: 'Local'),
+                Tab(icon: Icon(Icons.public), text: 'World'),
+              ],
+            ),
+            _ => null,
+          },
+        );
+      },
+      bottomNavigationBuilder: (context, autoRouter) {
+        return NavigationBar(
+          selectedIndex: autoRouter.activeIndex,
+          onDestinationSelected: autoRouter.setActiveIndex,
+          destinations: const [
+            NavigationDestination(icon: Icon(Icons.feed), label: 'Feeds'),
+            NavigationDestination(
+              icon: Icon(Icons.map_outlined),
+              label: 'Discover',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _MobileWrapper extends ConsumerWidget {
+  const _MobileWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return AutoTabsScaffold(
       routes: const [
         FeedRoutingRoute(),
