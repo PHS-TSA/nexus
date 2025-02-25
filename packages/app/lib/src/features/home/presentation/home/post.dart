@@ -204,7 +204,9 @@ class _PostImages extends ConsumerWidget {
               ),
             ),
             AsyncError() => const Text('Error loading image'),
-            _ => const CircularProgressIndicator(),
+            _ => const CircularProgressIndicator(
+              constraints: BoxConstraints(minWidth: 300, minHeight: 300),
+            ),
           };
         },
       ),
