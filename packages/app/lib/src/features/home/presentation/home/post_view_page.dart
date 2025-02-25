@@ -29,16 +29,20 @@ class PostViewPage extends ConsumerWidget {
         // TODO(MattsAttack): Could update this to be more intresting.
         title: const Text('Post View'),
       ),
-      body: Center(
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 1000),
-          child: Column(
-            children: [
-              Post(postId: postId),
-              // TODO(MattsAttack): Comments will go here.
-            ],
+      body: ListView(
+        children: [
+          Center(
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 1000),
+              child: Column(
+                children: [
+                  Post(postId: postId),
+                  // TODO(MattsAttack): Comments will go here.
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
