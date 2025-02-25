@@ -68,8 +68,9 @@ class _DesktopWrapper extends ConsumerWidget {
                 extended:
                     MediaQuery.sizeOf(context).width >=
                     800, // Might need to change to contraints
-                minExtendedWidth: 180,
+                minExtendedWidth: 200,
                 destinations: const [
+                  //Todo increase size oftabs
                   NavigationRailDestination(
                     icon: Icon(Icons.feed),
                     label: Text('Feeds'),
@@ -88,19 +89,31 @@ class _DesktopWrapper extends ConsumerWidget {
             ],
           ), // Implement rail here similar to google article
           appBar: AppBar(
+            elevation: 0,
+            // backgroundColor: Theme.of(context).colorScheme.primary,
+            shadowColor: Theme.of(context).colorScheme.surface,
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            scrolledUnderElevation: 0,
             title: Text(autoRouter.current.title(context)),
             automaticallyImplyLeading: false,
-            bottom: switch (autoRouter.current.path) {
-              // FIXME(lishaduck): This needs some work.
-              '/' => TabBar(
-                onTap: autoRouter.setActiveIndex,
-                tabs: const [
-                  Tab(icon: Icon(Icons.my_location), text: 'Local'),
-                  Tab(icon: Icon(Icons.public), text: 'World'),
-                ],
-              ),
-              _ => null,
-            },
+            // bottom: switch (autoRouter.current.path) {
+            //   '/' => TabBar(
+            //     onTap: autoRouter.setActiveIndex,
+            //     automaticIndicatorColorAdjustment: false,
+            //     overlayColor: WidgetStateProperty.all(
+            //       Theme.of(context).colorScheme.surface,
+            //     ),
+
+            //     // labelColor: Colors.blue,
+            //     // unselectedLabelColor: Colors.blue,
+            //     // indicatorColor: Colors.blue,
+            //     tabs: const [
+            //       Tab(icon: Icon(Icons.my_location), text: 'Local'),
+            //       Tab(icon: Icon(Icons.public), text: 'World'),
+            //     ],
+            //   ),
+            //   _ => null,
+            // },
           ),
           floatingActionButton: FloatingActionButton(
             onPressed:
@@ -112,31 +125,6 @@ class _DesktopWrapper extends ConsumerWidget {
           ), // Change to form on top of feed for desktop
         );
       },
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed:
-      //       () async => showDialog<void>(
-      //         context: context,
-      //         builder: (context) => const _Dialog(),
-      //       ),
-      //   child: const Icon(Icons.create),
-      // ),
-      // bottomNavigationBuilder: (context, autoRouter) {
-      //   return NavigationBar(
-      //     selectedIndex: autoRouter.activeIndex,
-      //     onDestinationSelected: autoRouter.setActiveIndex,
-      //     destinations: const [
-      //       NavigationDestination(icon: Icon(Icons.feed), label: 'Feeds'),
-      //       NavigationDestination(
-      //         icon: Icon(Icons.map_outlined),
-      //         label: 'Discover',
-      //       ),
-      //       NavigationDestination(
-      //         icon: Icon(Icons.settings),
-      //         label: 'Settings',
-      //       ),
-      //     ],
-      //   );
-      // },
     );
   }
 }
