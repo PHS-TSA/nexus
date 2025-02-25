@@ -27,6 +27,8 @@ class FeedRoutingPage extends ConsumerWidget {
           backgroundColor: Theme.of(context).colorScheme.surface,
           automaticallyImplyLeading: false,
           title: NavigationBar(
+            selectedIndex: autoRouter.activeIndex,
+            onDestinationSelected: autoRouter.setActiveIndex,
             elevation: 0,
             backgroundColor: Theme.of(context).colorScheme.surface,
             destinations: const [
