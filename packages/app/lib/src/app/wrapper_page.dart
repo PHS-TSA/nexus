@@ -151,6 +151,9 @@ class _MobileWrapper extends ConsumerWidget {
       appBarBuilder: (context, autoRouter) {
         return AppBar(
           title: Text(autoRouter.current.title(context)),
+          shadowColor: Theme.of(context).colorScheme.surface,
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          scrolledUnderElevation: 0,
           automaticallyImplyLeading: false,
           bottom: switch (autoRouter.current.path) {
             // FIXME(lishaduck): This needs some work.
