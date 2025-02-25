@@ -23,11 +23,14 @@ class FeedRoutingPage extends ConsumerWidget {
       routes: const [LocalFeedRoute(), WorldFeedRoute()],
       appBarBuilder: (context, autoRouter) {
         return AppBar(
+          scrolledUnderElevation: 0,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           automaticallyImplyLeading: false,
           title: NavigationBar(
             selectedIndex: autoRouter.activeIndex,
             onDestinationSelected: autoRouter.setActiveIndex,
-            backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+            elevation: 0,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             destinations: const [
               NavigationDestination(icon: Icon(Icons.pin_drop), label: 'Local'),
               NavigationDestination(icon: Icon(Icons.public), label: 'World'),
