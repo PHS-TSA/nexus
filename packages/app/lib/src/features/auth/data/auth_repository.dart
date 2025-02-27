@@ -63,6 +63,8 @@ final class _AppwriteAuthRepository implements AuthRepository {
   @override
   Future<Session?> logInUser(String email, String password) async {
     try {
+      log('$email, $password');
+
       return await account.createEmailPasswordSession(
         email: email,
         password: password,
@@ -85,6 +87,8 @@ final class _AppwriteAuthRepository implements AuthRepository {
       // If it exists, return it.
       return await account.get();
     } on AppwriteException {
+      log('No user session found');
+
       return null;
     }
   }
