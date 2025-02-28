@@ -12,7 +12,7 @@ part 'accessibility.freezed.dart';
 
 @immutable
 @freezed
-class ExpectedFailures with _$ExpectedFailures {
+sealed class ExpectedFailures with _$ExpectedFailures {
   const factory ExpectedFailures({
     @Default(false) bool androidTap,
     @Default(false) bool iosTap,

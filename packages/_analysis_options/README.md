@@ -1,4 +1,4 @@
-# `analysis_options`
+# `_analysis_options`
 
 Provide a strict lint configuration.
 
@@ -13,7 +13,7 @@ To use the lints, add as a dev dependency in your `pubspec.yaml`;
 then, add an include in `analysis_options.yaml`:
 
 ```yaml
-include: package:analysis_options/analysis_options.yaml
+include: package:_analysis_options/analysis_options.yaml
 ```
 
 ## Additional information

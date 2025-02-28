@@ -63,10 +63,15 @@ linter:
 
     # Experimental rules, not yet in VGA
     annotate_redeclares: true
+    unsafe_variance: true
+    omit_obvious_property_types: true
+    specify_nonobvious_property_types: true
 
     # New/updated rules, not yet in VGA
     use_truncating_division: true
     avoid_futureor_void: true
+    unnecessary_underscores: true
+    strict_top_level_inference: true
 
     # Newly (or soon-to-be) deprecated rules, still in VGA
     unnecessary_await_in_return: false

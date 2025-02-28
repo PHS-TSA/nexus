@@ -1,8 +1,63 @@
-name: "nexus"
+name: "harvest_hub_workspace"
 
 environment:
-  sdk: ">=3.6.0 <4.0.0"
+  sdk: ">=3.7.0 <4.0.0"
   flutter: "3.29.0"
 
+workspace:
+  - packages/_analysis_options
+  - packages/app
+
 dev_dependencies:
-  melos: ^6.3.2
+  melos: ^7.0.0-dev.7
+
+melos:
+  command:
+    bootstrap:
+      environment:
+        sdk: "^3.7.0"
+
+      hooks:
+        post: melos run gen-l10n && melos run gen
+
+  scripts:
+    clean:
+      description: clean project
+      exec: flutter clean
+      packageFilters:
+        flutter: true
+    custom_lint:
+      description: run custom lint
+      exec: dart run custom_lint --fatal-infos
+      packageFilters:
+        dependsOn:
+          - custom_lint
+    gen-l10n:
+      description: generate l10n files
+      exec: flutter gen-l10n
+      packageFilters:
+        flutter: true
+    gen:
+      description: run build_runner
+      exec: dart run build_runner build --delete-conflicting-outputs --low-resources-mode
+      packageFilters:
+        dependsOn:
+          - build_runner
+    gen:watch:
+      description: watch build_runner
+      exec: dart run build_runner watch --delete-conflicting-outputs --low-resources-mode
+      packageFilters:
+        dependsOn:
+          - build_runner
+    gen:clean:
+      description: clean build_runner
+      exec: dart run build_runner clean
+      packageFilters:
+        dependsOn:
+          - build_runner
+    test:
+      description: run tests
+      exec: dart run very_good_cli:very_good test --coverage --test-randomize-ordering-seed random
+      packageFilters:
+        dependsOn:
+          - very_good_cli

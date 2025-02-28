@@ -12,7 +12,7 @@ codecov.yaml  @lishaduck
 tests/        @PHS-TSA/nexus
 pubspec.*     @PHS-TSA/nexus
 
-/packages/analysis_options/  @lishaduck
+/packages/_analysis_options/  @lishaduck
 /packages/app/               @PHS-TSA/nexus
 
 /packages/*/assets/  @PHS-TSA/nexus

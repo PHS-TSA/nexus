@@ -189,7 +189,6 @@ class _Dialog extends HookConsumerWidget {
                     ElevatedButton(
                       onPressed: () async {
                         // TODO(MattsAttack): Set a max image upload count, probably 10.
-                        print('about to image pick');
                         final picker = ImagePicker();
                         final pickedFiles = await picker.pickMultiImage();
 
@@ -198,7 +197,6 @@ class _Dialog extends HookConsumerWidget {
                           //Handle IOS images
                           if (pickedFilePath.toLowerCase().contains('heic') ||
                               pickedFilePath.toLowerCase().contains('heif')) {
-                            print('heic detected. Current value $pickedFile');
                             final tmpDir = (await getTemporaryDirectory()).path;
                             final target =
                                 '$tmpDir/${DateTime.now().millisecondsSinceEpoch}.jpg';
@@ -209,7 +207,6 @@ class _Dialog extends HookConsumerWidget {
                                   target,
                                   quality: 100,
                                 ))!;
-                            print('heic compressed. Current value $pickedFile');
                           }
 
                           ref

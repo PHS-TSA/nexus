@@ -8,7 +8,7 @@ part 'uploaded_image_entity.freezed.dart';
 /// {@endtemplate}
 @immutable
 @freezed
-class UploadedImageEntity with _$UploadedImageEntity {
+sealed class UploadedImageEntity with _$UploadedImageEntity {
   /// {@macro nexus.features.home.domain.uploaded_image}
   const factory UploadedImageEntity({
     required String imageId,

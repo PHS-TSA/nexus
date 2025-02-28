@@ -25,7 +25,7 @@ extension _WidgetTesterX on WidgetTester {
     final container = createContainer(
       overrides: [authRepositoryProvider.overrideWithValue(mockAuthRepository)],
     );
-    final routerSubscription = container.listen(routerProvider, (_, __) {});
+    final routerSubscription = container.listen(routerProvider, (_, _) {});
     final router = routerSubscription.read();
     container.read(authServiceProvider);
 
