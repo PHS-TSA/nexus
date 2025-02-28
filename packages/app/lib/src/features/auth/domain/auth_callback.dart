@@ -2,4 +2,4 @@
 library;
 
 /// A callback that is called when the user logs in.
-typedef AuthCallback = void Function({bool didLogIn});
+typedef AuthCallback = void Function({required bool didLogIn});

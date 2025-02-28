@@ -205,7 +205,7 @@ jobs:
           run-bootstrap: true
           enforce-lockfile: true
       - name: 🕵️ Analyze project source
-        run: melos analyze --fatal-infos --concurrency=5
+        run: dart analyze --fatal-infos
       - name: 🕵️ Run Custom Lint Rules
         run: melos run custom_lint
 

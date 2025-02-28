@@ -27,7 +27,6 @@ migrate_working_dir/
 build/
 coverage/
 /packages/*/lib/src/gen/
-pubspec_overrides.yaml
 
 # Generated files
 **/*.g.dart

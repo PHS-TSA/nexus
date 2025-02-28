@@ -101,15 +101,10 @@ class AppRouter extends RootStackRouter {
           resolver.routeName == SignUpRoute.name) {
         resolver.next();
       } else {
-        await resolver.redirect(
+        await resolver.redirectUntil(
           LogInRoute(
             // The parameter brings them back to the page they were trying to access.
-            onResult:
-                ({
-                  // AutoRoute is buggy here, this is actually required.
-                  // ignore: avoid_types_on_closure_parameters
-                  bool? didLogIn,
-                }) => resolver.next(didLogIn ?? false),
+            onResult: ({required didLogIn}) => resolver.next(didLogIn),
           ),
         );
       }

@@ -1,6 +1,6 @@
-name: analysis_options
+name: _analysis_options
 description: "Analyzer configuration for the Nexus team."
-version: 0.0.1
+version: 0.0.0
 homepage: https://PHS-TSA.github.io
 documentation: https://github.com/PHS-TSA/nexus
 issue_tracker: https://github.com/PHS-TSA/nexus/issues
@@ -8,9 +8,7 @@ repository: https://github.com/PHS-TSA/nexus.git
 
 environment:
   sdk: ^3.7.0
+resolution: workspace
 
 dependencies:
   very_good_analysis: ^7.0.0
-
-dev_dependencies:
-  custom_lint: ^0.7.1

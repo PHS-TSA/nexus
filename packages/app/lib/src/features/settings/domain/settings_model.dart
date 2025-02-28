@@ -13,7 +13,7 @@ part 'settings_model.g.dart';
 /// {@endtemplate}
 @freezed
 @immutable
-class SettingsModel with _$SettingsModel {
+sealed class SettingsModel with _$SettingsModel {
   /// {@macro nexus.features.settings.domain.settings_model}
   ///
   /// Create a new, immutable instance of [SettingsModel].
