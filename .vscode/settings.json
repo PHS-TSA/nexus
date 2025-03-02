@@ -90,7 +90,6 @@
   // Configure the Dart extension to be handier.
   "dart.renameFilesWithClasses": "prompt",
   "dart.previewFlutterUiGuides": true,
-  "dart.enablePub": false, // We use Melos.
 
   // Make commit messages more consistent.
   "commitlint.config.extend.rules": {
