@@ -67,7 +67,7 @@ class _DesktopWrapper extends ConsumerWidget {
                 onDestinationSelected: autoRouter.setActiveIndex,
                 extended:
                     MediaQuery.sizeOf(context).width >=
-                    800, // Might need to change to contraints
+                    800, // Might need to change to constraints
                 minExtendedWidth: 200,
                 destinations: const [
                   //Todo increase size oftabs
