@@ -265,10 +265,26 @@ class _Dialog extends HookConsumerWidget {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                Text(
-                  'Create a new post',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
+                if (responsivePadding == 0)
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () async {
+                          await context.router.maybePop();
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
+                      Text(
+                        'Create a new post',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                    ],
+                  )
+                else
+                  Text(
+                    'Create a new post',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
                 const SizedBox(height: 16),
 
                 // TODO(MattsAttack): guard against creating empty posts.
