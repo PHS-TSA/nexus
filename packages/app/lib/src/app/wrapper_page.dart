@@ -347,7 +347,7 @@ class _UploadedImagesView extends HookConsumerWidget {
     final uploadedImages = ref.watch(uploadedImagesServiceProvider);
 
     return SizedBox(
-      height: 150,
+      height: 200,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.all(8),
