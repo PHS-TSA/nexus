@@ -248,7 +248,6 @@ class _Dialog extends HookConsumerWidget {
     }, [formKey]);
     final responsivePadding =
         MediaQuery.sizeOf(context).width > 680 ? 16.0 : 0.0;
-    print('Is this working cuh: $responsivePadding');
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(responsivePadding),

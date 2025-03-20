@@ -31,9 +31,9 @@ class LogInPage extends HookConsumerWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth > 680) {
-          return const _DesktopLogInPage();
+          return _DesktopLogInPage(onResult: _onResult);
         } else {
-          return const _MobileLogInPage();
+          return _MobileLogInPage(onResult: _onResult);
         }
       },
     );
