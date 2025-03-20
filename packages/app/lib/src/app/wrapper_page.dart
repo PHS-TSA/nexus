@@ -246,11 +246,19 @@ class _Dialog extends HookConsumerWidget {
         context,
       ).showSnackBar(const SnackBar(content: Text('Post Created!')));
     }, [formKey]);
-
+    final responsivePadding =
+        MediaQuery.sizeOf(context).width > 680 ? 16.0 : 0.0;
+    print('Is this working cuh: $responsivePadding');
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(responsivePadding),
+      ),
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: responsivePadding * 4,
+        vertical: responsivePadding * 3,
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(responsivePadding),
         child: Form(
           key: formKey,
           child: Padding(
@@ -335,6 +343,8 @@ class _Dialog extends HookConsumerWidget {
           ),
         ),
       ),
+      //   );
+      // },
     );
   }
 }

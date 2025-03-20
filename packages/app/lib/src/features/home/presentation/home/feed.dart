@@ -42,7 +42,7 @@ class Feed extends ConsumerWidget {
 
               // If we have none, return a placeholder.
               AsyncData() when index == 0 => const Expanded(
-                child: Center(child: Text('No posts yet!')),
+                child: Center(child: Text('No posts yet! Make the first!')),
               ),
               // If we run out of items, return null.
               AsyncData() => null,
