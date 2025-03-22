@@ -70,7 +70,7 @@ class _DesktopWrapper extends ConsumerWidget {
                     800, // Might need to change to constraints
                 minExtendedWidth: 200,
                 destinations: const [
-                  //Todo increase size oftabs
+                  // TODO(MattsAttack): increase size of tabs
                   NavigationRailDestination(
                     icon: Icon(Icons.feed),
                     label: Text('Feeds'),

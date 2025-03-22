@@ -81,7 +81,7 @@ class _DesktopLogInPage extends HookConsumerWidget {
         }
       }
     }, [formKey]);
-    // TODO: implement build
+    // TODO(MattsAttack): implement build.
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(
@@ -224,7 +224,7 @@ class _MobileLogInPage extends HookConsumerWidget {
         }
       }
     }, [formKey]);
-    // TODO: implement build
+    // TODO(MattsAttack): implement build.
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
