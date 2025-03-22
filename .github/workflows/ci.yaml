@@ -56,6 +56,7 @@ jobs:
             packages/*/lib/src/gen/*.gen.dart
             packages/*/lib/src/**/*.g.dart
             packages/*/lib/src/**/*.freezed.dart
+            packages/*/test/helpers/**/*.freezed.dart
             packages/*/lib/src/app/*.gr.dart
             packages/*/lib/src/app/*.gm.dart
             packages/*/lib/src/l10n/app_localizations.dart
@@ -135,6 +136,7 @@ jobs:
             packages/*/lib/src/gen/*.gen.dart
             packages/*/lib/src/**/*.g.dart
             packages/*/lib/src/**/*.freezed.dart
+            packages/*/test/helpers/**/*.freezed.dart
             packages/*/lib/src/app/*.gr.dart
             packages/*/lib/src/app/*.gm.dart
             packages/*/lib/src/l10n/app_localizations.dart
@@ -144,7 +146,7 @@ jobs:
         run: dart pub get --enforce-lockfile
       - name: 🔧 Build
         run: |
-          flutter build --no-pub ${{ matrix.target }} ${{ matrix.flutter-flags }}
+          flutter build ${{ matrix.target }} --no-pub ${{ matrix.flutter-flags }}
         working-directory: packages/app/
       - name: ⚙️ Upload build
         if: ${{ matrix.target == 'web' }}
@@ -185,6 +187,7 @@ jobs:
             packages/*/lib/src/gen/*.gen.dart
             packages/*/lib/src/**/*.g.dart
             packages/*/lib/src/**/*.freezed.dart
+            packages/*/test/helpers/**/*.freezed.dart
             packages/*/lib/src/app/*.gr.dart
             packages/*/lib/src/app/*.gm.dart
             packages/*/lib/src/l10n/app_localizations.dart
@@ -232,6 +235,7 @@ jobs:
             packages/*/lib/src/gen/*.gen.dart
             packages/*/lib/src/**/*.g.dart
             packages/*/lib/src/**/*.freezed.dart
+            packages/*/test/helpers/**/*.freezed.dart
             packages/*/lib/src/app/*.gr.dart
             packages/*/lib/src/app/*.gm.dart
             packages/*/lib/src/l10n/app_localizations.dart
