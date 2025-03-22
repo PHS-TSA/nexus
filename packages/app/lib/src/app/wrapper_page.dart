@@ -36,11 +36,9 @@ class WrapperPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth > 680) {
-          return const _DesktopWrapper();
-        } else {
-          return const _MobileWrapper();
-        }
+        return context.isMobile
+            ? const _MobileWrapper()
+            : const _DesktopWrapper();
       },
     );
   }
