@@ -53,15 +53,13 @@ jobs:
         with:
           path: |
             .dart_tool/
-            lib/src/gen/*.gen.dart
-            lib/src/features/**/*.g.dart
-            lib/src/features/**/*.freezed.dart
-            lib/src/utils/*.g.dart
-            lib/src/utils/*.freezed.dart
-            lib/src/app/*.gr.dart
-            lib/src/app/*.gm.dart
-            lib/src/l10n/app_localizations.dart
-            lib/src/l10n/app_localizations_*.dart
+            packages/*/lib/src/gen/*.gen.dart
+            packages/*/lib/src/**/*.g.dart
+            packages/*/lib/src/**/*.freezed.dart
+            packages/*/lib/src/app/*.gr.dart
+            packages/*/lib/src/app/*.gm.dart
+            packages/*/lib/src/l10n/app_localizations.dart
+            packages/*/lib/src/l10n/app_localizations_*.dart
           key: ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-${{ hashFiles('**/build.yaml') }}
       - name: 📦 Install dependencies
         uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
@@ -134,15 +132,13 @@ jobs:
         with:
           path: |
             .dart_tool/
-            lib/src/gen/*.gen.dart
-            lib/src/features/**/*.g.dart
-            lib/src/features/**/*.freezed.dart
-            lib/src/utils/*.g.dart
-            lib/src/utils/*.freezed.dart
-            lib/src/app/*.gr.dart
-            lib/src/app/*.gm.dart
-            lib/src/l10n/app_localizations.dart
-            lib/src/l10n/app_localizations_*.dart
+            packages/*/lib/src/gen/*.gen.dart
+            packages/*/lib/src/**/*.g.dart
+            packages/*/lib/src/**/*.freezed.dart
+            packages/*/lib/src/app/*.gr.dart
+            packages/*/lib/src/app/*.gm.dart
+            packages/*/lib/src/l10n/app_localizations.dart
+            packages/*/lib/src/l10n/app_localizations_*.dart
           key: ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-${{ hashFiles('**/build.yaml') }}
       - name: 📦 Install dependencies
         uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
@@ -189,15 +185,13 @@ jobs:
         with:
           path: |
             .dart_tool/
-            lib/src/gen/*.gen.dart
-            lib/src/features/**/*.g.dart
-            lib/src/features/**/*.freezed.dart
-            lib/src/utils/*.g.dart
-            lib/src/utils/*.freezed.dart
-            lib/src/app/*.gr.dart
-            lib/src/app/*.gm.dart
-            lib/src/l10n/app_localizations.dart
-            lib/src/l10n/app_localizations_*.dart
+            packages/*/lib/src/gen/*.gen.dart
+            packages/*/lib/src/**/*.g.dart
+            packages/*/lib/src/**/*.freezed.dart
+            packages/*/lib/src/app/*.gr.dart
+            packages/*/lib/src/app/*.gm.dart
+            packages/*/lib/src/l10n/app_localizations.dart
+            packages/*/lib/src/l10n/app_localizations_*.dart
           key: ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-${{ hashFiles('**/build.yaml') }}
       - name: 📦 Install dependencies
         uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
@@ -237,15 +231,13 @@ jobs:
         with:
           path: |
             .dart_tool/
-            lib/src/gen/*.gen.dart
-            lib/src/features/**/*.g.dart
-            lib/src/features/**/*.freezed.dart
-            lib/src/utils/*.g.dart
-            lib/src/utils/*.freezed.dart
-            lib/src/app/*.gr.dart
-            lib/src/app/*.gm.dart
-            lib/src/l10n/app_localizations.dart
-            lib/src/l10n/app_localizations_*.dart
+            packages/*/lib/src/gen/*.gen.dart
+            packages/*/lib/src/**/*.g.dart
+            packages/*/lib/src/**/*.freezed.dart
+            packages/*/lib/src/app/*.gr.dart
+            packages/*/lib/src/app/*.gm.dart
+            packages/*/lib/src/l10n/app_localizations.dart
+            packages/*/lib/src/l10n/app_localizations_*.dart
           key: ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-${{ hashFiles('**/build.yaml') }}
           restore-keys: |
             ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-
