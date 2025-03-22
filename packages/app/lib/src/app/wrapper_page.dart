@@ -34,6 +34,106 @@ class WrapperPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 680) {
+          return const _DesktopWrapper();
+        } else {
+          return const _MobileWrapper();
+        }
+      },
+    );
+  }
+}
+
+class _DesktopWrapper extends ConsumerWidget {
+  const _DesktopWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AutoTabsRouter(
+      routes: const [
+        FeedRoutingRoute(),
+        MapRoute(),
+        SettingsRoute(), // Make a new feed route page that has an app bar that routes between local and world
+      ],
+      builder: (context, child) {
+        final autoRouter = AutoTabsRouter.of(context);
+        return Scaffold(
+          body: Row(
+            children: [
+              NavigationRail(
+                selectedIndex: autoRouter.activeIndex,
+                onDestinationSelected: autoRouter.setActiveIndex,
+                extended:
+                    MediaQuery.sizeOf(context).width >=
+                    800, // Might need to change to constraints
+                minExtendedWidth: 200,
+                destinations: const [
+                  // TODO(MattsAttack): increase size of tabs
+                  NavigationRailDestination(
+                    icon: Icon(Icons.feed),
+                    label: Text('Feeds'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.map_outlined),
+                    label: Text('Discover'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.settings),
+                    label: Text('Settings'),
+                  ),
+                ],
+              ),
+              Expanded(child: child),
+            ],
+          ), // Implement rail here similar to google article
+          appBar: AppBar(
+            elevation: 0,
+            // backgroundColor: Theme.of(context).colorScheme.primary,
+            shadowColor: Theme.of(context).colorScheme.surface,
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            scrolledUnderElevation: 0,
+            title: Text(autoRouter.current.title(context)),
+            automaticallyImplyLeading: false,
+            // bottom: switch (autoRouter.current.path) {
+            //   '/' => TabBar(
+            //     onTap: autoRouter.setActiveIndex,
+            //     automaticIndicatorColorAdjustment: false,
+            //     overlayColor: WidgetStateProperty.all(
+            //       Theme.of(context).colorScheme.surface,
+            //     ),
+
+            //     // labelColor: Colors.blue,
+            //     // unselectedLabelColor: Colors.blue,
+            //     // indicatorColor: Colors.blue,
+            //     tabs: const [
+            //       Tab(icon: Icon(Icons.my_location), text: 'Local'),
+            //       Tab(icon: Icon(Icons.public), text: 'World'),
+            //     ],
+            //   ),
+            //   _ => null,
+            // },
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed:
+                () async => showDialog<void>(
+                  context: context,
+                  builder: (context) => const _Dialog(),
+                ),
+            child: const Icon(Icons.create),
+          ), // Change to form on top of feed for desktop
+        );
+      },
+    );
+  }
+}
+
+class _MobileWrapper extends ConsumerWidget {
+  const _MobileWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return AutoTabsScaffold(
       routes: const [
         FeedRoutingRoute(),
@@ -51,6 +151,9 @@ class WrapperPage extends ConsumerWidget {
       appBarBuilder: (context, autoRouter) {
         return AppBar(
           title: Text(autoRouter.current.title(context)),
+          shadowColor: Theme.of(context).colorScheme.surface,
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          scrolledUnderElevation: 0,
           automaticallyImplyLeading: false,
           bottom: switch (autoRouter.current.path) {
             // FIXME(lishaduck): This needs some work.
@@ -143,21 +246,44 @@ class _Dialog extends HookConsumerWidget {
         context,
       ).showSnackBar(const SnackBar(content: Text('Post Created!')));
     }, [formKey]);
-
+    final responsivePadding =
+        MediaQuery.sizeOf(context).width > 680 ? 16.0 : 0.0;
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(responsivePadding),
+      ),
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: responsivePadding * 4,
+        vertical: responsivePadding * 3,
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(responsivePadding),
         child: Form(
           key: formKey,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                Text(
-                  'Create a new post',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
+                if (responsivePadding == 0)
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () async {
+                          await context.router.maybePop();
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
+                      Text(
+                        'Create a new post',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                    ],
+                  )
+                else
+                  Text(
+                    'Create a new post',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
                 const SizedBox(height: 16),
 
                 // TODO(MattsAttack): guard against creating empty posts.
@@ -232,6 +358,8 @@ class _Dialog extends HookConsumerWidget {
           ),
         ),
       ),
+      //   );
+      // },
     );
   }
 }
@@ -244,7 +372,7 @@ class _UploadedImagesView extends HookConsumerWidget {
     final uploadedImages = ref.watch(uploadedImagesServiceProvider);
 
     return SizedBox(
-      height: 150,
+      height: 200,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.all(8),

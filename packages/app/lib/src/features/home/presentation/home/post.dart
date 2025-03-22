@@ -187,7 +187,6 @@ class _PostImages extends ConsumerWidget {
 
     return SizedBox(
       height: 500,
-      width: MediaQuery.sizeOf(context).width / 1.5,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.all(8),
@@ -204,7 +203,9 @@ class _PostImages extends ConsumerWidget {
               ),
             ),
             AsyncError() => const Text('Error loading image'),
-            _ => const CircularProgressIndicator(),
+            _ => CircularProgressIndicator(
+              constraints: BoxConstraints.tight(const Size.square(300)),
+            ),
           };
         },
       ),

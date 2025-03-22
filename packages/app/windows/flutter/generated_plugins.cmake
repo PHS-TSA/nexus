@@ -6,7 +6,9 @@ list(APPEND FLUTTER_PLUGIN_LIST
   desktop_webview_window
   file_selector_windows
   geolocator_windows
+  screen_retriever_windows
   url_launcher_windows
+  window_manager
   window_to_front
 )
 
