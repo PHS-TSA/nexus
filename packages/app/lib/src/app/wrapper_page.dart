@@ -46,6 +46,12 @@ class WrapperPage extends ConsumerWidget {
   }
 }
 
+extension _BuildContextX on BuildContext {
+  bool get isMobile {
+    return MediaQuery.sizeOf(this).width <= 680;
+  }
+}
+
 class _DesktopWrapper extends ConsumerWidget {
   const _DesktopWrapper({super.key});
 
@@ -55,7 +61,7 @@ class _DesktopWrapper extends ConsumerWidget {
       routes: const [
         FeedRoutingRoute(),
         MapRoute(),
-        SettingsRoute(), // Make a new feed route page that has an app bar that routes between local and world
+        SettingsRoute(), // TODO(MattsAttack): Make a new feed route page that has an app bar that routes between local and world
       ],
       builder: (context, child) {
         final autoRouter = AutoTabsRouter.of(context);
@@ -67,10 +73,10 @@ class _DesktopWrapper extends ConsumerWidget {
                 onDestinationSelected: autoRouter.setActiveIndex,
                 extended:
                     MediaQuery.sizeOf(context).width >=
-                    800, // Might need to change to constraints
+                    800, // TODO(MattsAttack): Evaluate if this should be changed to constraints.
                 minExtendedWidth: 200,
                 destinations: const [
-                  // TODO(MattsAttack): increase size of tabs
+                  // TODO(MattsAttack): increase size of tabs.
                   NavigationRailDestination(
                     icon: Icon(Icons.feed),
                     label: Text('Feeds'),
@@ -87,33 +93,14 @@ class _DesktopWrapper extends ConsumerWidget {
               ),
               Expanded(child: child),
             ],
-          ), // Implement rail here similar to google article
+          ), // TODO(MattsAttack): Implement rail here, similar to Google article.
           appBar: AppBar(
             elevation: 0,
-            // backgroundColor: Theme.of(context).colorScheme.primary,
             shadowColor: Theme.of(context).colorScheme.surface,
             backgroundColor: Theme.of(context).colorScheme.surface,
             scrolledUnderElevation: 0,
             title: Text(autoRouter.current.title(context)),
             automaticallyImplyLeading: false,
-            // bottom: switch (autoRouter.current.path) {
-            //   '/' => TabBar(
-            //     onTap: autoRouter.setActiveIndex,
-            //     automaticIndicatorColorAdjustment: false,
-            //     overlayColor: WidgetStateProperty.all(
-            //       Theme.of(context).colorScheme.surface,
-            //     ),
-
-            //     // labelColor: Colors.blue,
-            //     // unselectedLabelColor: Colors.blue,
-            //     // indicatorColor: Colors.blue,
-            //     tabs: const [
-            //       Tab(icon: Icon(Icons.my_location), text: 'Local'),
-            //       Tab(icon: Icon(Icons.public), text: 'World'),
-            //     ],
-            //   ),
-            //   _ => null,
-            // },
           ),
           floatingActionButton: FloatingActionButton(
             onPressed:
@@ -122,7 +109,7 @@ class _DesktopWrapper extends ConsumerWidget {
                   builder: (context) => const _Dialog(),
                 ),
             child: const Icon(Icons.create),
-          ), // Change to form on top of feed for desktop
+          ), // TODO(MattsAttack): Change to form on top of feed for desktop.
         );
       },
     );
@@ -138,7 +125,7 @@ class _MobileWrapper extends ConsumerWidget {
       routes: const [
         FeedRoutingRoute(),
         MapRoute(),
-        SettingsRoute(), // Make a new feed route page that has an app bar that routes between local and world
+        SettingsRoute(), // TODO(MattsAttack): Make a new feed route page that has an app bar that routes between local and world
       ],
       floatingActionButton: FloatingActionButton(
         onPressed:
@@ -246,25 +233,24 @@ class _Dialog extends HookConsumerWidget {
         context,
       ).showSnackBar(const SnackBar(content: Text('Post Created!')));
     }, [formKey]);
-    final responsivePadding =
-        MediaQuery.sizeOf(context).width > 680 ? 16.0 : 0.0;
+
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(responsivePadding),
+        borderRadius: BorderRadius.circular(context.isMobile ? 0.0 : 16.0),
       ),
       insetPadding: EdgeInsets.symmetric(
-        horizontal: responsivePadding * 4,
-        vertical: responsivePadding * 3,
+        horizontal: context.isMobile ? 0.0 : 64.0,
+        vertical: context.isMobile ? 0.0 : 48.0,
       ),
       child: Padding(
-        padding: EdgeInsets.all(responsivePadding),
+        padding: EdgeInsets.all(context.isMobile ? 0.0 : 16.0),
         child: Form(
           key: formKey,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                if (responsivePadding == 0)
+                if (context.isMobile)
                   Row(
                     children: [
                       IconButton(
@@ -358,15 +344,13 @@ class _Dialog extends HookConsumerWidget {
           ),
         ),
       ),
-      //   );
-      // },
     );
   }
 }
 
 class _UploadedImagesView extends HookConsumerWidget {
   const _UploadedImagesView({super.key});
-  //Need to build a list of images. have it so you can horizontally scroll through images and have an x to remove them
+  // TODO(MattsAttack): Need to build a list of images. have it so you can horizontally scroll through images and have an x to remove them.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final uploadedImages = ref.watch(uploadedImagesServiceProvider);

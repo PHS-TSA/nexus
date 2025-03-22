@@ -9,7 +9,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:os_detect/os_detect.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:window_manager/window_manager.dart';
 
 import '../features/settings/application/settings_service.dart';
 import '../features/settings/data/preferences_repository.dart';
@@ -46,6 +48,13 @@ mixin Bootstrap implements Widget {
 
     // Bind Flutter to the native platform.
     WidgetsFlutterBinding.ensureInitialized();
+
+    // Constrain the window size on desktop.
+    if (isWindows || isLinux || isMacOS) {
+      await windowManager.ensureInitialized();
+      await WindowManager.instance.setMinimumSize(const Size(1200, 600));
+      await WindowManager.instance.setMaximumSize(const Size(1920, 1080));
+    }
 
     // Load the user's preferences.
     final prefs = await getSharedPreferences(
