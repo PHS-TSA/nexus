@@ -66,12 +66,9 @@ class SignUpPage extends HookConsumerWidget {
 
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(
-          // `MediaQuery`s shouldn't be cached, it makes them potentially less responsive.
-          left: MediaQuery.sizeOf(context).width / 4,
-          right: MediaQuery.sizeOf(context).width / 4,
-          top: MediaQuery.sizeOf(context).height / 6,
-          bottom: MediaQuery.sizeOf(context).height / 4,
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.sizeOf(context).width / 4,
+          vertical: MediaQuery.sizeOf(context).height / 6,
         ),
         decoration: BoxDecoration(
           image: DecorationImage(

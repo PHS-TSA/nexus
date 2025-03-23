@@ -30,7 +30,7 @@ class LogInPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return context.isMobile
+        return context.sizeClass == MaterialWindowSizeClass.compact
             ? _MobileLogInPage(onResult: _onResult)
             : _DesktopLogInPage(onResult: _onResult);
       },
@@ -83,12 +83,9 @@ class _DesktopLogInPage extends HookConsumerWidget {
     // TODO(MattsAttack): implement build.
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(
-          // `MediaQuery`s shouldn't be cached, it makes them potentially less responsive.
-          left: MediaQuery.sizeOf(context).width / 4,
-          right: MediaQuery.sizeOf(context).width / 4,
-          top: MediaQuery.sizeOf(context).height / 6,
-          bottom: MediaQuery.sizeOf(context).height / 6,
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.sizeOf(context).width / 4,
+          vertical: MediaQuery.sizeOf(context).height / 6,
         ),
         decoration: BoxDecoration(
           image: DecorationImage(

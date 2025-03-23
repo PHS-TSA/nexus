@@ -84,21 +84,27 @@ class CreatePost extends HookConsumerWidget {
 
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(context.isMobile ? 0.0 : 16.0),
+        borderRadius: BorderRadius.circular(
+          context.sizeClass == MaterialWindowSizeClass.compact ? 0.0 : 16.0,
+        ),
       ),
       insetPadding: EdgeInsets.symmetric(
-        horizontal: context.isMobile ? 0.0 : 64.0,
-        vertical: context.isMobile ? 0.0 : 48.0,
+        horizontal:
+            context.sizeClass == MaterialWindowSizeClass.compact ? 0.0 : 64.0,
+        vertical:
+            context.sizeClass == MaterialWindowSizeClass.compact ? 0.0 : 48.0,
       ),
       child: Padding(
-        padding: EdgeInsets.all(context.isMobile ? 0.0 : 16.0),
+        padding: EdgeInsets.all(
+          context.sizeClass == MaterialWindowSizeClass.compact ? 0.0 : 16.0,
+        ),
         child: Form(
           key: formKey,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                if (context.isMobile)
+                if (context.sizeClass == MaterialWindowSizeClass.compact)
                   Row(
                     children: [
                       IconButton(

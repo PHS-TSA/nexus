@@ -36,7 +36,7 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return context.isMobile
+        return context.sizeClass == MaterialWindowSizeClass.compact
             ? _MobileWrapper(autoRouter: autoRouter, tabs: tabs, child: child)
             : _DesktopWrapper(autoRouter: autoRouter, tabs: tabs, child: child);
       },
@@ -73,8 +73,8 @@ class _DesktopWrapper extends StatelessWidget {
             selectedIndex: autoRouter.activeIndex,
             onDestinationSelected: autoRouter.setActiveIndex,
             extended:
-                MediaQuery.sizeOf(context).width >=
-                800, // TODO(MattsAttack): Evaluate if this should be changed to constraints.
+                // TODO(MattsAttack): Evaluate if this should be changed to constraints.
+                context.sizeClass >= MaterialWindowSizeClass.medium,
             minExtendedWidth: 200,
             destinations: const [
               // TODO(MattsAttack): increase size of tabs.
