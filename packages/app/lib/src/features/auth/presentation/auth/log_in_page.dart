@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../app/router.gr.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../utils/hooks.dart';
+import '../../../../utils/responsive.dart';
 import '../../../../utils/toast.dart';
 import '../../application/auth_service.dart';
 import '../../domain/auth_callback.dart';
@@ -27,14 +28,11 @@ class LogInPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO(lishaduck): Figure out how to remove nested scaffolds.
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth > 680) {
-          return _DesktopLogInPage(onResult: _onResult);
-        } else {
-          return _MobileLogInPage(onResult: _onResult);
-        }
+        return context.isMobile
+            ? _MobileLogInPage(onResult: _onResult)
+            : _DesktopLogInPage(onResult: _onResult);
       },
     );
   }
@@ -81,6 +79,7 @@ class _DesktopLogInPage extends HookConsumerWidget {
         }
       }
     }, [formKey]);
+
     // TODO(MattsAttack): implement build.
     return Scaffold(
       body: Container(
@@ -224,6 +223,7 @@ class _MobileLogInPage extends HookConsumerWidget {
         }
       }
     }, [formKey]);
+
     // TODO(MattsAttack): implement build.
     return Scaffold(
       body: SingleChildScrollView(

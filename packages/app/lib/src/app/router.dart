@@ -56,7 +56,6 @@ class AppRouter extends RootStackRouter {
               path: 'world',
               title: (context, data) => 'Test',
             ),
-            RedirectRoute(path: '*', redirectTo: 'local'),
           ],
         ),
       ],

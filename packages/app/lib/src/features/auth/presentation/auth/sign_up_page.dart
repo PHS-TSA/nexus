@@ -64,7 +64,6 @@ class SignUpPage extends HookConsumerWidget {
       }
     }, [formKey]);
 
-    // TODO(lishaduck): Figure out how to remove nested scaffolds.
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(
