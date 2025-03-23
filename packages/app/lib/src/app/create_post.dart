@@ -19,7 +19,13 @@ import '../features/home/domain/uploaded_image_entity.dart';
 import '../utils/hooks.dart';
 import '../utils/responsive.dart';
 
+/// {@template nexus.app.create_post}
+/// A dialog that allows for a user to create a new post.
+/// {@endtemplate}
 class CreatePost extends HookConsumerWidget {
+  /// {@macro nexus.app.create_post}
+  ///
+  /// Construct a new [CreatePost] widget.
   const CreatePost({super.key});
 
   @override

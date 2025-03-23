@@ -84,11 +84,11 @@ class AppRouter extends RootStackRouter {
   @override
   List<AutoRouteGuard> get guards => [
     /*
-         * How this guard works:
-         * 1. The guard contacts the `authRepositoryProvider` to check if the user is logged in. If they are, it allows them to go to the requested page.
-         * 2. Otherwise, we’ll send the user to the “log in” page and save the original page the user wanted to go to in the `onResult` closure.
-         * 3. Once the user successfully logs in, `didLogIn` is set to `true` and `onResult` is run, sending them to their originally requested page.
-         */
+      How this guard works:
+      * 1. The guard contacts the `authRepositoryProvider` to check if the user is logged in. If they are, it allows them to go to the requested page.
+      * 2. Otherwise, we’ll send the user to the “log in” page and save the original page the user wanted to go to in the `onResult` closure.
+      * 3. Once the user successfully logs in, `didLogIn` is set to `true` and `onResult` is run, sending them to their originally requested page.
+     */
     AutoRouteGuard.simple((resolver, router) async {
       final authenticated = ref.read(authServiceProvider).requireValue;
 
