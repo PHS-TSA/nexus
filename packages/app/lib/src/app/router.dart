@@ -10,7 +10,7 @@ import '../features/auth/application/auth_service.dart';
 import 'router.gr.dart';
 
 /// The router for the application.
-@AutoRouterConfig(replaceInRouteName: 'Page,Route', deferredLoading: true)
+@AutoRouterConfig(replaceInRouteName: 'Page,Route', deferredLoading: true, argsEquality: false)
 class AppRouter extends RootStackRouter {
   /// Instantiate a new instance of [AppRouter].
   AppRouter(this.ref);
