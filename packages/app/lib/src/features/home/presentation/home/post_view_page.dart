@@ -26,7 +26,7 @@ class PostViewPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        // TODO(MattsAttack): Could update this to be more intresting.
+        // TODO(MattsAttack): Could update this to be more interesting.
         title: const Text('Post View'),
       ),
       body: ListView(

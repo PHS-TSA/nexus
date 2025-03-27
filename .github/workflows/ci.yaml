@@ -56,6 +56,7 @@ jobs:
             packages/*/lib/src/gen/*.gen.dart
             packages/*/lib/src/**/*.g.dart
             packages/*/lib/src/**/*.freezed.dart
+            packages/*/test/helpers/**/*.freezed.dart
             packages/*/lib/src/app/*.gr.dart
             packages/*/lib/src/app/*.gm.dart
             packages/*/lib/src/l10n/app_localizations.dart
@@ -135,19 +136,17 @@ jobs:
             packages/*/lib/src/gen/*.gen.dart
             packages/*/lib/src/**/*.g.dart
             packages/*/lib/src/**/*.freezed.dart
+            packages/*/test/helpers/**/*.freezed.dart
             packages/*/lib/src/app/*.gr.dart
             packages/*/lib/src/app/*.gm.dart
             packages/*/lib/src/l10n/app_localizations.dart
             packages/*/lib/src/l10n/app_localizations_*.dart
           key: ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-${{ hashFiles('**/build.yaml') }}
       - name: 📦 Install dependencies
-        uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
-        with:
-          run-bootstrap: true
-          enforce-lockfile: true
+        run: dart pub get --enforce-lockfile
       - name: 🔧 Build
         run: |
-          flutter build ${{ matrix.target }} ${{ matrix.flutter-flags }}
+          flutter build ${{ matrix.target }} --no-pub ${{ matrix.flutter-flags }}
         working-directory: packages/app/
       - name: ⚙️ Upload build
         if: ${{ matrix.target == 'web' }}
@@ -188,16 +187,18 @@ jobs:
             packages/*/lib/src/gen/*.gen.dart
             packages/*/lib/src/**/*.g.dart
             packages/*/lib/src/**/*.freezed.dart
+            packages/*/test/helpers/**/*.freezed.dart
             packages/*/lib/src/app/*.gr.dart
             packages/*/lib/src/app/*.gm.dart
             packages/*/lib/src/l10n/app_localizations.dart
             packages/*/lib/src/l10n/app_localizations_*.dart
           key: ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-${{ hashFiles('**/build.yaml') }}
-      - name: 📦 Install dependencies
+      - name: 🌋 Install Melos
         uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
         with:
-          run-bootstrap: true
-          enforce-lockfile: true
+          run-bootstrap: false
+      - name: 📦 Install dependencies
+        run: dart pub get --enforce-lockfile
       - name: 🕵️ Analyze project source
         run: dart analyze --fatal-infos
       - name: 🕵️ Run Custom Lint Rules
@@ -234,6 +235,7 @@ jobs:
             packages/*/lib/src/gen/*.gen.dart
             packages/*/lib/src/**/*.g.dart
             packages/*/lib/src/**/*.freezed.dart
+            packages/*/test/helpers/**/*.freezed.dart
             packages/*/lib/src/app/*.gr.dart
             packages/*/lib/src/app/*.gm.dart
             packages/*/lib/src/l10n/app_localizations.dart
@@ -242,11 +244,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-
             ${{ runner.os }}-
-      - name: 📦 Install dependencies
+      - name: 🌋 Install Melos
         uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
         with:
-          run-bootstrap: true
-          enforce-lockfile: true
+          run-bootstrap: false
+      - name: 📦 Install dependencies
+        run: dart pub get --enforce-lockfile
       - name: 🧪 Run tests
         run: melos run test
         continue-on-error: true

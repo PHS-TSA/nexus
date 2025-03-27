@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../app/router.gr.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../utils/hooks.dart';
+import '../../../../utils/responsive.dart';
 import '../../../../utils/toast.dart';
 import '../../application/auth_service.dart';
 import '../../domain/auth_callback.dart';
@@ -27,14 +28,11 @@ class LogInPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO(lishaduck): Figure out how to remove nested scaffolds.
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth > 680) {
-          return _DesktopLogInPage(onResult: _onResult);
-        } else {
-          return _MobileLogInPage(onResult: _onResult);
-        }
+        return context.sizeClass == MaterialWindowSizeClass.compact
+            ? _MobileLogInPage(onResult: _onResult)
+            : _DesktopLogInPage(onResult: _onResult);
       },
     );
   }
@@ -81,15 +79,13 @@ class _DesktopLogInPage extends HookConsumerWidget {
         }
       }
     }, [formKey]);
+
     // TODO(MattsAttack): implement build.
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(
-          // `MediaQuery`s shouldn't be cached, it makes them potentially less responsive.
-          left: MediaQuery.sizeOf(context).width / 4,
-          right: MediaQuery.sizeOf(context).width / 4,
-          top: MediaQuery.sizeOf(context).height / 6,
-          bottom: MediaQuery.sizeOf(context).height / 6,
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.sizeOf(context).width / 4,
+          vertical: MediaQuery.sizeOf(context).height / 6,
         ),
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -224,6 +220,7 @@ class _MobileLogInPage extends HookConsumerWidget {
         }
       }
     }, [formKey]);
+
     // TODO(MattsAttack): implement build.
     return Scaffold(
       body: SingleChildScrollView(
