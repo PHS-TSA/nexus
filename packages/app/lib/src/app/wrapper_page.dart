@@ -20,6 +20,7 @@ class WrapperPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AutoTabsRouter(
+      transitionBuilder: (context, child, animation) => child,
       routes: const [FeedRoutingRoute(), MapRoute(), SettingsRoute()],
       builder: (context, child) => child,
     );

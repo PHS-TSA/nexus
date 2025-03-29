@@ -27,7 +27,6 @@ class MapPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Wrapper(
-      autoRouter: context.tabsRouter,
       child: FlutterMap(
         options: MapOptions(
           initialCenter: const LatLng(38.657457, -95.560048),

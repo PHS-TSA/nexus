@@ -39,7 +39,6 @@ class SettingsPage extends ConsumerWidget {
     final themeMode = settingsService.themeMode;
 
     return Wrapper(
-      autoRouter: context.tabsRouter,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

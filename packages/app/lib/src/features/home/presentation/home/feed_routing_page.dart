@@ -20,23 +20,24 @@ class FeedRoutingPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tabsRouter = context.tabsRouter;
-
-    return AutoTabsRouter.tabBar(
-      routes: const [LocalFeedRoute(), WorldFeedRoute()],
-      builder: (context, child, tabController) {
-        return Wrapper(
-          autoRouter: tabsRouter,
-          tabs: TabBar(
-            controller: tabController,
-            tabs: const [
-              Tab(icon: Icon(Icons.pin_drop), text: 'Local'),
-              Tab(icon: Icon(Icons.public), text: 'World'),
+    return Wrapper(
+      child: AutoTabsRouter.tabBar(
+        routes: const [LocalFeedRoute(), WorldFeedRoute()],
+        builder: (context, child, tabController) {
+          return Column(
+            children: [
+              TabBar(
+                controller: tabController,
+                tabs: const [
+                  Tab(icon: Icon(Icons.pin_drop), text: 'Local'),
+                  Tab(icon: Icon(Icons.public), text: 'World'),
+                ],
+              ),
+              Expanded(child: child),
             ],
-          ),
-          child: child,
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

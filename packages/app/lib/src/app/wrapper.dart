@@ -15,38 +15,22 @@ class Wrapper extends StatelessWidget {
   /// {@macro nexus.app.wrapper}
   ///
   /// Construct a new [Wrapper] widget.
-  const Wrapper({
-    required this.autoRouter,
-    required this.child,
-    super.key,
-    this.tabs,
-  });
+  const Wrapper({required this.child, super.key});
 
   /// The child widget to display.
   final Widget child;
 
-  /// The [TabsRouter] to use for navigation.
-  /// This is used to determine the current index of the tabs.
-  final TabsRouter autoRouter;
-
-  /// [AppBar.bottom]
-  final PreferredSizeWidget? tabs;
-
   @override
   Widget build(BuildContext context) {
+    final autoRouter = context.tabsRouter;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return context.sizeClass == MaterialWindowSizeClass.compact
-            ? _MobileWrapper(autoRouter: autoRouter, tabs: tabs, child: child)
-            : _DesktopWrapper(autoRouter: autoRouter, tabs: tabs, child: child);
+            ? _MobileWrapper(autoRouter: autoRouter, child: child)
+            : _DesktopWrapper(autoRouter: autoRouter, child: child);
       },
     );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<TabsRouter>('autoRouter', autoRouter));
   }
 }
 
@@ -95,15 +79,6 @@ class _DesktopWrapper extends StatelessWidget {
           Expanded(child: child),
         ],
       ), // TODO(MattsAttack): Implement rail here, similar to Google article.
-      appBar: AppBar(
-        elevation: 0,
-        shadowColor: Theme.of(context).colorScheme.surface,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        scrolledUnderElevation: 0,
-        title: Text(autoRouter.current.title(context)),
-        automaticallyImplyLeading: false,
-        bottom: tabs,
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed:
             () async => showDialog<void>(
@@ -127,14 +102,11 @@ class _MobileWrapper extends StatelessWidget {
     required this.autoRouter,
     required this.child,
     super.key,
-    this.tabs,
   });
 
   final Widget child;
 
   final TabsRouter autoRouter;
-
-  final PreferredSizeWidget? tabs;
 
   @override
   Widget build(BuildContext context) {
@@ -146,14 +118,6 @@ class _MobileWrapper extends StatelessWidget {
               builder: (context) => const CreatePost(),
             ),
         child: const Icon(Icons.create),
-      ),
-      appBar: AppBar(
-        title: Text(autoRouter.current.title(context)),
-        shadowColor: Theme.of(context).colorScheme.surface,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        scrolledUnderElevation: 0,
-        automaticallyImplyLeading: false,
-        bottom: tabs,
       ),
       body: child,
       bottomNavigationBar: NavigationBar(

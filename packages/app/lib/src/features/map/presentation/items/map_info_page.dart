@@ -31,10 +31,7 @@ class MapInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrapper(
-      autoRouter: context.tabsRouter,
-      child: Feed(feed: FeedEntity.local(latitude, longitude)),
-    );
+    return Wrapper(child: Feed(feed: FeedEntity.local(latitude, longitude)));
   }
 
   // coverage:ignore-start
