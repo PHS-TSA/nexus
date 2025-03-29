@@ -9,7 +9,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../../../app/wrapper.dart';
 import '../../../../utils/tile_layers.dart';
 import '../../../home/domain/feed_entity.dart';
 import '../../../home/presentation/home/feed.dart';
@@ -26,22 +25,20 @@ class MapPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrapper(
-      child: FlutterMap(
-        options: MapOptions(
-          initialCenter: const LatLng(38.657457, -95.560048),
-          initialZoom: 4.5,
-          onTap: (_, pos) async {
-            await showDialog<void>(
-              context: context,
-              builder:
-                  (context) =>
-                      _Dialog(latitude: pos.latitude, longitude: pos.longitude),
-            );
-          },
-        ),
-        children: [openStreetMapLayer()],
+    return FlutterMap(
+      options: MapOptions(
+        initialCenter: const LatLng(38.657457, -95.560048),
+        initialZoom: 4.5,
+        onTap: (_, pos) async {
+          await showDialog<void>(
+            context: context,
+            builder:
+                (context) =>
+                    _Dialog(latitude: pos.latitude, longitude: pos.longitude),
+          );
+        },
       ),
+      children: [openStreetMapLayer()],
     );
   }
 }

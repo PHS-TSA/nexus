@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'router.gr.dart';
+import 'wrapper.dart';
 
 /// {@template nexus.app.wrapper_page}
 /// Wrap the pages in a Material Design scaffold.
@@ -20,9 +21,8 @@ class WrapperPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AutoTabsRouter(
-      transitionBuilder: (context, child, animation) => child,
       routes: const [FeedRoutingRoute(), MapRoute(), SettingsRoute()],
-      builder: (context, child) => child,
+      builder: (context, child) => Wrapper(child: child),
     );
   }
 }

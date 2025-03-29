@@ -5,7 +5,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../app/wrapper.dart';
 import '../../../home/domain/feed_entity.dart';
 import '../../../home/presentation/home/feed.dart';
 
@@ -31,7 +30,7 @@ class MapInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrapper(child: Feed(feed: FeedEntity.local(latitude, longitude)));
+    return Feed(feed: FeedEntity.local(latitude, longitude));
   }
 
   // coverage:ignore-start

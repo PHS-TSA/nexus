@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
-import '../../../../app/wrapper.dart';
 
 /// {@template nexus.features.home.presentation.home.feed_routing_page}
 /// A page that manages routing between different feeds.
@@ -20,24 +19,22 @@ class FeedRoutingPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Wrapper(
-      child: AutoTabsRouter.tabBar(
-        routes: const [LocalFeedRoute(), WorldFeedRoute()],
-        builder: (context, child, tabController) {
-          return Column(
-            children: [
-              TabBar(
-                controller: tabController,
-                tabs: const [
-                  Tab(icon: Icon(Icons.pin_drop), text: 'Local'),
-                  Tab(icon: Icon(Icons.public), text: 'World'),
-                ],
-              ),
-              Expanded(child: child),
-            ],
-          );
-        },
-      ),
+    return AutoTabsRouter.tabBar(
+      routes: const [LocalFeedRoute(), WorldFeedRoute()],
+      builder: (context, child, tabController) {
+        return Column(
+          children: [
+            TabBar(
+              controller: tabController,
+              tabs: const [
+                Tab(icon: Icon(Icons.pin_drop), text: 'Local'),
+                Tab(icon: Icon(Icons.public), text: 'World'),
+              ],
+            ),
+            Expanded(child: child),
+          ],
+        );
+      },
     );
   }
 }
