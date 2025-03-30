@@ -16,12 +16,12 @@ import '../../domain/auth_callback.dart';
 
 // TODO(lishaduck): Extract most of this out to a widget that can be shared with the log in page.
 
-/// {@template nexus.features.auth.presentation.auth.sign_up_page}
+/// {@template harvest_hub.features.auth.presentation.auth.sign_up_page}
 /// A page that displays an interface for signing up new users.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class SignUpPage extends HookConsumerWidget {
-  /// {@macro nexus.features.auth.presentation.auth.sign_up_page}
+  /// {@macro harvest_hub.features.auth.presentation.auth.sign_up_page}
   ///
   /// Construct a new [SignUpPage] widget.
   const SignUpPage({super.key, AuthCallback? onResult}) : _onResult = onResult;
@@ -105,7 +105,7 @@ class _DesktopSignUpPage extends HookConsumerWidget {
             child: Column(
               children: [
                 Text(
-                  'Welcome to Town Talk!',
+                  'Welcome to Harvest Hub!',
                   style: TextStyle(
                     fontSize: 28,
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -260,7 +260,7 @@ class _MobileSignUpPage extends HookConsumerWidget {
                     child: Column(
                       children: [
                         Text(
-                          'Welcome to Town Talk!',
+                          'Welcome to Harvest Hub!',
                           style: TextStyle(
                             fontSize: 24,
                             color:

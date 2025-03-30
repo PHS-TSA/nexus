@@ -3,9 +3,9 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:harvest_hub/src/l10n/l10n.dart';
+import 'package:harvest_hub/src/utils/design.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nexus/src/l10n/l10n.dart';
-import 'package:nexus/src/utils/design.dart';
 
 import 'riverpod.dart';
 

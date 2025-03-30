@@ -13,12 +13,12 @@ import '../../../../utils/tile_layers.dart';
 import '../../../home/domain/feed_entity.dart';
 import '../../../home/presentation/home/feed.dart';
 
-/// {@template nexus.features.map.presentation.items.map_page}
+/// {@template harvest_hub.features.map.presentation.items.map_page}
 /// Displays a map that allows users to view and interact with locations.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class MapPage extends HookWidget {
-  /// {@macro nexus.features.map.presentation.items.map_page}
+  /// {@macro harvest_hub.features.map.presentation.items.map_page}
   ///
   /// Construct a new [MapPage] widget.
   const MapPage({super.key});

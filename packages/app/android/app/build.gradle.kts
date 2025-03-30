@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "org.psdr3.nexus"
+    namespace = "org.psdr3.harvest_hub"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "org.psdr3.nexus"
+        applicationId = "org.psdr3.harvest_hub"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

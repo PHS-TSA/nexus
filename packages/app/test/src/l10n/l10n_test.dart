@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nexus/src/l10n/l10n.dart';
+import 'package:harvest_hub/src/l10n/l10n.dart';
 
 import '../../helpers/pump_app.dart';
 

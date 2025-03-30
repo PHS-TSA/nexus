@@ -1,8 +1,8 @@
 import 'package:checks/checks.dart';
 import 'package:flutter_checks/flutter_checks.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nexus/src/features/home/presentation/home/feed.dart';
-import 'package:nexus/src/features/home/presentation/home/local_feed_page.dart';
+import 'package:harvest_hub/src/features/home/presentation/home/feed.dart';
+import 'package:harvest_hub/src/features/home/presentation/home/local_feed_page.dart';
 
 import '../../../../../helpers/accessibility.dart';
 import '../../../../../helpers/pump_app.dart';

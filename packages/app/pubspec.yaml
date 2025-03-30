@@ -1,4 +1,4 @@
-name: "nexus"
+name: "harvest_hub"
 description: "An application for teenage makers."
 
 # Prevent accidental publishing to pub.dev.

@@ -1,6 +1,6 @@
 import 'package:appwrite/models.dart';
+import 'package:harvest_hub/src/features/auth/data/auth_repository.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:nexus/src/features/auth/data/auth_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MockSharedPreferences extends Mock

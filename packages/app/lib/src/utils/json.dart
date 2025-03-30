@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-/// {@template nexus.utils.json.DateTime}
+/// {@template harvest_hub.utils.json.DateTime}
 /// Convert a [DateTime] to a JSON [String] in ISO8601 format with no offset (i.e., UTC).
 /// {@endtemplate}
 class DataTimeJsonConverter extends JsonConverter<DateTime, String> {
-  /// {@macro nexus.utils.json.DateTime}
+  /// {@macro harvest_hub.utils.json.DateTime}
   const DataTimeJsonConverter();
 
   @override

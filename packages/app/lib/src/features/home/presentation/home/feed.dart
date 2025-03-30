@@ -14,11 +14,11 @@ import '../../domain/feed_entity.dart';
 import '../../domain/post_model_entity.dart';
 import 'post.dart';
 
-/// {@template nexus.features.home.presentation.home.feed}
+/// {@template harvest_hub.features.home.presentation.home.feed}
 /// An infinite loading list of posts.
 /// {@endtemplate}
 class Feed extends ConsumerWidget {
-  /// {@macro nexus.features.home.presentation.home.feed}
+  /// {@macro harvest_hub.features.home.presentation.home.feed}
   ///
   /// Construct a new [Feed] widget.
   const Feed({required this.feed, super.key});

@@ -14,12 +14,12 @@ import '../../../../utils/toast.dart';
 import '../../application/auth_service.dart';
 import '../../domain/auth_callback.dart';
 
-/// {@template nexus.features.auth.presentation.auth.login_page}
+/// {@template harvest_hub.features.auth.presentation.auth.login_page}
 /// A page that displays an interface for signing in users.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class LogInPage extends HookConsumerWidget {
-  /// {@macro nexus.features.auth.presentation.auth.login_page}
+  /// {@macro harvest_hub.features.auth.presentation.auth.login_page}
   ///
   /// Construct a new [LogInPage] widget.
   const LogInPage({super.key, AuthCallback? onResult}) : _onResult = onResult;
@@ -106,7 +106,7 @@ class _DesktopLogInPage extends HookConsumerWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Welcome to Town Talk!',
+                      'Welcome to Harvest Hub!',
                       style: TextStyle(
                         fontSize: 28,
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -248,7 +248,7 @@ class _MobileLogInPage extends HookConsumerWidget {
                     child: Column(
                       children: [
                         Text(
-                          'Welcome to Town Talk!',
+                          'Welcome to Harvest Hub!',
                           style: TextStyle(
                             fontSize: 24,
                             color:

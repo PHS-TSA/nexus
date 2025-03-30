@@ -2,7 +2,7 @@ import 'package:checks/checks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_checks/flutter_checks.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nexus/src/features/map/presentation/items/map_info_page.dart';
+import 'package:harvest_hub/src/features/map/presentation/items/map_info_page.dart';
 
 import '../../../../../helpers/accessibility.dart';
 import '../../../../../helpers/pump_app.dart';

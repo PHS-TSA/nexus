@@ -10,7 +10,7 @@ import 'post_id.dart';
 
 part 'post_model_entity.freezed.dart';
 
-/// {@template nexus.features.home.domain.post_model_entity}
+/// {@template harvest_hub.features.home.domain.post_model_entity}
 /// Represent a post, which is a single item in a feed.
 ///
 /// As opposed to [PostEntity], this is contains the resolved values of a post.
@@ -18,7 +18,7 @@ part 'post_model_entity.freezed.dart';
 @immutable
 @freezed
 sealed class PostModelEntity with _$PostModelEntity {
-  /// {@macro nexus.features.home.domain.post_model_entity}
+  /// {@macro harvest_hub.features.home.domain.post_model_entity}
   ///
   /// Create a new, immutable instance of [PostModelEntity].
   const factory PostModelEntity({

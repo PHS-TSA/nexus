@@ -16,12 +16,12 @@ import 'comment.dart';
 import 'create_comment.dart';
 import 'post.dart';
 
-/// {@template nexus.features.home.presentation.home.post_view_page}
+/// {@template harvest_hub.features.home.presentation.home.post_view_page}
 /// A page that contains full post information.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class PostViewPage extends StatelessWidget {
-  /// {@macro nexus.features.home.presentation.home.post_view_page}
+  /// {@macro harvest_hub.features.home.presentation.home.post_view_page}
   ///
   /// Construct a new [PostViewPage] widget.
   const PostViewPage({@PathParam('id') required this.id, super.key});

@@ -8,12 +8,12 @@ import 'package:flutter/material.dart';
 import '../../../home/domain/feed_entity.dart';
 import '../../../home/presentation/home/feed.dart';
 
-/// {@template nexus.features.map.presentation.items.map_info_page}
+/// {@template harvest_hub.features.map.presentation.items.map_info_page}
 /// Displays a feed of posts from the area nearby the user.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class MapInfoPage extends StatelessWidget {
-  /// {@macro nexus.features.map.presentation.items.map_info_page}
+  /// {@macro harvest_hub.features.map.presentation.items.map_info_page}
   ///
   /// Construct a new [MapInfoPage] widget.
   const MapInfoPage({
