@@ -16,7 +16,7 @@ import '../domain/post_entity.dart';
 part 'feed_service.g.dart';
 
 /// Provide the values of a feed.
-@riverpod
+@Riverpod(keepAlive: true)
 base class FeedService extends _$FeedService {
   @override
   FeedModel build(FeedEntity feed) {
@@ -58,7 +58,7 @@ base class FeedService extends _$FeedService {
 /// Fetches a single post from the feed.
 ///
 /// [postIndex] is the index of the current post the user is viewing.
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<PostId?> feedPost(Ref ref, FeedEntity feed, int postIndex) async {
   // Keep previous posts in cache to make scrolling up possible.
   // Otherwise, the `ListView` freaks out.
@@ -82,7 +82,7 @@ FutureOr<PostId?> feedPost(Ref ref, FeedEntity feed, int postIndex) async {
 /// Store a post independently of any feed for memory efficiency.
 ///
 /// [id] is the unique identifier for the post.
-@riverpod
+@Riverpod(keepAlive: true)
 base class SinglePost extends _$SinglePost {
   @override
   PostEntity? build(PostId id) {
@@ -99,7 +99,7 @@ base class SinglePost extends _$SinglePost {
 }
 
 /// Image provider for posts
-@riverpod
+@Riverpod(keepAlive: true)
 Future<Uint8List> image(Ref ref, String id) async {
   return await ref.watch(postRepositoryProvider).getImages(id);
 }
