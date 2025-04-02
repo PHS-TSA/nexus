@@ -183,7 +183,7 @@ class _PostInteractables extends HookConsumerWidget {
      */
 
     // Get current user id.
-    final userId = ref.read(idProvider);
+    final userId = ref.watch(idProvider);
     final postId = ref.watch(currentPostIdProvider);
     final likes = ref.watch(currentPostLikesProvider);
 

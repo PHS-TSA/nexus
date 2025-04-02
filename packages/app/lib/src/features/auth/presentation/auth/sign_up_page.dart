@@ -232,7 +232,6 @@ class _MobileSignUpPage extends HookConsumerWidget {
       }
     }, [formKey]);
 
-    // TODO(MattsAttack): implement build.
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(

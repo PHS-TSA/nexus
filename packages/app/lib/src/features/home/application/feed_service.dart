@@ -113,6 +113,7 @@ base class SinglePost extends _$SinglePost {
     state = post;
   }
 
+  /// Toggle whether the current user is in the list of users who liked the post.
   Future<bool> toggleLike(UserId userId) async {
     if (state == null) return false;
     final post = state!;
@@ -141,5 +142,5 @@ base class SinglePost extends _$SinglePost {
 /// Image provider for posts
 @Riverpod(keepAlive: true)
 Future<Uint8List> image(Ref ref, String id) async {
-  return await ref.watch(postRepositoryProvider).getImages(id);
+  return await ref.watch(postRepositoryProvider).getImage(id);
 }

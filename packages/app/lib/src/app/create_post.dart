@@ -202,9 +202,11 @@ class CreatePost extends HookConsumerWidget {
   }
 }
 
+/// This is a horizontally-scrollable list of images for previewing.
+///
+/// Notably, it also allows the user to remove images from the list.
 class _UploadedImagesView extends HookConsumerWidget {
   const _UploadedImagesView({super.key});
-  // TODO(MattsAttack): Need to build a list of images. have it so you can horizontally scroll through images and have an x to remove them.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final uploadedImages = ref.watch(uploadedImagesServiceProvider);
