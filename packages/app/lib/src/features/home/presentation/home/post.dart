@@ -10,10 +10,8 @@ import 'package:timeago_flutter/timeago_flutter.dart';
 import '../../../../app/router.gr.dart';
 import '../../../../utils/toast.dart';
 import '../../../auth/application/auth_service.dart';
-import '../../../auth/domain/user.dart';
-import '../../application/avatar_service.dart';
 import '../../application/feed_service.dart';
-import '../../data/post_repository.dart';
+import '../../application/post_service.dart';
 import '../../domain/post_entity.dart';
 
 /// {@template nexus.features.home.presentation.home.post}
@@ -38,20 +36,33 @@ class Post extends StatelessWidget {
           await context.router.push(PostViewRoute(postId: postId));
         }
       },
+      key: ValueKey(postId),
       child: Card(
         margin: const EdgeInsets.all(4),
         child: Container(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // The post sections are in here, like poster info and post content.
-              _PosterInfo(postId: postId),
-              const Divider(),
-              _PostBody(postId: postId),
-              _PostInteractables(postId: postId),
-            ],
+          child: Consumer(
+            builder: (context, ref, child) {
+              return switch (ref.watch(postServiceProvider(postId))) {
+                AsyncData(:final value?) => ProviderScope(
+                  overrides: [currentPostProvider.overrideWithValue(value)],
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // The post sections are in here, like poster info and post content.
+                      _PosterInfo(),
+                      Divider(),
+                      _PostBody(),
+                      _PostInteractables(),
+                    ],
+                  ),
+                ),
+
+                AsyncError(:final error) => Text('Error loading post: $error'),
+                _ => const CircularProgressIndicator(),
+              };
+            },
           ),
         ),
       ),
@@ -69,73 +80,46 @@ class Post extends StatelessWidget {
 }
 
 class _PosterInfo extends ConsumerWidget {
-  const _PosterInfo({required this.postId, super.key});
-
-  final PostId postId;
+  const _PosterInfo({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // TODO(lishaduck): Better support async loading, to remove the need for non-null assertion.
-    final post = ref.watch(singlePostProvider(postId))!;
+    final authorName = ref.watch(currentPostAuthorNameProvider);
+    final timestamp = ref.watch(currentPostTimestampProvider);
 
     // TODO(MattsAttack): Show actual date and time of post when you click on it.
 
     return Row(
       spacing: 8,
       children: [
-        _PostAvatar(authorName: post.authorName),
-        Text(post.authorName),
-        Timeago(date: post.timestamp, builder: (context, value) => Text(value)),
+        const _PostAvatar(),
+        Text(authorName),
+        Timeago(date: timestamp, builder: (context, value) => Text(value)),
         // TODO(MattsAttack): Could put flairs here.
       ],
     );
   }
-
-  // coverage:ignore-start
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty('postId', postId.id));
-  }
-
-  // coverage:ignore-end
 }
 
 class _PostAvatar extends ConsumerWidget {
-  const _PostAvatar({required this.authorName, super.key});
+  const _PostAvatar({super.key});
 
-  final String authorName;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final avatar = ref.watch(avatarServiceProvider(authorName));
+    final avatar = ref.watch(currentPostAvatarProvider);
 
-    return switch (avatar) {
-      AsyncData(:final value) => CircleAvatar(
-        backgroundImage: MemoryImage(value),
-      ),
-      AsyncError() => const Text('Error loading avatar'),
-      _ => const CircularProgressIndicator(),
-    };
+    return CircleAvatar(backgroundImage: MemoryImage(avatar));
   }
-
-  // coverage:ignore-start
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty('authorName', authorName));
-  }
-
-  // coverage:ignore-end
 }
 
 class _PostBody extends ConsumerWidget {
-  const _PostBody({required this.postId, super.key});
-
-  final PostId postId;
+  const _PostBody({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final post = ref.watch(singlePostProvider(postId))!;
+    final headline = ref.watch(currentPostHeadlineProvider);
+    final description = ref.watch(currentPostDescriptionProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,39 +127,28 @@ class _PostBody extends ConsumerWidget {
       spacing: 8,
       children: [
         Text(
-          post.headline,
+          headline,
           textAlign: TextAlign.left,
           style: const TextStyle(
             fontSize: 24,
           ), // TODO(MattsAttack): Need better text styling.
         ),
-        Text(post.description, textAlign: TextAlign.left),
+        Text(description, textAlign: TextAlign.left),
         // Call storage from in here so the rest of the post loads first
-        _PostImages(postId: postId),
+        const _PostImages(),
       ],
     );
   }
-
-  // coverage:ignore-start
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty('postId', postId.id));
-  }
-
-  // coverage:ignore-end
 }
 
 class _PostImages extends ConsumerWidget {
-  const _PostImages({required this.postId, super.key});
-
-  final PostId postId;
+  const _PostImages({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final post = ref.watch(singlePostProvider(postId));
+    final images = ref.watch(currentPostImagesProvider);
 
-    if (post == null || post.imageIds.isEmpty) {
+    if (images.isEmpty) {
       return const SizedBox(height: 0);
     }
 
@@ -184,51 +157,23 @@ class _PostImages extends ConsumerWidget {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.all(8),
-        itemCount: post.imageIds.length,
+        itemCount: images.length,
         itemBuilder: (context, index) {
-          final image = ref.watch(imageProvider(post.imageIds[index]));
-
-          return switch (image) {
-            AsyncData(:final value) => Container(
-              margin: const EdgeInsets.all(8),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.memory(value, fit: BoxFit.cover),
-              ),
+          return Container(
+            margin: const EdgeInsets.all(8),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.memory(images[index], fit: BoxFit.cover),
             ),
-            AsyncError() => const Text('Error loading image'),
-            _ => CircularProgressIndicator(
-              constraints: BoxConstraints.tight(const Size.square(300)),
-            ),
-          };
+          );
         },
       ),
     );
   }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<PostId>('postId', postId));
-  }
-}
-
-/// Given a list of likes and a user ID, return a new list of likes with the user ID toggled in or out of the list.
-Likes toggleLike(Likes currentLikes, UserId userId) {
-  // Toggle likes.
-  if (!currentLikes.contains(userId)) {
-    // User likes the post.
-    return currentLikes.add(userId);
-  } else {
-    // User is removing like
-    return currentLikes.remove(userId);
-  }
 }
 
 class _PostInteractables extends HookConsumerWidget {
-  const _PostInteractables({required this.postId, super.key});
-
-  final PostId postId;
+  const _PostInteractables({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -238,13 +183,13 @@ class _PostInteractables extends HookConsumerWidget {
      */
 
     // Get current user id.
-    final userId = ref.watch(idProvider);
-
-    final post = ref.watch(singlePostProvider(postId))!;
+    final userId = ref.read(idProvider);
+    final postId = ref.watch(currentPostIdProvider);
+    final likes = ref.watch(currentPostLikesProvider);
 
     return Row(
       children: [
-        Text('${post.likes.length}'),
+        Text('${likes.length}'),
         IconButton(
           onPressed: () async {
             if (userId == null) {
@@ -252,29 +197,15 @@ class _PostInteractables extends HookConsumerWidget {
               // TODO(MattsAttack): Send user back to login page, perhaps?
             }
 
-            final newLikes = toggleLike(post.likes, userId);
+            final liked = await ref
+                .read(singlePostProvider(postId).notifier)
+                .toggleLike(userId);
 
-            // Toggle likes.
-            ref
-                .read(singlePostProvider(post.id).notifier)
-                .setPost(post.copyWith(likes: newLikes));
-
-            try {
-              await ref
-                  .read(postRepositoryProvider)
-                  .toggleLikePost(post.id, userId, newLikes);
-            } on Exception catch (e) {
-              // Undo like.
-              ref
-                  .read(singlePostProvider(post.id).notifier)
-                  .setPost(post); // This is still the old post.
-
-              if (!context.mounted) return;
-              context.showSnackBar(content: Text('Failed to like post: $e'));
-            }
+            if (!liked || !context.mounted) return;
+            context.showSnackBar(content: const Text('Failed to like post'));
           },
           icon: Icon(
-            post.likes.contains(userId)
+            likes.contains(userId)
                 ? Icons.thumb_up_sharp
                 : Icons.thumb_up_outlined,
           ),
@@ -282,13 +213,4 @@ class _PostInteractables extends HookConsumerWidget {
       ],
     );
   }
-
-  // coverage:ignore-start
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty('postId', postId.id));
-  }
-
-  // coverage:ignore-end
 }

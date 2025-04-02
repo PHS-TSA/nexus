@@ -35,7 +35,7 @@ class Feed extends ConsumerWidget {
         child: RefreshIndicator(
           onRefresh: () async {
             ref.invalidate(feedServiceProvider(feed));
-            return await ref.refresh(feedPostProvider(feed, 0).future);
+            final _ = await ref.refresh(feedPostProvider(feed, 0).future);
           },
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),

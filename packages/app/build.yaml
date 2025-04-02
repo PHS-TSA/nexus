@@ -29,8 +29,8 @@ targets:
         # configs for the @freezed generator
         generate_for:
           - lib/src/utils/**.dart
-          - lib/src/features/*/domain/*_model.dart
           - lib/src/features/*/domain/*_entity.dart
+          - lib/src/features/*/domain/*_model.dart
           - test/helpers/accessibility.dart
         options:
           map: false
@@ -39,8 +39,8 @@ targets:
         # configs for the @JsonSerializable generator
         generate_for:
           - lib/src/utils/**.dart
-          - lib/src/features/*/domain/*_model.dart
           - lib/src/features/*/domain/*_entity.dart
+          - lib/src/features/*/domain/*_model.dart
         options:
           checked: true
       riverpod_generator:

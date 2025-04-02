@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../auth/application/auth_service.dart';
+import '../../auth/domain/user.dart';
 import '../data/post_repository.dart';
 import '../domain/feed_entity.dart';
 import '../domain/feed_model.dart';
@@ -62,21 +63,36 @@ base class FeedService extends _$FeedService {
 FutureOr<PostId?> feedPost(Ref ref, FeedEntity feed, int postIndex) async {
   // Keep previous posts in cache to make scrolling up possible.
   // Otherwise, the `ListView` freaks out.
+  // Also makes reloading the feed significantly simpler.
   if (postIndex != 0) {
-    await ref.watch(feedPostProvider(feed, postIndex - 1).future);
+    ref.watch(feedPostProvider(feed, postIndex - 1));
   }
 
-  final ids = ref.watch(feedServiceProvider(feed).select((s) => s.ids));
-
-  var next = ids.elementAtOrNull(postIndex);
+  var next = ref
+      .read(feedServiceProvider(feed).select((s) => s.ids))
+      .elementAtOrNull(postIndex);
   var moreToGet = true;
 
   while (moreToGet && next == null) {
     moreToGet = await ref.watch(feedServiceProvider(feed).notifier).fetchMore();
-    next = ids.elementAtOrNull(postIndex);
+    next = ref
+        .read(feedServiceProvider(feed).select((s) => s.ids))
+        .elementAtOrNull(postIndex);
   }
 
   return next;
+}
+
+/// Given a list of likes and a user ID, return a new list of likes with the user ID toggled in or out of the list.
+Likes _toggleLike(Likes currentLikes, UserId userId) {
+  // Toggle likes.
+  if (!currentLikes.contains(userId)) {
+    // User likes the post.
+    return currentLikes.add(userId);
+  } else {
+    // User is removing like
+    return currentLikes.remove(userId);
+  }
 }
 
 /// Store a post independently of any feed for memory efficiency.
@@ -95,6 +111,30 @@ base class SinglePost extends _$SinglePost {
   // ignore: use_setters_to_change_properties
   void setPost(PostEntity post) {
     state = post;
+  }
+
+  Future<bool> toggleLike(UserId userId) async {
+    if (state == null) return false;
+    final post = state!;
+
+    final newLikes = _toggleLike(post.likes, userId);
+
+    state = post.copyWith(likes: newLikes);
+
+    try {
+      await ref
+          .read(postRepositoryProvider)
+          .toggleLikePost(post.id, userId, newLikes);
+    } on Exception {
+      // Undo like.
+      ref
+          .read(singlePostProvider(post.id).notifier)
+          .setPost(post); // This is still the old post.
+
+      return false;
+    }
+
+    return true;
   }
 }
 
