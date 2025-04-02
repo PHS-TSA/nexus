@@ -12,7 +12,7 @@ import '../../../../utils/toast.dart';
 import '../../../auth/application/auth_service.dart';
 import '../../application/feed_service.dart';
 import '../../application/post_service.dart';
-import '../../domain/post_entity.dart';
+import '../../domain/post_id.dart';
 
 /// {@template nexus.features.home.presentation.home.post}
 /// View a post.

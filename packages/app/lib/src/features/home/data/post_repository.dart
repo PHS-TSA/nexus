@@ -12,6 +12,7 @@ import '../../../utils/api.dart';
 import '../../auth/domain/user.dart';
 import '../domain/feed_entity.dart';
 import '../domain/post_entity.dart';
+import '../domain/post_id.dart';
 import '../domain/uploaded_image_entity.dart';
 
 part 'post_repository.g.dart';

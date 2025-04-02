@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../domain/post_entity.dart';
+import '../../domain/post_id.dart';
 import 'post.dart';
 
 /// {@template nexus.features.home.presentation.home.post_view_page}

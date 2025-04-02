@@ -13,6 +13,7 @@ import '../data/post_repository.dart';
 import '../domain/feed_entity.dart';
 import '../domain/feed_model.dart';
 import '../domain/post_entity.dart';
+import '../domain/post_id.dart';
 
 part 'feed_service.g.dart';
 

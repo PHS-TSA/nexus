@@ -5,6 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../auth/domain/user.dart';
 import 'post_entity.dart';
+import 'post_id.dart';
 
 part 'post_model_entity.freezed.dart';
 

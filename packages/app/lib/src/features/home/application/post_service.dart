@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../auth/domain/user.dart';
-import '../domain/post_entity.dart';
+import '../domain/post_id.dart';
 import '../domain/post_model_entity.dart';
 import 'avatar_service.dart';
 import 'feed_service.dart';
