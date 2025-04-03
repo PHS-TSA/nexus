@@ -4,6 +4,7 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../auth/domain/user.dart';
+import 'comment_dto_entity.dart';
 import 'post_entity.dart';
 import 'post_id.dart';
 
@@ -50,6 +51,9 @@ sealed class PostModelEntity with _$PostModelEntity {
     ///
     /// This is a list of the [UserId]s of users who liked the post.
     required IList<UserId> likes,
+
+    /// Commentary on the current post.
+    required IList<CommentDtoEntity> comments,
   }) = _PostModelEntity;
 
   const PostModelEntity._();

@@ -6,6 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../utils/json.dart';
 import '../../auth/domain/user.dart';
+import 'comment_dto_entity.dart';
 import 'post_id.dart';
 
 part 'post_entity.freezed.dart';
@@ -50,6 +51,9 @@ sealed class PostEntity with _$PostEntity {
 
     /// Contains ID of image in bucket
     @JsonKey(name: 'imageID') required IList<String> imageIds,
+
+    /// Contains comments.
+    required IList<CommentDtoEntity> comments,
   }) = _PostEntity;
 
   factory PostEntity.fromJson(Map<String, dynamic> json) =>

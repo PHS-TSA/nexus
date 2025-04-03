@@ -19,7 +19,7 @@ import '../../domain/post_id.dart';
 /// {@endtemplate}
 class Post extends StatelessWidget {
   /// {@macro nexus.features.home.presentation.home.post}
-
+  ///
   /// Construct a new [Post] widget for a [PostId].
   const Post({required this.postId, super.key});
 

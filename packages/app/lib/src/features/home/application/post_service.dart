@@ -42,6 +42,7 @@ Future<PostModelEntity?> postService(Ref ref, PostId postId) async {
     description: post.description,
     images: images.lockUnsafe,
     likes: post.likes,
+    comments: post.comments,
   );
 }
 

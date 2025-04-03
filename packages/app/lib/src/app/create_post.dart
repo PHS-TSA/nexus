@@ -15,6 +15,7 @@ import '../features/home/application/location_service.dart';
 import '../features/home/application/uploaded_image_service.dart';
 import '../features/home/data/post_repository.dart';
 import '../features/home/domain/post_entity.dart';
+import '../features/home/domain/post_id.dart';
 import '../features/home/domain/uploaded_image_entity.dart';
 import '../utils/hooks.dart';
 import '../utils/responsive.dart';
@@ -69,6 +70,7 @@ class CreatePost extends HookConsumerWidget {
               imageIds:
                   // Read in the list of uploaded images ids.
                   uploadedImages.map((image) => image.imageId).toIList(),
+              comments: const IList.empty(),
             ),
             uploadedImages,
           );
