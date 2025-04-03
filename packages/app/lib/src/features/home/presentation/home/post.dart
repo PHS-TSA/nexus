@@ -2,7 +2,6 @@
 library;
 
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:timeago_flutter/timeago_flutter.dart';
@@ -12,22 +11,20 @@ import '../../../../utils/toast.dart';
 import '../../../auth/application/auth_service.dart';
 import '../../application/feed_service.dart';
 import '../../application/post_service.dart';
-import '../../domain/post_id.dart';
 
 /// {@template nexus.features.home.presentation.home.post}
 /// View a post.
 /// {@endtemplate}
-class Post extends StatelessWidget {
+class Post extends ConsumerWidget {
   /// {@macro nexus.features.home.presentation.home.post}
   ///
-  /// Construct a new [Post] widget for a [PostId].
-  const Post({required this.postId, super.key});
-
-  /// [PostId] for this post.
-  final PostId postId;
+  /// Construct a new [Post] widget for a [].
+  const Post({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final postId = ref.watch(currentPostIdProvider);
+
     // TODO(MattsAttack): implement hero widget.
     return GestureDetector(
       onTap: () async {
@@ -36,47 +33,25 @@ class Post extends StatelessWidget {
           await context.router.push(PostViewRoute(postId: postId));
         }
       },
-      key: ValueKey(postId),
       child: Card(
         margin: const EdgeInsets.all(4),
         child: Container(
           padding: const EdgeInsets.all(16),
-          child: Consumer(
-            builder: (context, ref, child) {
-              return switch (ref.watch(postServiceProvider(postId))) {
-                AsyncData(:final value?) => ProviderScope(
-                  overrides: [currentPostProvider.overrideWithValue(value)],
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // The post sections are in here, like poster info and post content.
-                      _PosterInfo(),
-                      Divider(),
-                      _PostBody(),
-                      _PostInteractables(),
-                    ],
-                  ),
-                ),
-
-                AsyncError(:final error) => Text('Error loading post: $error'),
-                _ => const CircularProgressIndicator(),
-              };
-            },
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // The post sections are in here, like poster info and post content.
+              _PosterInfo(),
+              Divider(),
+              _PostBody(),
+              _PostInteractables(),
+            ],
           ),
         ),
       ),
     );
   }
-
-  // coverage:ignore-start
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty('postId', postId.id));
-  }
-
-  // coverage:ignore-end
 }
 
 class _PosterInfo extends ConsumerWidget {

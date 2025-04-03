@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../application/post_service.dart';
 import '../../domain/post_id.dart';
 import 'post.dart';
 
@@ -34,11 +35,32 @@ class PostViewPage extends ConsumerWidget {
           Center(
             child: Container(
               constraints: const BoxConstraints(maxWidth: 1000),
-              child: Column(
-                children: [
-                  Post(postId: postId),
-                  // TODO(MattsAttack): Comments will go here.
-                ],
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final response = ref.watch(postServiceProvider(postId));
+
+                  return switch (response) {
+                    AsyncData(:final value?) => Column(
+                      children: [
+                        ProviderScope(
+                          overrides: [
+                            currentPostProvider.overrideWithValue(value),
+                          ],
+                          child: const Post(),
+                        ),
+                        // TODO(MattsAttack): Comments will go here.
+                      ],
+                    ),
+                    AsyncData() => const Center(child: Text('Post not found')),
+                    AsyncError(:final error, :final stackTrace) => Center(
+                      child: Text(
+                        'Error: $error\n$stackTrace',
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ),
+                    _ => const Center(child: CircularProgressIndicator()),
+                  };
+                },
               ),
             ),
           ),

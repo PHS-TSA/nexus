@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../application/feed_service.dart';
+import '../../application/post_service.dart';
 import '../../domain/feed_entity.dart';
+import '../../domain/post_model_entity.dart';
 import 'post.dart';
 
 /// {@template nexus.features.home.presentation.home.feed}
@@ -40,11 +42,24 @@ class Feed extends ConsumerWidget {
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             itemBuilder: (context, index) {
-              final response = ref.watch(feedPostProvider(feed, index));
+              final id = ref.watch(feedPostProvider(feed, index));
+
+              final AsyncValue<PostModelEntity?> response = switch (id) {
+                AsyncData(:final value?) => ref.watch(
+                  postServiceProvider(value),
+                ),
+                AsyncData() => const AsyncData(null),
+                AsyncError(:final error, :final stackTrace) => AsyncError(
+                  error,
+                  stackTrace,
+                ),
+                _ => const AsyncLoading(),
+              };
 
               return switch (response) {
-                AsyncData(:final value) when value != null => Post(
-                  postId: value,
+                AsyncData(:final value) when value != null => ProviderScope(
+                  overrides: [currentPostProvider.overrideWithValue(value)],
+                  child: Post(key: ValueKey(value)),
                 ),
 
                 // If we have none, return a placeholder.
