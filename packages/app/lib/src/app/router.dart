@@ -68,7 +68,7 @@ class AppRouter extends RootStackRouter {
     ),
     AutoRoute(
       page: PostViewRoute.page,
-      path: '/post/:postId',
+      path: '/post/:id',
       title: (context, data) => 'Post',
     ),
     AutoRoute(

@@ -30,7 +30,7 @@ class Post extends ConsumerWidget {
       onTap: () async {
         if (context.router.current.name != PostViewRoute.name) {
           // Prevents user from clicking on post in post view.
-          await context.router.push(PostViewRoute(postId: postId));
+          await context.router.push(PostViewRoute(id: postId.id));
         }
       },
       child: Card(

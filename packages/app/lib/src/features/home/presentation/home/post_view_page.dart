@@ -22,10 +22,12 @@ class PostViewPage extends ConsumerWidget {
   /// {@macro nexus.features.home.presentation.home.post_view_page}
   ///
   /// Construct a new [PostViewPage] widget.
-  const PostViewPage({required this.postId, super.key});
+  const PostViewPage({@PathParam('id') required this.id, super.key});
 
-  /// ID for this post.
-  final PostId postId;
+  /// [PostId] for this post.
+  final String id;
+
+  PostId get _postId => PostId(id);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -50,7 +52,7 @@ class PostViewPage extends ConsumerWidget {
               constraints: const BoxConstraints(maxWidth: 1000),
               child: Consumer(
                 builder: (context, ref, child) {
-                  final response = ref.watch(postServiceProvider(postId));
+                  final response = ref.watch(postServiceProvider(_postId));
 
                   return switch (response) {
                     AsyncData(:final value?) => Column(
@@ -90,7 +92,7 @@ class PostViewPage extends ConsumerWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty('postId', postId.id));
+    properties.add(StringProperty('postId', _postId.id));
   }
 
   // coverage:ignore-end
