@@ -6,6 +6,7 @@ library;
 
 import 'dart:developer';
 
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -127,6 +128,7 @@ String _normalizedValue(Object? value) {
     Uint8List _ => 'Uint8List(${value.length})',
     AsyncData<Uint8List>(:final value) =>
       'AsyncData<Uint8List>(value: ${_normalizedValue(value)})',
+    final IList<Uint8List> list => '[${list.map(_normalizedValue).join(', ')}]',
     _ => value.toString(),
   };
 }
