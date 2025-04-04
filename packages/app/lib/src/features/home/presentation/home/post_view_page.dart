@@ -2,11 +2,14 @@
 library;
 
 import 'package:auto_route/auto_route.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:timeago_flutter/timeago_flutter.dart';
 
 import '../../application/post_service.dart';
+import '../../domain/comment_entity.dart';
 import '../../domain/post_id.dart';
 import 'post.dart';
 
@@ -26,10 +29,7 @@ class PostViewPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(
-        // TODO(MattsAttack): Could update this to be more interesting.
-        title: const Text('Post View'),
-      ),
+      appBar: AppBar(leading: const AutoLeadingButton()),
       body: ListView(
         children: [
           Center(
@@ -48,7 +48,11 @@ class PostViewPage extends ConsumerWidget {
                           ],
                           child: const Post(),
                         ),
-                        // TODO(MattsAttack): Comments will go here.
+
+                        const Divider(),
+
+                        if (value.comments.isNotEmpty)
+                          _Comments(comments: value.comments),
                       ],
                     ),
                     AsyncData() => const Center(child: Text('Post not found')),
@@ -77,4 +81,37 @@ class PostViewPage extends ConsumerWidget {
   }
 
   // coverage:ignore-end
+}
+
+class _Comments extends StatelessWidget {
+  const _Comments({required this.comments, super.key});
+
+  final IList<CommentEntity> comments;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        for (final CommentEntity(:comment, :timestamp, :authorName, :avatar)
+            in comments)
+          Row(
+            children: [
+              CircleAvatar(backgroundImage: MemoryImage(avatar)),
+              Text(authorName),
+              Timeago(
+                date: timestamp,
+                builder: (context, value) => Text(value),
+              ),
+              Text(comment),
+            ],
+          ),
+      ],
+    );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IterableProperty<CommentEntity>('comments', comments));
+  }
 }
