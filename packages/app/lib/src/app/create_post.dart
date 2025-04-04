@@ -34,11 +34,11 @@ class CreatePost extends HookConsumerWidget {
     final formKey = useGlobalKey<FormState>();
     final title = useState('');
     final description = useState('');
-    final userId = ref.watch(idProvider);
-    final userName = ref.watch(userNameProvider);
 
     final handleSubmit = useCallback(() async {
-      final uploadedImages = ref.watch(uploadedImagesServiceProvider);
+      final userId = ref.read(idProvider);
+      final userName = ref.read(userNameProvider);
+      final uploadedImages = ref.read(uploadedImagesServiceProvider);
       final location = await ref.read(locationServiceProvider.future);
       var lat = location.latitude.roundToDouble();
       var lng = location.longitude.roundToDouble();
@@ -52,7 +52,7 @@ class CreatePost extends HookConsumerWidget {
 
       formKey.currentState?.save();
 
-      // Create a list off all uploaded images ids
+      // Create a list of all uploaded images ids
 
       await ref
           .read(postRepositoryProvider)

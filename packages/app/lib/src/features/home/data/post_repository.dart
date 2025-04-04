@@ -1,15 +1,17 @@
 /// This library contains post fetchers.
 library;
 
+import 'dart:typed_data';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:flutter/foundation.dart' show Uint8List;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../env/env.dart';
 import '../../../utils/api.dart';
 import '../../auth/domain/user.dart';
+import '../domain/comment_dto_entity.dart';
 import '../domain/feed_entity.dart';
 import '../domain/post_entity.dart';
 import '../domain/post_id.dart';
@@ -41,6 +43,9 @@ abstract interface class PostRepository {
 
   /// Fetch images from Appwrite.
   Future<Uint8List> getImage(String id);
+
+  /// Post a comment.
+  Future<void> comment(CommentDtoEntity comment);
 }
 
 final class _AppwritePostRepository implements PostRepository {
@@ -133,6 +138,13 @@ final class _AppwritePostRepository implements PostRepository {
       fileId: file.imageId,
       file: InputFile.fromBytes(bytes: bytes, filename: fileName),
     );
+  }
+
+  @override
+  Future<void> comment(CommentDtoEntity comment) async {
+    // TODO: Do I need to update the post or just set `post` property of the comment?
+
+    // await database.createDocument();
   }
 }
 

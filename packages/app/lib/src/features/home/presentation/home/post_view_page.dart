@@ -11,6 +11,7 @@ import 'package:timeago_flutter/timeago_flutter.dart';
 import '../../application/post_service.dart';
 import '../../domain/comment_entity.dart';
 import '../../domain/post_id.dart';
+import 'create_comment.dart';
 import 'post.dart';
 
 /// {@template nexus.features.home.presentation.home.post_view_page}
@@ -29,7 +30,19 @@ class PostViewPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(leading: const AutoLeadingButton()),
+      appBar: AppBar(
+        leading: const AutoLeadingButton(),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.comment_outlined),
+            onPressed:
+                () async => showDialog<void>(
+                  context: context,
+                  builder: (context) => const CreateComment(),
+                ),
+          ),
+        ],
+      ),
       body: ListView(
         children: [
           Center(
