@@ -1,11 +1,13 @@
 /// This library contains a widget that displays a feed of posts.
 library;
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../app/router.gr.dart';
 import '../../application/feed_service.dart';
 import '../../application/post_service.dart';
 import '../../domain/feed_entity.dart';
@@ -57,9 +59,17 @@ class Feed extends ConsumerWidget {
               };
 
               return switch (response) {
-                AsyncData(:final value) when value != null => ProviderScope(
-                  overrides: [currentPostProvider.overrideWithValue(value)],
-                  child: Post(key: ValueKey(value)),
+                AsyncData(:final value) when value != null => GestureDetector(
+                  onTap: () async {
+                    await context.router.push(PostViewRoute(id: value.id.id));
+                  },
+                  child: Card(
+                    margin: const EdgeInsets.all(4),
+                    child: ProviderScope(
+                      overrides: [currentPostProvider.overrideWithValue(value)],
+                      child: Post(key: ValueKey(value)),
+                    ),
+                  ),
                 ),
 
                 // If we have none, return a placeholder.

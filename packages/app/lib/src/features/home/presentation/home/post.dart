@@ -1,12 +1,10 @@
 /// This library contains the UI for viewing a post.
 library;
 
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:timeago_flutter/timeago_flutter.dart';
 
-import '../../../../app/router.gr.dart';
 import '../../../../utils/toast.dart';
 import '../../../auth/application/auth_service.dart';
 import '../../application/feed_service.dart';
@@ -15,40 +13,27 @@ import '../../application/post_service.dart';
 /// {@template nexus.features.home.presentation.home.post}
 /// View a post.
 /// {@endtemplate}
-class Post extends ConsumerWidget {
+class Post extends StatelessWidget {
   /// {@macro nexus.features.home.presentation.home.post}
   ///
   /// Construct a new [Post] widget for a [].
   const Post({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final postId = ref.watch(currentPostIdProvider);
-
+  Widget build(BuildContext context) {
     // TODO(MattsAttack): implement hero widget.
-    return GestureDetector(
-      onTap: () async {
-        if (context.router.current.name != PostViewRoute.name) {
-          // Prevents user from clicking on post in post view.
-          await context.router.push(PostViewRoute(id: postId.id));
-        }
-      },
-      child: Card(
-        margin: const EdgeInsets.all(4),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          child: const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // The post sections are in here, like poster info and post content.
-              _PosterInfo(),
-              Divider(),
-              _PostBody(),
-              _PostInteractables(),
-            ],
-          ),
-        ),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // The post sections are in here, like poster info and post content.
+          _PosterInfo(),
+          Divider(),
+          _PostBody(),
+          _PostInteractables(),
+        ],
       ),
     );
   }
