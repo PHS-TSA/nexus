@@ -39,6 +39,7 @@ jobs:
           clean: true
           persist-credentials: false
           set-safe-directory: true
+          fetch-depth: 1
       - name: 🐦 Set up Flutter
         id: flutter
         uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff # v2.18.0
@@ -109,6 +110,7 @@ jobs:
           clean: true
           persist-credentials: false
           set-safe-directory: true
+          fetch-depth: 1
       - name: 🐦 Set up Flutter
         id: flutter
         uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff # v2.18.0
@@ -153,7 +155,7 @@ jobs:
         if: ${{ matrix.target == 'web' }}
         uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
-          name: app-${{ matrix.target }}-build
+          name: build-${{ matrix.target }}
           path: "./packages/app/build/"
           if-no-files-found: error
 
@@ -171,6 +173,7 @@ jobs:
           clean: true
           persist-credentials: false
           set-safe-directory: true
+          fetch-depth: 1
       - name: 🐦 Set up Flutter
         id: flutter
         uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff # v2.18.0
@@ -217,6 +220,7 @@ jobs:
           clean: true
           persist-credentials: false
           set-safe-directory: true
+          fetch-depth: 1
       - name: 🐦 Set up Flutter
         id: flutter
         uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff # v2.18.0
@@ -273,6 +277,7 @@ jobs:
           clean: true
           persist-credentials: false
           set-safe-directory: true
+          fetch-depth: 1
       - name: 🐦 Set up Flutter
         id: flutter
         uses: subosito/flutter-action@f2c4f6686ca8e8d6e6d0f28410eeef506ed66aff # v2.18.0
@@ -285,21 +290,61 @@ jobs:
       - name: ✨ Verify formatting
         run: dart format . --output=none --set-exit-if-changed
 
+  deploy:
+    name: Deploy
+    needs: ["build"]
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+
+    permissions:
+      id-token: write # Needed to authenticate with Deno Deploy.
+    concurrency:
+      group: deploy-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: 📚 Git checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          submodules: recursive
+          clean: true
+          persist-credentials: false
+          set-safe-directory: true
+          fetch-depth: 1
+          sparse-checkout: packages/server
+      - name: ⚙️ Download build
+        uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4.1.4
+        with:
+          name: build-web
+          path: "./packages/server/static"
+      - name: 🔧 Deploy
+        uses: denoland/deployctl@612f83df2b874c6908d68de5cf3f36a6538fa8f7 # 1.12.0
+        with:
+          project: "harvest-hub"
+          entrypoint: ./server.ts
+          root: packages/server/
+          include: |
+            server/
+            static/
+            deno.json
+            deno.lock
+
   spell-check:
     name: Check Spelling
     needs: []
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📚 Git Checkout
+      - name: 📚 Git checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           submodules: recursive
           clean: true
           persist-credentials: false
           set-safe-directory: true
+          fetch-depth: 1
 
-      - name: 🪄 Spell Check
+      - name: 🪄 Spell check
         uses: streetsidesoftware/cspell-action@934c74da3775ac844ec89503f666f67efb427fed # v6.8.1
         with:
           files: |
@@ -331,14 +376,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📚 Git Checkout
+      - name: 📚 Git checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           submodules: recursive
           clean: true
           persist-credentials: false
           set-safe-directory: true
-      - name: 🕵️ Markdown linting
+          fetch-depth: 1
+      - name: 🕵️ Lint Markdown
         uses: DavidAnson/markdownlint-cli2-action@db43aef879112c3119a410d69f66701e0d530809 # v17.0.0
         id: markdownlint
         with:
