@@ -6,13 +6,13 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:timeago_flutter/timeago_flutter.dart';
 
 import '../../../../app/router.gr.dart';
 import '../../application/feed_service.dart';
 import '../../application/post_service.dart';
 import '../../domain/comment_entity.dart';
 import '../../domain/post_id.dart';
+import 'comment.dart';
 import 'create_comment.dart';
 import 'post.dart';
 
@@ -118,22 +118,8 @@ class _Comments extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        for (final CommentEntity(:comment, :timestamp, :authorName, :avatar)
-            in comments)
-          Row(
-            children: [
-              CircleAvatar(backgroundImage: MemoryImage(avatar)),
-              Text(authorName),
-              Timeago(
-                date: timestamp,
-                builder: (context, value) => Text(value),
-              ),
-              Text(comment),
-            ],
-          ),
-      ],
+    return ListView(
+      children: [for (final comment in comments) Comment(comment: comment)],
     );
   }
 
