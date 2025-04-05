@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:timeago_flutter/timeago_flutter.dart';
 
+import '../../../../app/router.gr.dart';
 import '../../application/feed_service.dart';
 import '../../application/post_service.dart';
 import '../../domain/comment_entity.dart';
@@ -32,8 +33,20 @@ class PostViewPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final scope = RouterScope.of(context, watch: true);
+
     return Scaffold(
-      appBar: AppBar(leading: const AutoLeadingButton()),
+      appBar: AppBar(
+        leading: CloseButton(
+          onPressed: () async {
+            if (scope.controller.canPop()) {
+              await scope.controller.maybePopTop();
+            } else {
+              await context.router.replace(const FeedRoutingRoute());
+            }
+          },
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await showDialog<void>(
