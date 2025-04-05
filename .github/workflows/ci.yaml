@@ -317,6 +317,7 @@ jobs:
         with:
           name: build-web
           path: "./packages/server/static"
+      - run: ls -a packages/server/
       - name: 🔧 Deploy
         uses: denoland/deployctl@612f83df2b874c6908d68de5cf3f36a6538fa8f7 # 1.12.0
         with:
