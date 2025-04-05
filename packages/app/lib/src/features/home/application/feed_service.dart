@@ -140,6 +140,24 @@ base class SinglePost extends _$SinglePost {
   }
 }
 
+/// Fetch a single post from the database.
+@Riverpod(keepAlive: true)
+Future<PostEntity?> getPost(Ref ref, PostId postId) async {
+  var post = ref.watch(singlePostProvider(postId));
+
+  if (post == null) {
+    final postRepo = ref.read(postRepositoryProvider);
+
+    post = await postRepo.readPost(postId);
+
+    if (post == null) return null;
+
+    ref.read(singlePostProvider(postId).notifier).setPost(post);
+  }
+
+  return post;
+}
+
 /// Image provider for posts
 @Riverpod(keepAlive: true)
 Future<Uint8List> image(Ref ref, String id) async {

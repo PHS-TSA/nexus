@@ -27,6 +27,9 @@ abstract interface class PostRepository {
   /// Read all the posts.
   Future<IList<PostEntity>> readPosts(FeedEntity feed, PostId? cursor);
 
+  /// Read a single post.
+  Future<PostEntity?> readPost(PostId postId);
+
   /// Create a new post.
   ///
   /// Returns the created post.
@@ -90,6 +93,32 @@ final class _AppwritePostRepository implements PostRepository {
 
       return PostEntity.fromJson(document.data);
     }).toIList();
+  }
+
+  @override
+  Future<PostEntity?> readPost(PostId postId) async {
+    try {
+      final document = await database.getDocument(
+        databaseId: databaseId,
+        collectionId: collectionId,
+        documentId: postId.id,
+      );
+
+      assert(
+        !document.data.containsKey('id'),
+        'ID should not have been redundantly stored.',
+      );
+
+      document.data['id'] = document.$id;
+
+      return PostEntity.fromJson(document.data);
+    } on AppwriteException catch (e) {
+      if (e.code == 404) {
+        return null;
+      }
+
+      rethrow;
+    }
   }
 
   @override

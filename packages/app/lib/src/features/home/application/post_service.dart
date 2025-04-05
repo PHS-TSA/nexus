@@ -21,7 +21,7 @@ part 'post_service.g.dart';
 /// This lets us emulate a "suspense"-like UI, where the UI doesn’t show until all data is loaded.
 @Riverpod(keepAlive: true)
 Future<PostModelEntity?> postService(Ref ref, PostId postId) async {
-  final post = ref.watch(singlePostProvider(postId));
+  final post = await ref.watch(getPostProvider(postId).future);
 
   if (post == null) return null;
 
