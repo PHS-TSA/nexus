@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:timeago_flutter/timeago_flutter.dart';
 
+import '../../application/feed_service.dart';
 import '../../application/post_service.dart';
 import '../../domain/comment_entity.dart';
 import '../../domain/post_id.dart';
@@ -32,18 +33,17 @@ class PostViewPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const AutoLeadingButton(),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.comment_outlined),
-            onPressed:
-                () async => showDialog<void>(
-                  context: context,
-                  builder: (context) => const CreateComment(),
-                ),
-          ),
-        ],
+      appBar: AppBar(leading: const AutoLeadingButton()),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await showDialog<void>(
+            context: context,
+            builder: (context) => const CreateComment(),
+          );
+
+          ref.invalidate(singlePostProvider(_postId));
+        },
+        child: const Icon(Icons.add_comment),
       ),
       body: ListView(
         children: [
