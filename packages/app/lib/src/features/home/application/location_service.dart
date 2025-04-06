@@ -11,8 +11,8 @@ part 'location_service.g.dart';
 
 /// Get the user's location.
 @riverpod
-FutureOr<Position> locationService(Ref ref) {
+FutureOr<Position> locationService(Ref ref) async {
   final locationRepo = ref.watch(locationRepositoryProvider);
 
-  return locationRepo.determinePosition();
+  return await locationRepo.determinePosition();
 }

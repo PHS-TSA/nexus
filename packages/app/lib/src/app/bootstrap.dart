@@ -4,6 +4,9 @@ library;
 // `riverpod_lint` doesn't recognize that this is the root of the app.
 // ignore_for_file: scoped_providers_should_specify_dependencies
 
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -76,8 +79,54 @@ mixin Bootstrap implements Widget {
           sharedPreferencesProvider.overrideWithValue(prefs),
           initialSettingsProvider.overrideWithValue(initialSettings),
         ],
+        observers: const [if (kDebugMode) _ProviderInspector()],
         child: RestorationScope(restorationId: 'root', child: this),
       ),
     );
   }
+}
+
+class _ProviderInspector extends ProviderObserver {
+  const _ProviderInspector();
+
+  @override
+  void didAddProvider(
+    ProviderBase<Object?> provider,
+    Object? value,
+    ProviderContainer container,
+  ) {
+    log(
+      '${provider.name ?? provider.runtimeType} added: ${_normalizedValue(value)}',
+    );
+  }
+
+  @override
+  void didUpdateProvider(
+    ProviderBase<Object?> provider,
+    Object? previousValue,
+    Object? newValue,
+    ProviderContainer container,
+  ) {
+    log(
+      '${provider.name ?? provider.runtimeType} updated: ${_normalizedValue(previousValue)} -> ${_normalizedValue(newValue)}',
+    );
+  }
+
+  @override
+  void didDisposeProvider(
+    ProviderBase<Object?> provider,
+    ProviderContainer container,
+  ) {
+    log('${provider.name ?? provider.runtimeType} disposed');
+  }
+}
+
+String _normalizedValue(Object? value) {
+  return switch (value) {
+    String _ => value,
+    Uint8List _ => 'Uint8List(${value.length})',
+    AsyncData<Uint8List>(:final value) =>
+      'AsyncData<Uint8List>(value: ${_normalizedValue(value)})',
+    _ => value.toString(),
+  };
 }

@@ -39,7 +39,7 @@ abstract interface class PostRepository {
   Future<void> uploadImage(UploadedImageEntity file);
 
   /// Fetch images from Appwrite.
-  Future<Uint8List> getImages(String id);
+  Future<Uint8List> getImage(String id);
 }
 
 final class _AppwritePostRepository implements PostRepository {
@@ -87,8 +87,7 @@ final class _AppwritePostRepository implements PostRepository {
   }
 
   @override
-  Future<Uint8List> getImages(String id) async {
-    // TODO(MattsAttack): Update for multi-image support.
+  Future<Uint8List> getImage(String id) async {
     return await storage.getFileView(bucketId: 'post-media', fileId: id);
   }
 

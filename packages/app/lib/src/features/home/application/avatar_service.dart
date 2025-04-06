@@ -13,7 +13,7 @@ part 'avatar_service.g.dart';
 /// Get the user's avatar.
 ///
 /// Defaults to the current user if no [username] is provided.
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<Uint8List> avatarService(Ref ref, [String? username]) {
   final avatarRepo = ref.watch(avatarProvider);
 

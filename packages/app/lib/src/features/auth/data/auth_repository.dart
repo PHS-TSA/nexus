@@ -68,7 +68,8 @@ final class _AppwriteAuthRepository implements AuthRepository {
         password: password,
       );
     } on AppwriteException catch (e) {
-      log('$e');
+      log('Failed to log user in!', error: e);
+
       return null;
     }
   }

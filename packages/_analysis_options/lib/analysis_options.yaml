@@ -16,13 +16,10 @@ analyzer:
 
   exclude:
     - "lib/src/gen/**"
-    - "lib/src/l10n/app_localizations*.dart"
     - "lib/generated_plugin_registrant.dart"
     - "test/.test_coverage.dart"
     - "build/**"
     - "**/*.g.dart"
-    - "**/*.gr.dart"
-    - "**/*.gen.dart"
     - "**/*.freezed.dart"
 
 linter:
