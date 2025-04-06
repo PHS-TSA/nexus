@@ -4,11 +4,11 @@ library;
 import 'package:flutter/material.dart';
 
 /// The app's color scheme.
-final scheme = ColorScheme.fromSeed(seedColor: Colors.blue.shade300);
+final scheme = ColorScheme.fromSeed(seedColor: Colors.yellow.shade600);
 
 /// The app's dark color scheme.
 final darkScheme = ColorScheme.fromSeed(
-  seedColor: Colors.blue.shade700,
+  seedColor: Colors.yellow.shade700,
   brightness: Brightness.dark,
 );
 
