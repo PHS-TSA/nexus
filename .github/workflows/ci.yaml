@@ -296,6 +296,7 @@ jobs:
   deploy:
     name: Deploy
     needs: ["build"]
+    if: ${{ github.event_name != 'merge_group' }}
     runs-on: ubuntu-latest
     timeout-minutes: 2
 
