@@ -322,13 +322,12 @@ jobs:
         uses: denoland/deployctl@612f83df2b874c6908d68de5cf3f36a6538fa8f7 # 1.12.0
         with:
           project: "harvest-hub"
-          entrypoint: ./server.ts
-          root: packages/server/
+          entrypoint: packages/server/server.ts
           include: |
-            server/
-            static/
-            deno.json
-            deno.lock
+            packages/server/server/
+            packages/server/static/
+            packages/server/deno.json
+            packages/server/deno.lock
 
   spell-check:
     name: Check Spelling
