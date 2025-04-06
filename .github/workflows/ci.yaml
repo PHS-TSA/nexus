@@ -62,7 +62,8 @@ jobs:
             packages/*/lib/src/app/*.gm.dart
             packages/*/lib/src/l10n/app_localizations.dart
             packages/*/lib/src/l10n/app_localizations_*.dart
-          key: ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-${{ hashFiles('**/build.yaml') }}
+          key: generated-${{ steps.flutter.outputs.CHANNEL }}-${{ runner.os }}-${{ hashFiles('**/build.yaml') }}-${{ hashFiles('packages/*/lib/**.dart') }}
+          restore-keys: generated-${{ steps.flutter.outputs.CHANNEL }}-${{ runner.os }}-
       - name: 📦 Install dependencies
         uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
         with:
@@ -143,7 +144,8 @@ jobs:
             packages/*/lib/src/app/*.gm.dart
             packages/*/lib/src/l10n/app_localizations.dart
             packages/*/lib/src/l10n/app_localizations_*.dart
-          key: ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-${{ hashFiles('**/build.yaml') }}
+          key: generated-${{ steps.flutter.outputs.CHANNEL }}-${{ runner.os }}-${{ hashFiles('**/build.yaml') }}-${{ hashFiles('packages/*/lib/**.dart') }}
+          restore-keys: generated-${{ steps.flutter.outputs.CHANNEL }}-${{ runner.os }}-
       - name: 📦 Install dependencies
         run: dart pub get --enforce-lockfile
       - name: 🔧 Build
@@ -195,7 +197,8 @@ jobs:
             packages/*/lib/src/app/*.gm.dart
             packages/*/lib/src/l10n/app_localizations.dart
             packages/*/lib/src/l10n/app_localizations_*.dart
-          key: ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-${{ hashFiles('**/build.yaml') }}
+          key: generated-${{ steps.flutter.outputs.CHANNEL }}-${{ runner.os }}-${{ hashFiles('**/build.yaml') }}-${{ hashFiles('packages/*/lib/**.dart') }}
+          restore-keys: generated-${{ steps.flutter.outputs.CHANNEL }}-${{ runner.os }}-
       - name: 🌋 Install Melos
         uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
         with:
@@ -244,10 +247,8 @@ jobs:
             packages/*/lib/src/app/*.gm.dart
             packages/*/lib/src/l10n/app_localizations.dart
             packages/*/lib/src/l10n/app_localizations_*.dart
-          key: ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-${{ hashFiles('**/build.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ steps.flutter.outputs.CHANNEL }}-dart-
-            ${{ runner.os }}-
+          key: generated-${{ steps.flutter.outputs.CHANNEL }}-${{ runner.os }}-${{ hashFiles('**/build.yaml') }}-${{ hashFiles('packages/*/lib/**.dart') }}
+          restore-keys: generated-${{ steps.flutter.outputs.CHANNEL }}-${{ runner.os }}-
       - name: 🌋 Install Melos
         uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
         with:
