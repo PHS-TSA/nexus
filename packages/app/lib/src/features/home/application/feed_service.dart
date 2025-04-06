@@ -1,6 +1,7 @@
 /// This library provides a service to stream posts in DB to the UI.
 library;
 
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
@@ -135,7 +136,9 @@ base class SinglePost extends _$SinglePost {
       await ref
           .read(postRepositoryProvider)
           .toggleLikePost(post.id, userId, newLikes);
-    } on Exception {
+    } on Exception catch (e) {
+      log('Failed to toggle like state', error: e);
+
       // Undo like.
       ref
           .read(singlePostProvider(post.id).notifier)
