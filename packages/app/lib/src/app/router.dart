@@ -1,6 +1,8 @@
 /// This library handles routing for the application declaratively.
 library;
 
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -8,10 +10,14 @@ import '../features/auth/application/auth_service.dart';
 import 'router.gr.dart';
 
 /// The router for the application.
-@AutoRouterConfig(replaceInRouteName: 'Page,Route', deferredLoading: true)
+@AutoRouterConfig(
+  replaceInRouteName: 'Page,Route',
+  deferredLoading: true,
+  argsEquality: false,
+)
 class AppRouter extends RootStackRouter {
   /// Instantiate a new instance of [AppRouter].
-  AppRouter(this.ref); // A [Ref] so that we can use Riverpod.
+  AppRouter(this.ref);
 
   /// Used in the guard to get the [authServiceProvider].
   Ref ref;
@@ -56,7 +62,6 @@ class AppRouter extends RootStackRouter {
               path: 'world',
               title: (context, data) => 'Test',
             ),
-            RedirectRoute(path: '*', redirectTo: 'local'),
           ],
         ),
       ],
@@ -67,14 +72,12 @@ class AppRouter extends RootStackRouter {
       title: (context, data) => 'Post',
     ),
     AutoRoute(
-      // TODO(lishaduck): Add a guard to prevent logged in users from accessing this page.
       page: LogInRoute.page,
       path: '/log-in',
       title: (context, data) => 'Log In',
       keepHistory: false,
     ),
     AutoRoute(
-      // TODO(lishaduck): Add a guard to prevent logged in users from accessing this page.
       page: SignUpRoute.page,
       path: '/sign-up',
       title: (context, data) => 'Sign Up',
@@ -85,28 +88,34 @@ class AppRouter extends RootStackRouter {
   @override
   List<AutoRouteGuard> get guards => [
     /*
-         * How this guard works:
-         * 1. The guard contacts the `authRepositoryProvider` to check if the user is logged in. If they are, it allows them to go to the requested page.
-         * 2. Otherwise, we’ll send the user to the “log in” page and save the original page the user wanted to go to in the `onResult` closure.
-         * 3. Once the user successfully logs in, `didLogIn` is set to `true` and `onResult` is run, sending them to their originally requested page.
-         */
+      How this guard works:
+      * 1. The guard checks the authentication state using `authServiceProvider`.
+      * 2. If the user is authenticated and trying to access a protected route, or is unauthenticated and trying to access authentication routes (log in/sign up), they proceed.
+      * 3. If the user is unauthenticated and tries to access a protected route, they're redirected to the login page with an `onResult` closure that returns them to their originally requested page after successful login.
+      * 4. If the user is already authenticated but tries to access auth routes, they're redirected to the main application.
+     */
     AutoRouteGuard.simple((resolver, router) async {
-      final authenticated = ref.read(authServiceProvider).requireValue;
+      final isAuthenticated =
+          ref.read(authServiceProvider).requireValue != null;
+      final isAuthenticatedRoute =
+          resolver.routeName != LogInRoute.name &&
+          resolver.routeName != SignUpRoute.name;
 
-      if (
-      // TODO(MattsAttack): check implementation, is this right?
-      authenticated != null ||
-          // If the user is trying to log in or sign up, let them through.
-          resolver.routeName == LogInRoute.name ||
-          resolver.routeName == SignUpRoute.name) {
+      if (isAuthenticated == isAuthenticatedRoute) {
         resolver.next();
-      } else {
-        await resolver.redirectUntil(
-          LogInRoute(
-            // The parameter brings them back to the page they were trying to access.
-            onResult: ({required didLogIn}) => resolver.next(didLogIn),
+      } else if (!isAuthenticated) {
+        unawaited(
+          resolver.redirectUntil(
+            LogInRoute(
+              // The parameter brings them back to the page they were trying to access.
+              onResult: ({required didLogIn}) {
+                resolver.next(didLogIn);
+              },
+            ),
           ),
         );
+      } else if (!isAuthenticatedRoute) {
+        resolver.overrideNext(children: [const WrapperRoute()]);
       }
     }),
   ];

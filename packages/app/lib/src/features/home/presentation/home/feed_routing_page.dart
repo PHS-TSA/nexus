@@ -19,23 +19,20 @@ class FeedRoutingPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AutoTabsScaffold(
+    return AutoTabsRouter.tabBar(
       routes: const [LocalFeedRoute(), WorldFeedRoute()],
-      appBarBuilder: (context, autoRouter) {
-        return AppBar(
-          scrolledUnderElevation: 0,
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          automaticallyImplyLeading: false,
-          title: NavigationBar(
-            selectedIndex: autoRouter.activeIndex,
-            onDestinationSelected: autoRouter.setActiveIndex,
-            elevation: 0,
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            destinations: const [
-              NavigationDestination(icon: Icon(Icons.pin_drop), label: 'Local'),
-              NavigationDestination(icon: Icon(Icons.public), label: 'World'),
-            ],
-          ),
+      builder: (context, child, tabController) {
+        return Column(
+          children: [
+            TabBar(
+              controller: tabController,
+              tabs: const [
+                Tab(icon: Icon(Icons.pin_drop), text: 'Local'),
+                Tab(icon: Icon(Icons.public), text: 'World'),
+              ],
+            ),
+            Expanded(child: child),
+          ],
         );
       },
     );

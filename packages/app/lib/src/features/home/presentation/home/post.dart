@@ -5,9 +5,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:timeago_flutter/timeago_flutter.dart';
 
 import '../../../../app/router.gr.dart';
-import '../../../../utils/format.dart';
 import '../../../../utils/toast.dart';
 import '../../../auth/application/auth_service.dart';
 import '../../../auth/domain/user.dart';
@@ -33,8 +33,8 @@ class Post extends StatelessWidget {
     // TODO(MattsAttack): implement hero widget.
     return GestureDetector(
       onTap: () async {
-        if (context.router.current.name == WrapperRoute.name) {
-          // Prevents user from clicking on post in in post view.
+        if (context.router.current.name != PostViewRoute.name) {
+          // Prevents user from clicking on post in post view.
           await context.router.push(PostViewRoute(postId: postId));
         }
       },
@@ -80,18 +80,12 @@ class _PosterInfo extends ConsumerWidget {
 
     // TODO(MattsAttack): Show actual date and time of post when you click on it.
 
-    // Have post info show how long ago in the bar.
-    final durationSincePostCreated = DateTime.timestamp().difference(
-      post.timestamp,
-    );
-    final timeSincePost = formatDuration(durationSincePostCreated);
-
     return Row(
       spacing: 8,
       children: [
         _PostAvatar(authorName: post.authorName),
         Text(post.authorName),
-        Text('$timeSincePost ago'),
+        Timeago(date: post.timestamp, builder: (context, value) => Text(value)),
         // TODO(MattsAttack): Could put flairs here.
       ],
     );

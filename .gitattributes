@@ -1,0 +1,4 @@
+* text=auto eol=lf
+
+/packages/app/*/[Ff]lutter/** linguist-generated=true
+*.lock linguist-generated=true
