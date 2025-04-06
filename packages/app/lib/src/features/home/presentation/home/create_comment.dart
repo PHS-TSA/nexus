@@ -41,15 +41,6 @@ class CreateComment extends HookConsumerWidget {
 
       await ref.read(postRepositoryProvider).updatePost(post.id, {
         'comments': [
-          ...post.comments.map(
-            (comment) =>
-                CommentDtoEntity(
-                  author: comment.author,
-                  authorName: comment.authorName,
-                  comment: comment.comment,
-                  timestamp: comment.timestamp,
-                ).toJson(),
-          ),
           CommentDtoEntity(
             comment: commentContent.value,
             author: userId,
