@@ -2,13 +2,13 @@ import 'package:checks/checks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_checks/flutter_checks.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:harvest_hub/src/app/app.dart';
+import 'package:harvest_hub/src/features/auth/data/auth_repository.dart';
+import 'package:harvest_hub/src/features/settings/application/settings_service.dart';
+import 'package:harvest_hub/src/features/settings/data/preferences_repository.dart';
+import 'package:harvest_hub/src/l10n/l10n.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:nexus/src/app/app.dart';
-import 'package:nexus/src/features/auth/data/auth_repository.dart';
-import 'package:nexus/src/features/settings/application/settings_service.dart';
-import 'package:nexus/src/features/settings/data/preferences_repository.dart';
-import 'package:nexus/src/l10n/l10n.dart';
 
 import '../../helpers/mocks.dart';
 

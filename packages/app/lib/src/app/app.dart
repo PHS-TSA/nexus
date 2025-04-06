@@ -11,11 +11,11 @@ import '../utils/design.dart';
 import '../utils/router.dart';
 import 'bootstrap.dart';
 
-/// {@template nexus.app}
+/// {@template harvest_hub.app}
 /// The widget that configures your application.
 /// {@endtemplate}
 class App extends ConsumerStatefulWidget with Bootstrap {
-  /// {@macro nexus.app}
+  /// {@macro harvest_hub.app}
   ///
   /// Construct a new [App] widget.
   const App({super.key});

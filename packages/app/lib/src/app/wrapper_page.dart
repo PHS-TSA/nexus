@@ -8,12 +8,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'router.gr.dart';
 import 'wrapper.dart';
 
-/// {@template nexus.app.wrapper_page}
+/// {@template harvest_hub.app.wrapper_page}
 /// Wrap the pages in a Material Design scaffold.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class WrapperPage extends ConsumerWidget {
-  /// {@macro nexus.app.wrapper_page}
+  /// {@macro harvest_hub.app.wrapper_page}
   ///
   /// Construct a new [WrapperPage] widget.
   const WrapperPage({super.key});

@@ -12,13 +12,13 @@ import 'post_id.dart';
 part 'post_entity.freezed.dart';
 part 'post_entity.g.dart';
 
-/// {@template nexus.features.home.domain.post}
+/// {@template harvest_hub.features.home.domain.post}
 /// Represent a post, which is a single item in a feed.
 /// {@endtemplate}
 @immutable
 @freezed
 sealed class PostEntity with _$PostEntity {
-  /// {@macro nexus.features.home.domain.post}
+  /// {@macro harvest_hub.features.home.domain.post}
   ///
   /// Create a new, immutable instance of [PostEntity].
   const factory PostEntity({

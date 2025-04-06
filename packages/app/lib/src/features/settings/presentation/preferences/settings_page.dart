@@ -15,7 +15,7 @@ import '../../../../utils/hooks.dart';
 import '../../../auth/application/auth_service.dart';
 import '../../application/settings_service.dart';
 
-/// {@template nexus.features.settings.presentation.preferences}
+/// {@template harvest_hub.features.settings.presentation.preferences}
 /// Display the various settings that can be customized by the user.
 ///
 /// When a user changes a setting, this updates the [SettingsService] and
@@ -23,7 +23,7 @@ import '../../application/settings_service.dart';
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class SettingsPage extends ConsumerWidget {
-  /// {@macro nexus.features.settings.presentation.preferences}
+  /// {@macro harvest_hub.features.settings.presentation.preferences}
   ///
   /// Construct a new [SettingsPage] widget.
   const SettingsPage({super.key});
@@ -108,7 +108,7 @@ class SettingsPage extends ConsumerWidget {
                   showAboutDialog(
                     context: context,
                     applicationIcon: Assets.icons.logo.image(width: 50),
-                    applicationName: 'Town Talk',
+                    applicationName: 'Harvest Hub',
                     applicationVersion: packageVersion,
                     applicationLegalese: '© 2024 Eli D. and Matthew W.',
                     children: [
@@ -152,7 +152,7 @@ class _AppDescription extends HookWidget {
         children: [
           const TextSpan(
             text:
-                'Town Talk is a new kind of public forum. '
+                'Harvest Hub is a new kind of public forum. '
                 'View the source at ',
           ),
           TextSpan(

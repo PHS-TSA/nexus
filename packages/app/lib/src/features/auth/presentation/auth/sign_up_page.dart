@@ -16,12 +16,12 @@ import '../../domain/auth_callback.dart';
 
 // TODO(lishaduck): Extract most of this out to a widget that can be shared with the log in page.
 
-/// {@template nexus.features.auth.presentation.auth.sign_up_page}
+/// {@template harvest_hub.features.auth.presentation.auth.sign_up_page}
 /// A page that displays an interface for signing up new users.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class SignUpPage extends HookConsumerWidget {
-  /// {@macro nexus.features.auth.presentation.auth.sign_up_page}
+  /// {@macro harvest_hub.features.auth.presentation.auth.sign_up_page}
   ///
   /// Construct a new [SignUpPage] widget.
   const SignUpPage({super.key, AuthCallback? onResult}) : _onResult = onResult;
@@ -90,8 +90,7 @@ class _DesktopSignUpPage extends HookConsumerWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: Assets.pictures.loginImage.provider(),
-            // TODO(MattsAttack): I need to find a better image or move the photo down.
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           ),
         ),
         child: Container(
@@ -105,7 +104,7 @@ class _DesktopSignUpPage extends HookConsumerWidget {
             child: Column(
               children: [
                 Text(
-                  'Welcome to Town Talk!',
+                  'Welcome to Harvest Hub!',
                   style: TextStyle(
                     fontSize: 28,
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -199,6 +198,7 @@ class _MobileSignUpPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useGlobalKey<FormState>();
 
+    final name = useState('');
     final email = useState('');
     final password = useState('');
 
@@ -206,10 +206,9 @@ class _MobileSignUpPage extends HookConsumerWidget {
       if (formKey.currentState?.validate() ?? false) {
         formKey.currentState?.save();
 
-        // Log in the user.
         await ref
             .read(authServiceProvider.notifier)
-            .logInUser(email.value, password.value);
+            .createUser(name.value, email.value, password.value);
 
         // Check that the widget still exists after the async operation.
         if (!context.mounted) return;
@@ -220,7 +219,7 @@ class _MobileSignUpPage extends HookConsumerWidget {
             // Runs the function passed in by the guard and brings user back to previous page.
             _onResult(didLogIn: true);
           } else {
-            // Replace the route so user won't come back to login.
+            // Replace the route so user won't come back to sign up.
             await context.router.replace(const LocalFeedRoute());
           }
         } else {
@@ -260,7 +259,7 @@ class _MobileSignUpPage extends HookConsumerWidget {
                     child: Column(
                       children: [
                         Text(
-                          'Welcome to Town Talk!',
+                          'Welcome to Harvest Hub!',
                           style: TextStyle(
                             fontSize: 24,
                             color:
@@ -271,6 +270,20 @@ class _MobileSignUpPage extends HookConsumerWidget {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 24),
+                        TextFormField(
+                          initialValue: name.value,
+                          onSaved: (value) {
+                            if (value == null) return;
+
+                            name.value = value;
+                          },
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'First and Last Name',
+                          ),
+                        ),
+                        const SizedBox(height: 16),
                         TextFormField(
                           initialValue: email.value,
                           onSaved: (value) {
@@ -304,7 +317,7 @@ class _MobileSignUpPage extends HookConsumerWidget {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: handleSubmit,
-                            child: const Text('Log in'),
+                            child: const Text('Sign up'),
                           ),
                         ),
                         Padding(
@@ -312,12 +325,10 @@ class _MobileSignUpPage extends HookConsumerWidget {
                           child: TextButton(
                             onPressed: () async {
                               await context.router.push(
-                                SignUpRoute(onResult: _onResult),
+                                LogInRoute(onResult: _onResult),
                               );
                             },
-                            child: const Text(
-                              "Don't have an account? Sign up!",
-                            ),
+                            child: const Text('Back to login'),
                           ),
                         ),
                       ],

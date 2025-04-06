@@ -8,13 +8,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'settings_model.freezed.dart';
 part 'settings_model.g.dart';
 
-/// {@template nexus.features.settings.domain.settings_model}
+/// {@template harvest_hub.features.settings.domain.settings_model}
 /// Represent the user's settings.
 /// {@endtemplate}
 @freezed
 @immutable
 sealed class SettingsModel with _$SettingsModel {
-  /// {@macro nexus.features.settings.domain.settings_model}
+  /// {@macro harvest_hub.features.settings.domain.settings_model}
   ///
   /// Create a new, immutable instance of [SettingsModel].
   const factory SettingsModel({required ThemeMode themeMode}) = _SettingsModel;

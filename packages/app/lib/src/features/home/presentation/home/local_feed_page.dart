@@ -9,12 +9,12 @@ import '../../application/location_service.dart';
 import '../../domain/feed_entity.dart';
 import 'feed.dart';
 
-/// {@template nexus.features.home.presentation.home.local_feed_page}
+/// {@template harvest_hub.features.home.presentation.home.local_feed_page}
 /// A page that displays a feed of posts from the area nearby the user.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class LocalFeedPage extends ConsumerWidget {
-  /// {@macro nexus.features.home.presentation.home.local_feed_page}
+  /// {@macro harvest_hub.features.home.presentation.home.local_feed_page}
   ///
   /// Construct a new [LocalFeedPage] widget.
   const LocalFeedPage({super.key});

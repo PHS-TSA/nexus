@@ -1,9 +1,9 @@
 import 'package:checks/checks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:harvest_hub/src/features/settings/application/settings_service.dart';
+import 'package:harvest_hub/src/features/settings/data/preferences_repository.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:nexus/src/features/settings/application/settings_service.dart';
-import 'package:nexus/src/features/settings/data/preferences_repository.dart';
 
 import '../../../../helpers/mocks.dart';
 import '../../../../helpers/riverpod.dart';

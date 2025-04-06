@@ -8,11 +8,11 @@ import 'package:flutter/material.dart';
 import '../utils/responsive.dart';
 import 'create_post.dart';
 
-/// {@template nexus.app.wrapper}
+/// {@template harvest_hub.app.wrapper}
 /// Wrap the pages in a Material Design scaffold.
 /// {@endtemplate}
 class Wrapper extends StatelessWidget {
-  /// {@macro nexus.app.wrapper}
+  /// {@macro harvest_hub.app.wrapper}
   ///
   /// Construct a new [Wrapper] widget.
   const Wrapper({required this.child, super.key});

@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:checks/checks.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nexus/src/utils/router.dart';
+import 'package:harvest_hub/src/utils/router.dart';
 
 import '../../helpers/riverpod.dart';
 

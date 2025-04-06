@@ -5,7 +5,7 @@
 [![Code Coverage][coverage_badge]][coverage_link]
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
 
-An application for teenage makers.
+Sharing and Growing!
 
 [ci_badge]: https://github.com/PHS-TSA/nexus/actions/workflows/ci.yaml/badge.svg?branch=main
 [ci_link]: https://github.com/PHS-TSA/nexus/actions/workflows/ci.yaml

@@ -7,12 +7,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../app/router.gr.dart';
 
-/// {@template nexus.features.home.presentation.home.feed_routing_page}
+/// {@template harvest_hub.features.home.presentation.home.feed_routing_page}
 /// A page that manages routing between different feeds.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
 class FeedRoutingPage extends ConsumerWidget {
-  /// {@macro nexus.features.home.presentation.home.feed_routing_page}
+  /// {@macro harvest_hub.features.home.presentation.home.feed_routing_page}
   ///
   /// Construct a new [FeedRoutingPage] widget.
   const FeedRoutingPage({super.key});

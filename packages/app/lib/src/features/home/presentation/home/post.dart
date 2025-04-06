@@ -10,11 +10,11 @@ import '../../../auth/application/auth_service.dart';
 import '../../application/feed_service.dart';
 import '../../application/post_service.dart';
 
-/// {@template nexus.features.home.presentation.home.post}
+/// {@template harvest_hub.features.home.presentation.home.post}
 /// View a post.
 /// {@endtemplate}
 class Post extends StatelessWidget {
-  /// {@macro nexus.features.home.presentation.home.post}
+  /// {@macro harvest_hub.features.home.presentation.home.post}
   ///
   /// Construct a new [Post] widget for a [].
   const Post({super.key});
