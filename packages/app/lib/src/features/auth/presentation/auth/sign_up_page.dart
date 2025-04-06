@@ -198,6 +198,7 @@ class _MobileSignUpPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useGlobalKey<FormState>();
 
+    final name = useState('');
     final email = useState('');
     final password = useState('');
 
@@ -205,10 +206,9 @@ class _MobileSignUpPage extends HookConsumerWidget {
       if (formKey.currentState?.validate() ?? false) {
         formKey.currentState?.save();
 
-        // Log in the user.
         await ref
             .read(authServiceProvider.notifier)
-            .logInUser(email.value, password.value);
+            .createUser(name.value, email.value, password.value);
 
         // Check that the widget still exists after the async operation.
         if (!context.mounted) return;
@@ -219,7 +219,7 @@ class _MobileSignUpPage extends HookConsumerWidget {
             // Runs the function passed in by the guard and brings user back to previous page.
             _onResult(didLogIn: true);
           } else {
-            // Replace the route so user won't come back to login.
+            // Replace the route so user won't come back to sign up.
             await context.router.replace(const LocalFeedRoute());
           }
         } else {
@@ -270,6 +270,20 @@ class _MobileSignUpPage extends HookConsumerWidget {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 24),
+                        TextFormField(
+                          initialValue: name.value,
+                          onSaved: (value) {
+                            if (value == null) return;
+
+                            name.value = value;
+                          },
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'First and Last Name',
+                          ),
+                        ),
+                        const SizedBox(height: 16),
                         TextFormField(
                           initialValue: email.value,
                           onSaved: (value) {
