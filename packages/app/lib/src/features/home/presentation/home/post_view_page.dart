@@ -20,7 +20,7 @@ import 'post.dart';
 /// A page that contains full post information.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
-class PostViewPage extends StatelessWidget {
+class PostViewPage extends ConsumerWidget {
   /// {@macro harvest_hub.features.home.presentation.home.post_view_page}
   ///
   /// Construct a new [PostViewPage] widget.
@@ -32,7 +32,7 @@ class PostViewPage extends StatelessWidget {
   PostId get _postId => PostId(id);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final scope = RouterScope.of(context, watch: true);
 
     return Scaffold(
@@ -66,45 +66,58 @@ class PostViewPage extends StatelessWidget {
               child: const Icon(Icons.add_comment),
             ),
       ),
-      body: ListView(
-        children: [
-          Center(
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 1000),
-              child: Consumer(
-                builder: (context, ref, _) {
-                  final response = ref.watch(postServiceProvider(_postId));
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(singlePostProvider(_postId));
+          final _ = await ref.read(postServiceProvider(_postId).future);
+        },
+        child: ListView(
+          children: [
+            Center(
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 1000),
+                child: Consumer(
+                  builder: (context, ref, _) {
+                    final response = ref.watch(postServiceProvider(_postId));
 
-                  return switch (response) {
-                    AsyncData(:final value?) => Column(
-                      children: [
-                        ProviderScope(
-                          overrides: [
-                            currentPostProvider.overrideWithValue(value),
-                          ],
-                          child: const Post(),
+                    return switch (response) {
+                      AsyncError(
+                        :final error,
+                        :final stackTrace,
+                        hasError: true,
+                      ) =>
+                        Center(
+                          child: Text(
+                            'Error: $error\n$stackTrace',
+                            style: const TextStyle(color: Colors.red),
+                          ),
                         ),
+                      AsyncValue(:final value?, hasValue: true) => Column(
+                        children: [
+                          ProviderScope(
+                            overrides: [
+                              currentPostProvider.overrideWithValue(value),
+                            ],
+                            child: const Post(),
+                          ),
 
-                        const Divider(),
+                          const Divider(),
 
-                        if (value.comments.isNotEmpty)
-                          _Comments(comments: value.comments),
-                      ],
-                    ),
-                    AsyncData() => const Center(child: Text('Post not found')),
-                    AsyncError(:final error, :final stackTrace) => Center(
-                      child: Text(
-                        'Error: $error\n$stackTrace',
-                        style: const TextStyle(color: Colors.red),
+                          if (value.comments.isNotEmpty)
+                            _Comments(comments: value.comments),
+                        ],
                       ),
-                    ),
-                    _ => const Center(child: CircularProgressIndicator()),
-                  };
-                },
+                      AsyncValue(hasValue: true) => const Center(
+                        child: Text('Post not found'),
+                      ),
+                      _ => const Center(child: CircularProgressIndicator()),
+                    };
+                  },
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
