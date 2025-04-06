@@ -4,6 +4,9 @@
 # Testing
 /packages/*/test/.test_optimizer.dart
 
+# Serve data
+/packages/*/static/
+
 # Miscellaneous
 *.class
 *.log
