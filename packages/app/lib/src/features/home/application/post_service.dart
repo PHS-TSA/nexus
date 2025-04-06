@@ -7,7 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../auth/domain/user.dart';
-import '../domain/post_entity.dart';
+import '../domain/comment_entity.dart';
+import '../domain/post_id.dart';
 import '../domain/post_model_entity.dart';
 import 'avatar_service.dart';
 import 'feed_service.dart';
@@ -20,18 +21,41 @@ part 'post_service.g.dart';
 /// This lets us emulate a "suspense"-like UI, where the UI doesn’t show until all data is loaded.
 @Riverpod(keepAlive: true)
 Future<PostModelEntity?> postService(Ref ref, PostId postId) async {
-  final post = ref.watch(singlePostProvider(postId));
+  final post = await ref.watch(getPostProvider(postId).future);
 
   if (post == null) return null;
 
-  final (avatar, images) =
+  final (avatar, images, commentsAvatars) =
       await (
         ref.watch(avatarServiceProvider(post.authorName).future),
         Future.wait(
           // TODO(MattsAttack): Could we grab all images with a single call?
           post.imageIds.map((image) => ref.watch(imageProvider(image).future)),
         ),
+        Future.wait(
+          post.comments.map(
+            (comment) =>
+                ref.watch(avatarServiceProvider(comment.authorName).future),
+          ),
+        ),
       ).wait;
+
+  if (post.comments.length != commentsAvatars.length) {
+    throw Exception('The number of comments and comment avatars do not match.');
+  }
+
+  final commentsWithAvatars = post.comments.zip(commentsAvatars);
+  final comments =
+      [
+        for (final (comment, commentAvatar) in commentsWithAvatars)
+          CommentEntity(
+            author: comment.author,
+            comment: comment.comment,
+            avatar: commentAvatar,
+            authorName: comment.authorName,
+            timestamp: comment.timestamp,
+          ),
+      ].lockUnsafe;
 
   return PostModelEntity(
     id: post.id,
@@ -42,6 +66,7 @@ Future<PostModelEntity?> postService(Ref ref, PostId postId) async {
     description: post.description,
     images: images.lockUnsafe,
     likes: post.likes,
+    comments: comments,
   );
 }
 
@@ -99,4 +124,12 @@ IList<Uint8List> currentPostImages(Ref ref) {
 @Riverpod(dependencies: [currentPost])
 IList<UserId> currentPostLikes(Ref ref) {
   return ref.watch(currentPostProvider.select((value) => value.likes));
+}
+
+/// Provide the number comments of the [currentPost].
+@Riverpod(dependencies: [currentPost])
+int currentPostCommentsCount(Ref ref) {
+  return ref.watch(
+    currentPostProvider.select((value) => value.comments.length),
+  );
 }

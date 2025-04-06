@@ -1,9 +1,10 @@
 /// This library contains post fetchers.
 library;
 
+import 'dart:typed_data';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:flutter/foundation.dart' show Uint8List;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,6 +13,7 @@ import '../../../utils/api.dart';
 import '../../auth/domain/user.dart';
 import '../domain/feed_entity.dart';
 import '../domain/post_entity.dart';
+import '../domain/post_id.dart';
 import '../domain/uploaded_image_entity.dart';
 
 part 'post_repository.g.dart';
@@ -23,6 +25,9 @@ abstract interface class PostRepository {
 
   /// Read all the posts.
   Future<IList<PostEntity>> readPosts(FeedEntity feed, PostId? cursor);
+
+  /// Read a single post.
+  Future<PostEntity?> readPost(PostId postId);
 
   /// Create a new post.
   ///
@@ -40,6 +45,9 @@ abstract interface class PostRepository {
 
   /// Fetch images from Appwrite.
   Future<Uint8List> getImage(String id);
+
+  /// Post a comment.
+  Future<void> updatePost(PostId postId, Map<String, Object?> updatedData);
 }
 
 final class _AppwritePostRepository implements PostRepository {
@@ -87,6 +95,32 @@ final class _AppwritePostRepository implements PostRepository {
   }
 
   @override
+  Future<PostEntity?> readPost(PostId postId) async {
+    try {
+      final document = await database.getDocument(
+        databaseId: databaseId,
+        collectionId: collectionId,
+        documentId: postId.id,
+      );
+
+      assert(
+        !document.data.containsKey('id'),
+        'ID should not have been redundantly stored.',
+      );
+
+      document.data['id'] = document.$id;
+
+      return PostEntity.fromJson(document.data);
+    } on AppwriteException catch (e) {
+      if (e.code == 404) {
+        return null;
+      }
+
+      rethrow;
+    }
+  }
+
+  @override
   Future<Uint8List> getImage(String id) async {
     return await storage.getFileView(bucketId: 'post-media', fileId: id);
   }
@@ -131,6 +165,16 @@ final class _AppwritePostRepository implements PostRepository {
       bucketId: 'post-media', //maybe change to env variable
       fileId: file.imageId,
       file: InputFile.fromBytes(bytes: bytes, filename: fileName),
+    );
+  }
+
+  @override
+  Future<void> updatePost(PostId id, Map<String, Object?> updatedData) async {
+    await database.updateDocument(
+      databaseId: databaseId,
+      collectionId: collectionId,
+      documentId: id.id,
+      data: updatedData,
     );
   }
 }

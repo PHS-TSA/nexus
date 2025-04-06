@@ -4,7 +4,9 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../auth/domain/user.dart';
+import 'comment_entity.dart';
 import 'post_entity.dart';
+import 'post_id.dart';
 
 part 'post_model_entity.freezed.dart';
 
@@ -49,12 +51,15 @@ sealed class PostModelEntity with _$PostModelEntity {
     ///
     /// This is a list of the [UserId]s of users who liked the post.
     required IList<UserId> likes,
+
+    /// Commentary on the current post.
+    required IList<CommentEntity> comments,
   }) = _PostModelEntity;
 
   const PostModelEntity._();
 
   @override
   String toString() {
-    return 'PostModelEntity(id: $id, authorName: $authorName, timestamp: $timestamp, headline: $headline, description: $description, likes: $likes)';
+    return 'PostModelEntity(id: $id, authorName: $authorName, avatar: Uint8List(${avatar.length}), timestamp: $timestamp, headline: $headline, description: $description, images: ${images.map((image) => 'Uint8List(${image.length})')}, likes: $likes, comments: $comments)';
   }
 }

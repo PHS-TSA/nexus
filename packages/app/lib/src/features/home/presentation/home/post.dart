@@ -1,82 +1,42 @@
 /// This library contains the UI for viewing a post.
 library;
 
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:timeago_flutter/timeago_flutter.dart';
 
-import '../../../../app/router.gr.dart';
 import '../../../../utils/toast.dart';
 import '../../../auth/application/auth_service.dart';
 import '../../application/feed_service.dart';
 import '../../application/post_service.dart';
-import '../../domain/post_entity.dart';
 
 /// {@template nexus.features.home.presentation.home.post}
 /// View a post.
 /// {@endtemplate}
 class Post extends StatelessWidget {
   /// {@macro nexus.features.home.presentation.home.post}
-
-  /// Construct a new [Post] widget for a [PostId].
-  const Post({required this.postId, super.key});
-
-  /// [PostId] for this post.
-  final PostId postId;
+  ///
+  /// Construct a new [Post] widget for a [].
+  const Post({super.key});
 
   @override
   Widget build(BuildContext context) {
     // TODO(MattsAttack): implement hero widget.
-    return GestureDetector(
-      onTap: () async {
-        if (context.router.current.name != PostViewRoute.name) {
-          // Prevents user from clicking on post in post view.
-          await context.router.push(PostViewRoute(postId: postId));
-        }
-      },
-      key: ValueKey(postId),
-      child: Card(
-        margin: const EdgeInsets.all(4),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          child: Consumer(
-            builder: (context, ref, child) {
-              return switch (ref.watch(postServiceProvider(postId))) {
-                AsyncData(:final value?) => ProviderScope(
-                  overrides: [currentPostProvider.overrideWithValue(value)],
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // The post sections are in here, like poster info and post content.
-                      _PosterInfo(),
-                      Divider(),
-                      _PostBody(),
-                      _PostInteractables(),
-                    ],
-                  ),
-                ),
-
-                AsyncError(:final error) => Text('Error loading post: $error'),
-                _ => const CircularProgressIndicator(),
-              };
-            },
-          ),
-        ),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // The post sections are in here, like poster info and post content.
+          _PosterInfo(),
+          Divider(),
+          _PostBody(),
+          _PostInteractables(),
+        ],
       ),
     );
   }
-
-  // coverage:ignore-start
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty('postId', postId.id));
-  }
-
-  // coverage:ignore-end
 }
 
 class _PosterInfo extends ConsumerWidget {
@@ -84,20 +44,45 @@ class _PosterInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO(lishaduck): Better support async loading, to remove the need for non-null assertion.
     final authorName = ref.watch(currentPostAuthorNameProvider);
     final timestamp = ref.watch(currentPostTimestampProvider);
 
-    // TODO(MattsAttack): Show actual date and time of post when you click on it.
-
-    return Row(
-      spacing: 8,
-      children: [
-        const _PostAvatar(),
-        Text(authorName),
-        Timeago(date: timestamp, builder: (context, value) => Text(value)),
-        // TODO(MattsAttack): Could put flairs here.
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const _PostAvatar(),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      authorName,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Timeago(
+                      date: timestamp,
+                      builder:
+                          (context, value) => Text(
+                            value,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                    ),
+                  ],
+                ),
+                // TODO(MattsAttack): Add additional elements like flairs if needed.
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -186,29 +171,43 @@ class _PostInteractables extends HookConsumerWidget {
     final userId = ref.watch(idProvider);
     final postId = ref.watch(currentPostIdProvider);
     final likes = ref.watch(currentPostLikesProvider);
+    final numComments = ref.watch(currentPostCommentsCountProvider);
 
     return Row(
+      spacing: 4,
       children: [
-        Text('${likes.length}'),
-        IconButton(
-          onPressed: () async {
-            if (userId == null) {
-              throw Exception('Null user ID detected');
-              // TODO(MattsAttack): Send user back to login page, perhaps?
-            }
+        Row(
+          spacing: 2,
+          children: [
+            Text('${likes.length}'),
+            IconButton(
+              onPressed: () async {
+                if (userId == null) {
+                  throw Exception('Null user ID detected');
+                  // TODO(MattsAttack): Send user back to login page, perhaps?
+                }
 
-            final liked = await ref
-                .read(singlePostProvider(postId).notifier)
-                .toggleLike(userId);
+                final liked = await ref
+                    .read(singlePostProvider(postId).notifier)
+                    .toggleLike(userId);
 
-            if (!liked || !context.mounted) return;
-            context.showSnackBar(content: const Text('Failed to like post'));
-          },
-          icon: Icon(
-            likes.contains(userId)
-                ? Icons.thumb_up_sharp
-                : Icons.thumb_up_outlined,
-          ),
+                if (!liked || !context.mounted) return;
+                context.showSnackBar(
+                  content: const Text('Failed to like post'),
+                );
+              },
+              icon: Icon(
+                likes.contains(userId)
+                    ? Icons.thumb_up_sharp
+                    : Icons.thumb_up_outlined,
+              ),
+            ),
+          ],
+        ),
+
+        Row(
+          spacing: 2,
+          children: [Text('$numComments'), const Icon(Icons.comment)],
         ),
       ],
     );

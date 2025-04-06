@@ -11,10 +11,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../features/auth/application/auth_service.dart';
+import '../features/home/application/feed_service.dart';
 import '../features/home/application/location_service.dart';
 import '../features/home/application/uploaded_image_service.dart';
 import '../features/home/data/post_repository.dart';
+import '../features/home/domain/feed_entity.dart';
 import '../features/home/domain/post_entity.dart';
+import '../features/home/domain/post_id.dart';
 import '../features/home/domain/uploaded_image_entity.dart';
 import '../utils/hooks.dart';
 import '../utils/responsive.dart';
@@ -33,11 +36,11 @@ class CreatePost extends HookConsumerWidget {
     final formKey = useGlobalKey<FormState>();
     final title = useState('');
     final description = useState('');
-    final userId = ref.watch(idProvider);
-    final userName = ref.watch(userNameProvider);
 
     final handleSubmit = useCallback(() async {
-      final uploadedImages = ref.watch(uploadedImagesServiceProvider);
+      final userId = ref.read(idProvider);
+      final userName = ref.read(userNameProvider);
+      final uploadedImages = ref.read(uploadedImagesServiceProvider);
       final location = await ref.read(locationServiceProvider.future);
       var lat = location.latitude.roundToDouble();
       var lng = location.longitude.roundToDouble();
@@ -51,7 +54,7 @@ class CreatePost extends HookConsumerWidget {
 
       formKey.currentState?.save();
 
-      // Create a list off all uploaded images ids
+      // Create a list of all uploaded images ids
 
       await ref
           .read(postRepositoryProvider)
@@ -69,9 +72,15 @@ class CreatePost extends HookConsumerWidget {
               imageIds:
                   // Read in the list of uploaded images ids.
                   uploadedImages.map((image) => image.imageId).toIList(),
+              comments: const IList.empty(),
             ),
             uploadedImages,
           );
+
+      // Clear the uploaded images list.
+      ref
+        ..invalidate(feedServiceProvider(FeedEntity.local(lat, lng)))
+        ..invalidate(feedServiceProvider(const FeedEntity.world()));
 
       if (!context.mounted) return;
       await context.router.maybePop();
