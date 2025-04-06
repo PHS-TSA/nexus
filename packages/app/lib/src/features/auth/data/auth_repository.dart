@@ -55,7 +55,9 @@ final class _AppwriteAuthRepository implements AuthRepository {
       await logInUser(email, password);
 
       return user;
-    } on AppwriteException {
+    } on AppwriteException catch (e) {
+      log('Failed to create account', error: e);
+
       return null;
     }
   }
