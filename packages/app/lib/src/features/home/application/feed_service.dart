@@ -43,8 +43,12 @@ base class FeedService extends _$FeedService {
       // Store the post in the provider
       ref.watch(singlePostProvider(post.id).notifier).setPost(post);
 
-      // Collect the post ID
-      newPostIds.add(post.id);
+      // Collect the post ID if it's not already in the state
+      if (!state.ids.contains(post.id)) {
+        newPostIds.add(post.id);
+      } else {
+        throw Exception('Post ${post.id} already exists in the feed state.');
+      }
     }
 
     // Update the state with the new batch of post IDs and cursor
@@ -69,16 +73,20 @@ FutureOr<PostId?> feedPost(Ref ref, FeedEntity feed, int postIndex) async {
     ref.watch(feedPostProvider(feed, postIndex - 1));
   }
 
-  var next = ref
-      .read(feedServiceProvider(feed).select((s) => s.ids))
-      .elementAtOrNull(postIndex);
-  var moreToGet = true;
+  var next = ref.watch(
+    feedServiceProvider(feed).select((s) => s.ids.elementAtOrNull(postIndex)),
+  );
 
-  while (moreToGet && next == null) {
-    moreToGet = await ref.watch(feedServiceProvider(feed).notifier).fetchMore();
+  if (next == null) {
+    await ref.watch(feedServiceProvider(feed).notifier).fetchMore();
+
     next = ref
-        .read(feedServiceProvider(feed).select((s) => s.ids))
+        .watch(feedServiceProvider(feed).select((s) => s.ids))
         .elementAtOrNull(postIndex);
+
+    if (next == null) {
+      return null;
+    }
   }
 
   return next;

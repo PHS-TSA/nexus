@@ -45,6 +45,9 @@ class Feed extends ConsumerWidget {
             physics: const AlwaysScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               final id = ref.watch(feedPostProvider(feed, index));
+              final lastIsLoading =
+                  index > 0 &&
+                  ref.watch(feedPostProvider(feed, index - 1)).isLoading;
 
               final AsyncValue<PostModelEntity?> response = switch (id) {
                 AsyncData(:final value?) => ref.watch(
@@ -59,50 +62,64 @@ class Feed extends ConsumerWidget {
               };
 
               return switch (response) {
-                AsyncData(:final value) when value != null => GestureDetector(
-                  onTap: () async {
-                    await context.router.push(PostViewRoute(id: value.id.id));
-                  },
-                  child: Card(
+                // If there's an error, display it as another post.
+                AsyncValue(:final error, :final stackTrace, hasError: true) =>
+                  Card(
                     margin: const EdgeInsets.all(4),
-                    child: ProviderScope(
-                      overrides: [currentPostProvider.overrideWithValue(value)],
-                      child: Post(key: ValueKey(value)),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: 8,
+                        children: [
+                          const Text(
+                            'Error',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 24,
+                            ), // TODO(MattsAttack): Need better text styling.
+                          ),
+                          Text(
+                            '$error\n$stackTrace',
+                            textAlign: TextAlign.left,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
+
+                AsyncValue(:final value, hasValue: true) when value != null =>
+                  GestureDetector(
+                    onTap: () async {
+                      await context.router.push(PostViewRoute(id: value.id.id));
+                    },
+                    child: Card(
+                      margin: const EdgeInsets.all(4),
+                      child: ProviderScope(
+                        overrides: [
+                          currentPostProvider.overrideWithValue(value),
+                        ],
+                        child: Post(key: ValueKey(value)),
+                      ),
+                    ),
+                  ),
 
                 // If we have none, return a placeholder.
-                AsyncData() when index == 0 => const Expanded(
-                  child: Center(child: Text('No posts yet. Make the first!')),
+                AsyncValue(hasValue: true) when index == 0 => const Center(
+                  child: Text('No posts yet. Make the first!'),
                 ),
                 // If we run out of items, return null.
-                AsyncData() => null,
-
-                // If there's an error, display it as another post.
-                AsyncError(:final error, :final stackTrace) => Card(
-                  margin: const EdgeInsets.all(4),
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 8,
-                      children: [
-                        const Text(
-                          'Error',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 24,
-                          ), // TODO(MattsAttack): Need better text styling.
-                        ),
-                        Text('$error\n$stackTrace', textAlign: TextAlign.left),
-                      ],
-                    ),
-                  ),
-                ),
+                AsyncValue(hasValue: true) => null,
 
                 // If we're loading, display a loading indicator.
+                AsyncLoading() when !lastIsLoading => const Center(
+                  child: SizedBox(
+                    width: 400,
+                    height: 400,
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
                 _ => null,
               };
             },

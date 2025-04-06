@@ -20,7 +20,7 @@ import 'post.dart';
 /// A page that contains full post information.
 /// {@endtemplate}
 @RoutePage(deferredLoading: true)
-class PostViewPage extends ConsumerWidget {
+class PostViewPage extends StatelessWidget {
   /// {@macro nexus.features.home.presentation.home.post_view_page}
   ///
   /// Construct a new [PostViewPage] widget.
@@ -32,9 +32,8 @@ class PostViewPage extends ConsumerWidget {
   PostId get _postId => PostId(id);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final scope = RouterScope.of(context, watch: true);
-    final response = ref.watch(postServiceProvider(_postId));
 
     return Scaffold(
       appBar: AppBar(
@@ -48,50 +47,61 @@ class PostViewPage extends ConsumerWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final post = response.valueOrNull;
-          if (post == null) {
-            return;
-          }
+      floatingActionButton: Consumer(
+        builder:
+            (context, ref, _) => FloatingActionButton(
+              onPressed: () async {
+                final post = ref.read(postServiceProvider(_postId)).valueOrNull;
+                if (post == null) {
+                  return;
+                }
 
-          await showDialog<void>(
-            context: context,
-            builder: (context) => CreateComment(post: post),
-          );
+                await showDialog<void>(
+                  context: context,
+                  builder: (context) => CreateComment(post: post),
+                );
 
-          ref.invalidate(singlePostProvider(_postId));
-        },
-        child: const Icon(Icons.add_comment),
+                ref.invalidate(singlePostProvider(_postId));
+              },
+              child: const Icon(Icons.add_comment),
+            ),
       ),
       body: ListView(
         children: [
           Center(
             child: Container(
               constraints: const BoxConstraints(maxWidth: 1000),
-              child: switch (response) {
-                AsyncData(:final value?) => Column(
-                  children: [
-                    ProviderScope(
-                      overrides: [currentPostProvider.overrideWithValue(value)],
-                      child: const Post(),
+              child: Consumer(
+                builder: (context, ref, _) {
+                  final response = ref.watch(postServiceProvider(_postId));
+
+                  return switch (response) {
+                    AsyncData(:final value?) => Column(
+                      children: [
+                        ProviderScope(
+                          overrides: [
+                            currentPostProvider.overrideWithValue(value),
+                          ],
+                          child: const Post(),
+                        ),
+
+                        const Divider(),
+
+                        if (value.comments.isNotEmpty)
+                          _Comments(comments: value.comments),
+                      ],
                     ),
-
-                    const Divider(),
-
-                    if (value.comments.isNotEmpty)
-                      _Comments(comments: value.comments),
-                  ],
-                ),
-                AsyncData() => const Center(child: Text('Post not found')),
-                AsyncError(:final error, :final stackTrace) => Center(
-                  child: Text(
-                    'Error: $error\n$stackTrace',
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                ),
-                _ => const Center(child: CircularProgressIndicator()),
-              },
+                    AsyncData() => const Center(child: Text('Post not found')),
+                    AsyncError(:final error, :final stackTrace) => Center(
+                      child: Text(
+                        'Error: $error\n$stackTrace',
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ),
+                    _ => const Center(child: CircularProgressIndicator()),
+                  };
+                },
+              ),
             ),
           ),
         ],
