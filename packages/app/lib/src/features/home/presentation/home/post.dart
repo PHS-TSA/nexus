@@ -44,20 +44,45 @@ class _PosterInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO(lishaduck): Better support async loading, to remove the need for non-null assertion.
     final authorName = ref.watch(currentPostAuthorNameProvider);
     final timestamp = ref.watch(currentPostTimestampProvider);
 
-    // TODO(MattsAttack): Show actual date and time of post when you click on it.
-
-    return Row(
-      spacing: 8,
-      children: [
-        const _PostAvatar(),
-        Text(authorName),
-        Timeago(date: timestamp, builder: (context, value) => Text(value)),
-        // TODO(MattsAttack): Could put flairs here.
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const _PostAvatar(),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      authorName,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Timeago(
+                      date: timestamp,
+                      builder:
+                          (context, value) => Text(
+                            value,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                    ),
+                  ],
+                ),
+                // TODO(MattsAttack): Add additional elements like flairs if needed.
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -146,29 +171,43 @@ class _PostInteractables extends HookConsumerWidget {
     final userId = ref.watch(idProvider);
     final postId = ref.watch(currentPostIdProvider);
     final likes = ref.watch(currentPostLikesProvider);
+    final numComments = ref.watch(currentPostCommentsCountProvider);
 
     return Row(
+      spacing: 4,
       children: [
-        Text('${likes.length}'),
-        IconButton(
-          onPressed: () async {
-            if (userId == null) {
-              throw Exception('Null user ID detected');
-              // TODO(MattsAttack): Send user back to login page, perhaps?
-            }
+        Row(
+          spacing: 2,
+          children: [
+            Text('${likes.length}'),
+            IconButton(
+              onPressed: () async {
+                if (userId == null) {
+                  throw Exception('Null user ID detected');
+                  // TODO(MattsAttack): Send user back to login page, perhaps?
+                }
 
-            final liked = await ref
-                .read(singlePostProvider(postId).notifier)
-                .toggleLike(userId);
+                final liked = await ref
+                    .read(singlePostProvider(postId).notifier)
+                    .toggleLike(userId);
 
-            if (!liked || !context.mounted) return;
-            context.showSnackBar(content: const Text('Failed to like post'));
-          },
-          icon: Icon(
-            likes.contains(userId)
-                ? Icons.thumb_up_sharp
-                : Icons.thumb_up_outlined,
-          ),
+                if (!liked || !context.mounted) return;
+                context.showSnackBar(
+                  content: const Text('Failed to like post'),
+                );
+              },
+              icon: Icon(
+                likes.contains(userId)
+                    ? Icons.thumb_up_sharp
+                    : Icons.thumb_up_outlined,
+              ),
+            ),
+          ],
+        ),
+
+        Row(
+          spacing: 2,
+          children: [Text('$numComments'), const Icon(Icons.comment)],
         ),
       ],
     );

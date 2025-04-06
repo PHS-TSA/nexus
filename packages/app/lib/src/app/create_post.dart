@@ -11,9 +11,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../features/auth/application/auth_service.dart';
+import '../features/home/application/feed_service.dart';
 import '../features/home/application/location_service.dart';
 import '../features/home/application/uploaded_image_service.dart';
 import '../features/home/data/post_repository.dart';
+import '../features/home/domain/feed_entity.dart';
 import '../features/home/domain/post_entity.dart';
 import '../features/home/domain/post_id.dart';
 import '../features/home/domain/uploaded_image_entity.dart';
@@ -74,6 +76,11 @@ class CreatePost extends HookConsumerWidget {
             ),
             uploadedImages,
           );
+
+      // Clear the uploaded images list.
+      ref
+        ..invalidate(feedServiceProvider(FeedEntity.local(lat, lng)))
+        ..invalidate(feedServiceProvider(const FeedEntity.world()));
 
       if (!context.mounted) return;
       await context.router.maybePop();

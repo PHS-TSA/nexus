@@ -125,3 +125,11 @@ IList<Uint8List> currentPostImages(Ref ref) {
 IList<UserId> currentPostLikes(Ref ref) {
   return ref.watch(currentPostProvider.select((value) => value.likes));
 }
+
+/// Provide the number comments of the [currentPost].
+@Riverpod(dependencies: [currentPost])
+int currentPostCommentsCount(Ref ref) {
+  return ref.watch(
+    currentPostProvider.select((value) => value.comments.length),
+  );
+}
