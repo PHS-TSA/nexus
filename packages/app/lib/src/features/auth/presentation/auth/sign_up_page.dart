@@ -303,7 +303,7 @@ class _MobileSignUpPage extends HookConsumerWidget {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: handleSubmit,
-                            child: const Text('Log in'),
+                            child: const Text('Sign up'),
                           ),
                         ),
                         Padding(
@@ -311,12 +311,10 @@ class _MobileSignUpPage extends HookConsumerWidget {
                           child: TextButton(
                             onPressed: () async {
                               await context.router.push(
-                                SignUpRoute(onResult: _onResult),
+                                LogInRoute(onResult: _onResult),
                               );
                             },
-                            child: const Text(
-                              "Don't have an account? Sign up!",
-                            ),
+                            child: const Text('Back to login'),
                           ),
                         ),
                       ],
