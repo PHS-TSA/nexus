@@ -1,5 +1,5 @@
 name: "harvest_hub"
-description: "An application for teenage makers."
+description: "Sharing and growing!"
 
 # Prevent accidental publishing to pub.dev.
 publish_to: "none"
@@ -134,7 +134,7 @@ flutter_launcher_icons:
 
   web:
     generate: true
-    image_path: "assets/icons/logo.png"
+    image_path: "assets/icons/splash.png"
     background_color: "#2e2e2e"
     theme_color: "#0281d4"
 
@@ -171,7 +171,7 @@ flutter_native_splash:
 
   # The image parameter allows you to specify an image used in the splash screen.  It must be a
   # png file and should be sized for 4x pixel density.
-  image: assets/icons/logo.png
+  image: assets/icons/splash.png
 
   # The branding property allows you to specify an image used as branding in the splash screen.
   # It must be a png file. It is supported for Android, iOS and the Web.  For Android 12,
