@@ -155,7 +155,7 @@ jobs:
         uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
           name: build-${{ matrix.target }}
-          path: "./packages/app/build/"
+          path: "./packages/app/build/${{ matrix.target }}/"
           if-no-files-found: error
 
   lint:
