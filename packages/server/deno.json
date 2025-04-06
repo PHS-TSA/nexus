@@ -1,0 +1,22 @@
+{
+  "imports": {
+    "@std/assert": "jsr:@std/assert@^1.0.11",
+    "@std/http": "jsr:@std/http@^1.0.13",
+    "@std/path": "jsr:@std/path@^1.0.8"
+  },
+  "compilerOptions": {
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUnusedLocals": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+    "noUnusedParameters": true,
+    "useUnknownInCatchVariables": true,
+    "verbatimModuleSyntax": true
+  }
+}
