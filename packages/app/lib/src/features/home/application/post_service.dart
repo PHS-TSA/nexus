@@ -49,6 +49,7 @@ Future<PostModelEntity?> postService(Ref ref, PostId postId) async {
       [
         for (final (comment, commentAvatar) in commentsWithAvatars)
           CommentEntity(
+            author: comment.author,
             comment: comment.comment,
             avatar: commentAvatar,
             authorName: comment.authorName,

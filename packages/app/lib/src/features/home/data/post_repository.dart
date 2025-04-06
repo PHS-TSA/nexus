@@ -11,7 +11,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../env/env.dart';
 import '../../../utils/api.dart';
 import '../../auth/domain/user.dart';
-import '../domain/comment_dto_entity.dart';
 import '../domain/feed_entity.dart';
 import '../domain/post_entity.dart';
 import '../domain/post_id.dart';
@@ -48,7 +47,7 @@ abstract interface class PostRepository {
   Future<Uint8List> getImage(String id);
 
   /// Post a comment.
-  Future<void> comment(CommentDtoEntity comment);
+  Future<void> updatePost(PostId postId, Map<String, Object?> updatedData);
 }
 
 final class _AppwritePostRepository implements PostRepository {
@@ -170,10 +169,13 @@ final class _AppwritePostRepository implements PostRepository {
   }
 
   @override
-  Future<void> comment(CommentDtoEntity comment) async {
-    // TODO: Do I need to update the post or just set `post` property of the comment?
-
-    // await database.createDocument();
+  Future<void> updatePost(PostId id, Map<String, Object?> updatedData) async {
+    await database.updateDocument(
+      databaseId: databaseId,
+      collectionId: collectionId,
+      documentId: id.id,
+      data: updatedData,
+    );
   }
 }
 

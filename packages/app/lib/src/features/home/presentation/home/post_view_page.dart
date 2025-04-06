@@ -34,6 +34,7 @@ class PostViewPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final scope = RouterScope.of(context, watch: true);
+    final response = ref.watch(postServiceProvider(_postId));
 
     return Scaffold(
       appBar: AppBar(
@@ -49,9 +50,14 @@ class PostViewPage extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          final post = response.valueOrNull;
+          if (post == null) {
+            return;
+          }
+
           await showDialog<void>(
             context: context,
-            builder: (context) => const CreateComment(),
+            builder: (context) => CreateComment(post: post),
           );
 
           ref.invalidate(singlePostProvider(_postId));
@@ -63,37 +69,29 @@ class PostViewPage extends ConsumerWidget {
           Center(
             child: Container(
               constraints: const BoxConstraints(maxWidth: 1000),
-              child: Consumer(
-                builder: (context, ref, child) {
-                  final response = ref.watch(postServiceProvider(_postId));
-
-                  return switch (response) {
-                    AsyncData(:final value?) => Column(
-                      children: [
-                        ProviderScope(
-                          overrides: [
-                            currentPostProvider.overrideWithValue(value),
-                          ],
-                          child: const Post(),
-                        ),
-
-                        const Divider(),
-
-                        if (value.comments.isNotEmpty)
-                          _Comments(comments: value.comments),
-                      ],
+              child: switch (response) {
+                AsyncData(:final value?) => Column(
+                  children: [
+                    ProviderScope(
+                      overrides: [currentPostProvider.overrideWithValue(value)],
+                      child: const Post(),
                     ),
-                    AsyncData() => const Center(child: Text('Post not found')),
-                    AsyncError(:final error, :final stackTrace) => Center(
-                      child: Text(
-                        'Error: $error\n$stackTrace',
-                        style: const TextStyle(color: Colors.red),
-                      ),
-                    ),
-                    _ => const Center(child: CircularProgressIndicator()),
-                  };
-                },
-              ),
+
+                    const Divider(),
+
+                    if (value.comments.isNotEmpty)
+                      _Comments(comments: value.comments),
+                  ],
+                ),
+                AsyncData() => const Center(child: Text('Post not found')),
+                AsyncError(:final error, :final stackTrace) => Center(
+                  child: Text(
+                    'Error: $error\n$stackTrace',
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
+                _ => const Center(child: CircularProgressIndicator()),
+              },
             ),
           ),
         ],
@@ -118,7 +116,7 @@ class _Comments extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
       children: [for (final comment in comments) Comment(comment: comment)],
     );
   }
