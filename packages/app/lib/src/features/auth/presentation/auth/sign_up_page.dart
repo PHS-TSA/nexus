@@ -90,8 +90,7 @@ class _DesktopSignUpPage extends HookConsumerWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: Assets.pictures.loginImage.provider(),
-            // TODO(MattsAttack): I need to find a better image or move the photo down.
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           ),
         ),
         child: Container(
