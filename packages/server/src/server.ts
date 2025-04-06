@@ -1,4 +1,5 @@
-import { serveDir } from "@std/http";
+import { serveDir, serveFile } from "@std/http";
+import { join } from "@std/path";
 
 export async function respond(req: Request, dir = "static"): Promise<Response> {
   const res = await serveDir(req, {
@@ -9,6 +10,11 @@ export async function respond(req: Request, dir = "static"): Promise<Response> {
       "Cross-Origin-Embedder-Policy:require-corp",
     ],
   });
+
+  // SPA mode
+  if (res.status == 404) {
+    return serveFile(req, join(dir, "index.html"));
+  }
 
   return res;
 }
