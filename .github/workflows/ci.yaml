@@ -64,6 +64,14 @@ jobs:
             packages/*/lib/src/l10n/app_localizations_*.dart
           key: generated-${{ steps.flutter.outputs.CHANNEL }}-${{ runner.os }}-${{ hashFiles('**/build.yaml') }}-${{ hashFiles('packages/*/lib/**.dart') }}
           restore-keys: generated-${{ steps.flutter.outputs.CHANNEL }}-${{ runner.os }}-
+      - name: 🗄️ Environment
+        run: echo "${DOT_ENV}" > packages/app/.env
+        env:
+          DOT_ENV: |
+            PROJECT_ID=${{ secrets.PROJECT_ID }}
+            API_ENDPOINT=${{ secrets.API_ENDPOINT }}
+            DATABASE_ID=${{ secrets.DATABASE_ID }}
+            POSTS_COLLECTION_ID=${{ secrets.POSTS_COLLECTION_ID }}
       - name: 📦 Install dependencies
         uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
         with:
