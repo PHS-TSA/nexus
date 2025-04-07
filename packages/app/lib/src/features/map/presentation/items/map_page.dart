@@ -51,7 +51,10 @@ class _Dialog extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Dialog(child: Feed(feed: FeedEntity.local(latitude, longitude)));
+    return Dialog(
+      clipBehavior: Clip.antiAlias,
+      child: Feed(feed: FeedEntity.local(latitude, longitude)),
+    );
   }
 
   // coverage:ignore-start

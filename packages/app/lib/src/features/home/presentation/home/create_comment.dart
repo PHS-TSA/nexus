@@ -59,6 +59,7 @@ class CreateComment extends HookConsumerWidget {
     }, [formKey]);
 
     return Dialog(
+      clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(
           context.sizeClass == MaterialWindowSizeClass.compact ? 0.0 : 16.0,
