@@ -9,7 +9,6 @@ part 'comment_entity.freezed.dart';
 /// {@template nexus.features.home.domain.comment_entity}
 /// Represent a comment on a post.
 ///
-///
 /// {@endtemplate}
 @immutable
 @freezed
@@ -38,6 +37,6 @@ sealed class CommentEntity with _$CommentEntity {
 
   @override
   String toString() {
-    return 'CommentEntity{comment: $comment, avatar: Uint8List(${avatar.length}), authorName: $authorName, timestamp: $timestamp}';
+    return 'CommentEntity(comment: $comment, avatar: Uint8List(${avatar.length}), authorName: $authorName, timestamp: $timestamp)';
   }
 }

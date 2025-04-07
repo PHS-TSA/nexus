@@ -187,11 +187,11 @@ class _PostInteractables extends HookConsumerWidget {
                   // TODO(MattsAttack): Send user back to login page, perhaps?
                 }
 
-                final liked = await ref
+                final toggled = await ref
                     .read(singlePostProvider(postId).notifier)
                     .toggleLike(userId);
 
-                if (!liked || !context.mounted) return;
+                if (!context.mounted || toggled) return;
                 context.showSnackBar(
                   content: const Text('Failed to like post'),
                 );

@@ -38,7 +38,6 @@ class CreateComment extends HookConsumerWidget {
       formKey.currentState?.save();
 
       // Create a list of all uploaded images ids
-
       await ref.read(postRepositoryProvider).updatePost(post.id, {
         'comments': [
           CommentDtoEntity(
@@ -60,6 +59,7 @@ class CreateComment extends HookConsumerWidget {
     }, [formKey]);
 
     return Dialog(
+      clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(
           context.sizeClass == MaterialWindowSizeClass.compact ? 0.0 : 16.0,
