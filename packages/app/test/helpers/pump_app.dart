@@ -30,7 +30,9 @@ extension PumpApp on WidgetTester {
 }
 
 class _Widget extends StatelessWidget {
-  const _Widget({required this.child});
+  const _Widget({
+    required this.child,
+  });
 
   final Widget child;
 

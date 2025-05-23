@@ -11,7 +11,10 @@ class Comment extends StatelessWidget {
   /// {@macro nexus.features.home.presentation.home.comment}
   ///
   /// Construct a new [Comment] widget for a [CommentEntity].
-  const Comment({required this.comment, super.key});
+  const Comment({
+    required this.comment,
+    super.key,
+  });
 
   /// The [CommentEntity] to display.
   final CommentEntity comment;

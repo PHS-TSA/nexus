@@ -15,7 +15,9 @@ class FeedRoutingPage extends ConsumerWidget {
   /// {@macro harvest_hub.features.home.presentation.home.feed_routing_page}
   ///
   /// Construct a new [FeedRoutingPage] widget.
-  const FeedRoutingPage({super.key});
+  const FeedRoutingPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

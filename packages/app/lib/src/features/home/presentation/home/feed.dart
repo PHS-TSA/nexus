@@ -21,7 +21,10 @@ class Feed extends ConsumerWidget {
   /// {@macro harvest_hub.features.home.presentation.home.feed}
   ///
   /// Construct a new [Feed] widget.
-  const Feed({required this.feed, super.key});
+  const Feed({
+    required this.feed,
+    super.key,
+  });
 
   /// The feed to fetch the posts from.
   final FeedEntity feed;

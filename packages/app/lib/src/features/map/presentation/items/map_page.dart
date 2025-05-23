@@ -21,7 +21,9 @@ class MapPage extends HookWidget {
   /// {@macro harvest_hub.features.map.presentation.items.map_page}
   ///
   /// Construct a new [MapPage] widget.
-  const MapPage({super.key});
+  const MapPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,11 @@ class MapPage extends HookWidget {
 }
 
 class _Dialog extends HookConsumerWidget {
-  const _Dialog({required this.latitude, required this.longitude, super.key});
+  const _Dialog({
+    required this.latitude,
+    required this.longitude,
+    super.key,
+  });
 
   final double latitude;
   final double longitude;

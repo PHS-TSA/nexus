@@ -18,7 +18,9 @@ class App extends ConsumerStatefulWidget with Bootstrap {
   /// {@macro harvest_hub.app}
   ///
   /// Construct a new [App] widget.
-  const App({super.key});
+  const App({
+    super.key,
+  });
 
   @override
   ConsumerState<App> createState() => _AppState();
@@ -80,7 +82,9 @@ class _AppState extends ConsumerState<App> with RestorationMixin {
 
 /// Eagerly initializes providers.
 class _EagerInitialization extends ConsumerWidget {
-  const _EagerInitialization({required this.child});
+  const _EagerInitialization({
+    required this.child,
+  });
 
   final Widget child;
 

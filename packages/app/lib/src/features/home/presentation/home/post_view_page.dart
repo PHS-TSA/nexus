@@ -24,7 +24,10 @@ class PostViewPage extends ConsumerWidget {
   /// {@macro harvest_hub.features.home.presentation.home.post_view_page}
   ///
   /// Construct a new [PostViewPage] widget.
-  const PostViewPage({@PathParam('id') required this.id, super.key});
+  const PostViewPage({
+    @PathParam('id') required this.id,
+    super.key,
+  });
 
   /// [PostId] for this post.
   final String id;
@@ -134,7 +137,10 @@ class PostViewPage extends ConsumerWidget {
 }
 
 class _Comments extends StatelessWidget {
-  const _Comments({required this.comments, super.key});
+  const _Comments({
+    required this.comments,
+    super.key,
+  });
 
   final IList<CommentEntity> comments;
 

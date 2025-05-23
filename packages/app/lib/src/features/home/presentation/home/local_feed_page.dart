@@ -17,7 +17,9 @@ class LocalFeedPage extends ConsumerWidget {
   /// {@macro harvest_hub.features.home.presentation.home.local_feed_page}
   ///
   /// Construct a new [LocalFeedPage] widget.
-  const LocalFeedPage({super.key});
+  const LocalFeedPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -22,7 +22,10 @@ class LogInPage extends HookConsumerWidget {
   /// {@macro harvest_hub.features.auth.presentation.auth.login_page}
   ///
   /// Construct a new [LogInPage] widget.
-  const LogInPage({super.key, AuthCallback? onResult}) : _onResult = onResult;
+  const LogInPage({
+    super.key,
+    AuthCallback? onResult,
+  }) : _onResult = onResult;
 
   final AuthCallback? _onResult;
 
@@ -39,10 +42,13 @@ class LogInPage extends HookConsumerWidget {
 }
 
 class _DesktopLogInPage extends HookConsumerWidget {
-  const _DesktopLogInPage({super.key, AuthCallback? onResult})
-    : _onResult = onResult;
+  const _DesktopLogInPage({
+    super.key,
+    AuthCallback? onResult,
+  }) : _onResult = onResult;
 
   final AuthCallback? _onResult;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useGlobalKey<FormState>();
@@ -178,10 +184,13 @@ class _DesktopLogInPage extends HookConsumerWidget {
 }
 
 class _MobileLogInPage extends HookConsumerWidget {
-  const _MobileLogInPage({super.key, AuthCallback? onResult})
-    : _onResult = onResult;
+  const _MobileLogInPage({
+    super.key,
+    AuthCallback? onResult,
+  }) : _onResult = onResult;
 
   final AuthCallback? _onResult;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useGlobalKey<FormState>();

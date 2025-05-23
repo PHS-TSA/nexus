@@ -19,7 +19,10 @@ class CreateComment extends HookConsumerWidget {
   /// {@macro nexus.app.create_comment}
   ///
   /// Construct a new [CreateComment] widget.
-  const CreateComment({required this.post, super.key});
+  const CreateComment({
+    required this.post,
+    super.key,
+  });
 
   /// The post to be updating.
   final PostModelEntity post;

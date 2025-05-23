@@ -16,7 +16,9 @@ class WrapperPage extends ConsumerWidget {
   /// {@macro harvest_hub.app.wrapper_page}
   ///
   /// Construct a new [WrapperPage] widget.
-  const WrapperPage({super.key});
+  const WrapperPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

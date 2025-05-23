@@ -15,7 +15,10 @@ class Wrapper extends StatelessWidget {
   /// {@macro harvest_hub.app.wrapper}
   ///
   /// Construct a new [Wrapper] widget.
-  const Wrapper({required this.child, super.key});
+  const Wrapper({
+    required this.child,
+    super.key,
+  });
 
   /// The child widget to display.
   final Widget child;
