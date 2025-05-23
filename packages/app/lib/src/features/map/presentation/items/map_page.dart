@@ -32,9 +32,8 @@ class MapPage extends HookWidget {
         onTap: (_, pos) async {
           await showDialog<void>(
             context: context,
-            builder:
-                (context) =>
-                    _Dialog(latitude: pos.latitude, longitude: pos.longitude),
+            builder: (context) =>
+                _Dialog(latitude: pos.latitude, longitude: pos.longitude),
           );
         },
       ),

@@ -40,7 +40,7 @@ void main() {
         final routerSubscription = container.listen(routerProvider, (_, _) {});
         final tested = routerSubscription.read();
 
-        final mapRoute = tested.routes[0].children?.routes.toList()[0];
+        final mapRoute = tested.routes[0].children?.toList()[0];
         check(mapRoute?.path).equals('');
       });
       test('should be correct for MapInfoRoute.', () {
@@ -48,8 +48,7 @@ void main() {
         final routerSubscription = container.listen(routerProvider, (_, _) {});
         final tested = routerSubscription.read();
 
-        final sampleItemDetailsRoute =
-            tested.routes[0].children?.routes.toList()[1];
+        final sampleItemDetailsRoute = tested.routes[0].children?.toList()[1];
         check(sampleItemDetailsRoute?.path).equals('info');
       });
       test('should be correct for SettingsRoute.', () {
@@ -57,7 +56,7 @@ void main() {
         final routerSubscription = container.listen(routerProvider, (_, _) {});
         final tested = routerSubscription.read();
 
-        final settingsRoute = tested.routes[0].children?.routes.toList()[2];
+        final settingsRoute = tested.routes[0].children?.toList()[2];
         check(settingsRoute?.path).equals('settings');
       });
       test("should be correct for ShellRoute('Feed')", () {
@@ -65,8 +64,7 @@ void main() {
         final routerSubscription = container.listen(routerProvider, (_, _) {});
         final tested = routerSubscription.read();
 
-        final sampleItemDetailsRoute =
-            tested.routes[0].children?.routes.toList()[3];
+        final sampleItemDetailsRoute = tested.routes[0].children?.toList()[3];
         check(sampleItemDetailsRoute?.path).equals('local');
       });
       test('should allow logging in', () {

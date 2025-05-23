@@ -25,37 +25,35 @@ Future<PostModelEntity?> postService(Ref ref, PostId postId) async {
 
   if (post == null) return null;
 
-  final (avatar, images, commentsAvatars) =
-      await (
-        ref.watch(avatarServiceProvider(post.authorName).future),
-        Future.wait(
-          // TODO(MattsAttack): Could we grab all images with a single call?
-          post.imageIds.map((image) => ref.watch(imageProvider(image).future)),
-        ),
-        Future.wait(
-          post.comments.map(
-            (comment) =>
-                ref.watch(avatarServiceProvider(comment.authorName).future),
-          ),
-        ),
-      ).wait;
+  final (avatar, images, commentsAvatars) = await (
+    ref.watch(avatarServiceProvider(post.authorName).future),
+    Future.wait(
+      // TODO(MattsAttack): Could we grab all images with a single call?
+      post.imageIds.map((image) => ref.watch(imageProvider(image).future)),
+    ),
+    Future.wait(
+      post.comments.map(
+        (comment) =>
+            ref.watch(avatarServiceProvider(comment.authorName).future),
+      ),
+    ),
+  ).wait;
 
   if (post.comments.length != commentsAvatars.length) {
     throw Exception('The number of comments and comment avatars do not match.');
   }
 
   final commentsWithAvatars = post.comments.zip(commentsAvatars);
-  final comments =
-      [
-        for (final (comment, commentAvatar) in commentsWithAvatars)
-          CommentEntity(
-            author: comment.author,
-            comment: comment.comment,
-            avatar: commentAvatar,
-            authorName: comment.authorName,
-            timestamp: comment.timestamp,
-          ),
-      ].lockUnsafe;
+  final comments = [
+    for (final (comment, commentAvatar) in commentsWithAvatars)
+      CommentEntity(
+        author: comment.author,
+        comment: comment.comment,
+        avatar: commentAvatar,
+        authorName: comment.authorName,
+        timestamp: comment.timestamp,
+      ),
+  ].lockUnsafe;
 
   return PostModelEntity(
     id: post.id,

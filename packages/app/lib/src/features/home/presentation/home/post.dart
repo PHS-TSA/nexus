@@ -69,11 +69,10 @@ class _PosterInfo extends ConsumerWidget {
                     ),
                     Timeago(
                       date: timestamp,
-                      builder:
-                          (context, value) => Text(
-                            value,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
+                      builder: (context, value) => Text(
+                        value,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     ),
                   ],
                 ),

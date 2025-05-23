@@ -66,10 +66,12 @@ class CreateComment extends HookConsumerWidget {
         ),
       ),
       insetPadding: EdgeInsets.symmetric(
-        horizontal:
-            context.sizeClass == MaterialWindowSizeClass.compact ? 0.0 : 64.0,
-        vertical:
-            context.sizeClass == MaterialWindowSizeClass.compact ? 0.0 : 48.0,
+        horizontal: context.sizeClass == MaterialWindowSizeClass.compact
+            ? 0.0
+            : 64.0,
+        vertical: context.sizeClass == MaterialWindowSizeClass.compact
+            ? 0.0
+            : 48.0,
       ),
       child: Padding(
         padding: EdgeInsets.all(

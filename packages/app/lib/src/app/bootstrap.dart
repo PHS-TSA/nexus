@@ -31,8 +31,10 @@ typedef GetSharedPreferences =
     });
 
 /// The environment needed to bootstrap the app.
-typedef BootstrapEnv =
-    ({RunApp runApp, GetSharedPreferences getSharedPreferences});
+typedef BootstrapEnv = ({
+  RunApp runApp,
+  GetSharedPreferences getSharedPreferences,
+});
 
 /// Turn any widget into a flow-blown app.
 mixin Bootstrap implements Widget {

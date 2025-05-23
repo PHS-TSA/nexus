@@ -53,6 +53,7 @@ linter:
     prefer_mixin: true
     unnecessary_null_aware_operator_on_extension_on_nullable: true
     unreachable_from_main: true
+    require_trailing_commas: true
 
     # Rules with false-positives, not in VGA
     discarded_futures: true
@@ -65,13 +66,16 @@ linter:
     specify_nonobvious_property_types: true
 
     # New/updated rules, not yet in VGA
-    use_truncating_division: true
     avoid_futureor_void: true
-    unnecessary_underscores: true
-    strict_top_level_inference: true
+    use_null_aware_elements: true
+    unnecessary_ignore: true
+    use_truncating_division: true
 
     # Newly (or soon-to-be) deprecated rules, still in VGA
     unnecessary_await_in_return: false
-    require_trailing_commas: false
+
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+
+formatter:
+  trailing_commas: preserve

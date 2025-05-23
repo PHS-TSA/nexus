@@ -40,11 +40,10 @@ class Comment extends StatelessWidget {
                     ),
                     Timeago(
                       date: comment.timestamp,
-                      builder:
-                          (context, value) => Text(
-                            value,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
+                      builder: (context, value) => Text(
+                        value,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     ),
                   ],
                 ),

@@ -250,10 +250,9 @@ class _MobileLogInPage extends HookConsumerWidget {
                           'Welcome to Harvest Hub!',
                           style: TextStyle(
                             fontSize: 24,
-                            color:
-                                Theme.of(
-                                  context,
-                                ).colorScheme.onPrimaryContainer,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onPrimaryContainer,
                           ),
                           textAlign: TextAlign.center,
                         ),

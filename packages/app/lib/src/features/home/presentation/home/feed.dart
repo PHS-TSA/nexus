@@ -89,21 +89,20 @@ class Feed extends ConsumerWidget {
                     ),
                   ),
 
-                AsyncValue(:final value, hasValue: true) when value != null =>
-                  GestureDetector(
-                    onTap: () async {
-                      await context.router.push(PostViewRoute(id: value.id.id));
-                    },
-                    child: Card(
-                      margin: const EdgeInsets.all(4),
-                      child: ProviderScope(
-                        overrides: [
-                          currentPostProvider.overrideWithValue(value),
-                        ],
-                        child: Post(key: ValueKey(value)),
-                      ),
+                // Intentional, we don’t want to match null.
+                // ignore: async_value_nullable_pattern
+                AsyncValue(:final value?, hasValue: true) => GestureDetector(
+                  onTap: () async {
+                    await context.router.push(PostViewRoute(id: value.id.id));
+                  },
+                  child: Card(
+                    margin: const EdgeInsets.all(4),
+                    child: ProviderScope(
+                      overrides: [currentPostProvider.overrideWithValue(value)],
+                      child: Post(key: ValueKey(value)),
                     ),
                   ),
+                ),
 
                 // If we have none, return a placeholder.
                 AsyncValue(hasValue: true) when index == 0 => const Center(
