@@ -32,10 +32,6 @@ resolution: workspace
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
-dependency_overrides:
-  flutter_web_auth_2: 4.1.0 # Supports WASM.
-  pana: 0.22.21
-
 dependencies:
   appwrite: ^16.1.0
   auto_route: ^10.0.1
@@ -93,6 +89,10 @@ dev_dependencies:
   riverpod_generator: ^2.6.5
   riverpod_lint: ^2.6.5
   very_good_cli: ^0.25.0
+
+dependency_overrides:
+  flutter_web_auth_2: 4.1.0 # Supports WASM.
+  pana: 0.22.21
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
