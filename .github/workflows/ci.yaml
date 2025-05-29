@@ -77,7 +77,7 @@ jobs:
   build:
     name: Build
     needs: ["setup"]
-    timeout-minutes: ${{ (matrix.target == 'web') && 5 || 10 }}
+    timeout-minutes: ${{ (matrix.target == 'web') && 5 || 20 }}
     runs-on: ${{ matrix.os }}
 
     strategy:
