@@ -1,21 +1,21 @@
 name: "harvest_hub_workspace"
 
 environment:
-  sdk: ">=3.7.0 <4.0.0"
-  flutter: "3.29.0"
+  sdk: ">=3.8.0 <4.0.0"
+  flutter: "3.32.0"
 
 workspace:
   - packages/_analysis_options
   - packages/app
 
 dev_dependencies:
-  melos: ^7.0.0-dev.7
+  melos: ^7.0.0-dev.8
 
 melos:
   command:
     bootstrap:
       environment:
-        sdk: "^3.7.0"
+        sdk: "^3.8.0"
 
       hooks:
         post: melos run gen-l10n && melos run gen

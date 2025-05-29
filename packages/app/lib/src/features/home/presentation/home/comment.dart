@@ -11,7 +11,10 @@ class Comment extends StatelessWidget {
   /// {@macro nexus.features.home.presentation.home.comment}
   ///
   /// Construct a new [Comment] widget for a [CommentEntity].
-  const Comment({required this.comment, super.key});
+  const Comment({
+    required this.comment,
+    super.key,
+  });
 
   /// The [CommentEntity] to display.
   final CommentEntity comment;
@@ -40,11 +43,10 @@ class Comment extends StatelessWidget {
                     ),
                     Timeago(
                       date: comment.timestamp,
-                      builder:
-                          (context, value) => Text(
-                            value,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
+                      builder: (context, value) => Text(
+                        value,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     ),
                   ],
                 ),

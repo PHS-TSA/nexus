@@ -24,12 +24,8 @@ permissions:
 jobs:
   setup:
     name: Setup
-    needs: []
     timeout-minutes: 5
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
 
     steps:
       - name: 📚 Git checkout
@@ -81,7 +77,7 @@ jobs:
   build:
     name: Build
     needs: ["setup"]
-    timeout-minutes: ${{ (matrix.target == 'web') && 5 || 10 }}
+    timeout-minutes: ${{ (matrix.target == 'web') && 5 || 20 }}
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -224,6 +220,9 @@ jobs:
     timeout-minutes: 7
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write
+
     steps:
       - name: 📚 Git checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -268,9 +267,9 @@ jobs:
         continue-on-error: true
       - name: 📊 Upload code coverage
         if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@b9fd7d16f6d7d1b5d2bec1a2887e65ceed900238 # v4.6.0
+        uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24 # v5.4.3
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          use_oidc: true
           files: packages/app/coverage/lcov.info
           fail_ci_if_error: true
           verbose: true
@@ -299,6 +298,8 @@ jobs:
           cache: true
       - name: 🌐 Disable analytics
         run: flutter --disable-analytics
+      - name: 📦 Install dependencies
+        run: dart pub get --enforce-lockfile
       - name: ✨ Verify formatting
         run: dart format . --output=none --set-exit-if-changed
 
@@ -344,7 +345,6 @@ jobs:
 
   spell-check:
     name: Check Spelling
-    needs: []
     runs-on: ubuntu-latest
 
     steps:
@@ -370,7 +370,6 @@ jobs:
 
   link-check:
     name: Check Links
-    needs: []
     timeout-minutes: 2
     runs-on: ubuntu-latest
 
@@ -384,7 +383,6 @@ jobs:
 
   markdownlint:
     name: Lint Markdown
-    needs: []
     timeout-minutes: 4
     runs-on: ubuntu-latest
 
@@ -405,3 +403,26 @@ jobs:
           # Surprisingly, the default is to only lint the project root.
           globs: |
             **/*.md
+
+  zizmor:
+    name: Run zizmor
+    timeout-minutes: 1
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          submodules: recursive
+          clean: true
+          persist-credentials: false
+          set-safe-directory: true
+      - name: 🌈 Run zizmor
+        uses: zizmorcore/zizmor-action@2520132f44b3ed84916048d32e5c7153fc739fe7 # v0.0.3
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

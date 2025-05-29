@@ -29,7 +29,9 @@ class CreatePost extends HookConsumerWidget {
   /// {@macro harvest_hub.app.create_post}
   ///
   /// Construct a new [CreatePost] widget.
-  const CreatePost({super.key});
+  const CreatePost({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -99,10 +101,12 @@ class CreatePost extends HookConsumerWidget {
         ),
       ),
       insetPadding: EdgeInsets.symmetric(
-        horizontal:
-            context.sizeClass == MaterialWindowSizeClass.compact ? 0.0 : 64.0,
-        vertical:
-            context.sizeClass == MaterialWindowSizeClass.compact ? 0.0 : 48.0,
+        horizontal: context.sizeClass == MaterialWindowSizeClass.compact
+            ? 0.0
+            : 64.0,
+        vertical: context.sizeClass == MaterialWindowSizeClass.compact
+            ? 0.0
+            : 48.0,
       ),
       child: Padding(
         padding: EdgeInsets.all(
@@ -216,7 +220,10 @@ class CreatePost extends HookConsumerWidget {
 ///
 /// Notably, it also allows the user to remove images from the list.
 class _UploadedImagesView extends HookConsumerWidget {
-  const _UploadedImagesView({super.key});
+  const _UploadedImagesView({
+    super.key,
+  });
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final uploadedImages = ref.watch(uploadedImagesServiceProvider);

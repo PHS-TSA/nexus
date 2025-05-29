@@ -23,7 +23,7 @@ issue_tracker: https://github.com/PHS-TSA/nexus/issues
 repository: https://github.com/PHS-TSA/nexus.git
 
 environment:
-  sdk: ^3.7.0
+  sdk: ^3.8.0
 resolution: workspace
 
 # Dependencies specify other packages that your package needs in order to work.
@@ -32,67 +32,67 @@ resolution: workspace
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
-dependency_overrides:
-  flutter_web_auth_2: 4.1.0 # Supports WASM.
-  pana: 0.22.18
-
 dependencies:
-  appwrite: ^14.0.0
-  auto_route: ^10.0.0
+  appwrite: ^16.1.0
+  auto_route: ^10.0.1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8 # Only required if you use Cupertino (iOS style) icons
   dio: ^5.8.0+1
   envied: ^1.1.1
-  fast_immutable_collections: ^11.0.3
+  fast_immutable_collections: ^11.0.4
   flutter:
     sdk: flutter
   flutter_hooks: ^0.21.2
   flutter_image_compress: ^2.4.0
   flutter_localizations: # Required to enable localization
     sdk: flutter
-  flutter_map: ^8.1.0
+  flutter_map: ^8.1.1
   flutter_map_cancellable_tile_provider: ^3.1.0
-  flutter_native_splash: ^2.4.5
+  flutter_native_splash: ^2.4.6
   flutter_web_plugins:
     sdk: flutter
   freezed_annotation: ^3.0.0
-  geolocator: ^13.0.2
+  geolocator: ^14.0.0
   hooks_riverpod: ^2.6.1
   image_picker: ^1.1.2
-  intl: ^0.19.0
+  intl: ^0.20.2
   json_annotation: ^4.9.0
   latlong2: ^0.9.1
   meta: ^1.16.0
   os_detect: ^2.0.3
   path_provider: ^2.1.5
   riverpod_annotation: ^2.6.1
-  shared_preferences: ^2.5.2
+  shared_preferences: ^2.5.3
   timeago_flutter: ^3.7.0
   url_launcher: ^6.3.1
   window_manager: ^0.4.3
 
 dev_dependencies:
   _analysis_options: 0.0.0
-  auto_route_generator: ^10.0.0
+  auto_route_generator: ^10.0.1
   build_runner: ^2.4.15
   build_version: ^2.1.1
   checks: ^0.3.0
   custom_lint: ^0.7.5
   dhttpd: ^4.1.0
   envied_generator: ^1.1.1
-  flutter_checks: ^0.1.1
-  flutter_gen_runner: ^5.9.0
+  flutter_checks: ^0.1.2
+  flutter_gen_runner: ^5.10.0
   flutter_launcher_icons: ^0.14.3
   flutter_test: # Required for a Flutter project that includes tests
     sdk: flutter
-  freezed: ^3.0.2
+  freezed: ^3.0.6
   freezed_lint: ^0.0.9
-  json_serializable: ^6.9.4
+  json_serializable: ^6.9.5
   mocktail: ^1.0.4
   riverpod_generator: ^2.6.5
   riverpod_lint: ^2.6.5
   very_good_cli: ^0.25.0
+
+dependency_overrides:
+  flutter_web_auth_2: 4.1.0 # Supports WASM.
+  pana: 0.22.21
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -105,7 +105,7 @@ flutter:
   uses-material-design: true # Required if you use the Material icon font
 
   # Enable generation of localized strings from arb files.
-  generate: false
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   assets: # Lists assets such as image files

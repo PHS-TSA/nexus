@@ -17,7 +17,9 @@ sealed class SettingsModel with _$SettingsModel {
   /// {@macro harvest_hub.features.settings.domain.settings_model}
   ///
   /// Create a new, immutable instance of [SettingsModel].
-  const factory SettingsModel({required ThemeMode themeMode}) = _SettingsModel;
+  const factory SettingsModel({
+    required ThemeMode themeMode,
+  }) = _SettingsModel;
 
   /// Deserialize a JSON [Map] into a new, immutable instance of [SettingsModel].
   factory SettingsModel.fromJson(Map<String, dynamic> json) =>

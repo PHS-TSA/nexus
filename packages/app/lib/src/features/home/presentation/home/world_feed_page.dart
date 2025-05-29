@@ -15,7 +15,9 @@ class WorldFeedPage extends StatelessWidget {
   /// {@macro harvest_hub.features.home.presentation.home.world_feed_page}
   ///
   /// Construct a new [WorldFeedPage] widget.
-  const WorldFeedPage({super.key});
+  const WorldFeedPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -15,7 +15,10 @@ class Wrapper extends StatelessWidget {
   /// {@macro harvest_hub.app.wrapper}
   ///
   /// Construct a new [Wrapper] widget.
-  const Wrapper({required this.child, super.key});
+  const Wrapper({
+    required this.child,
+    super.key,
+  });
 
   /// The child widget to display.
   final Widget child;
@@ -80,11 +83,10 @@ class _DesktopWrapper extends StatelessWidget {
         ],
       ), // TODO(MattsAttack): Implement rail here, similar to Google article.
       floatingActionButton: FloatingActionButton(
-        onPressed:
-            () async => showDialog<void>(
-              context: context,
-              builder: (context) => const CreatePost(),
-            ),
+        onPressed: () async => showDialog<void>(
+          context: context,
+          builder: (context) => const CreatePost(),
+        ),
         child: const Icon(Icons.create),
       ), // TODO(MattsAttack): Change to form on top of feed for desktop.
     );
@@ -112,11 +114,10 @@ class _MobileWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed:
-            () async => showDialog<void>(
-              context: context,
-              builder: (context) => const CreatePost(),
-            ),
+        onPressed: () async => showDialog<void>(
+          context: context,
+          builder: (context) => const CreatePost(),
+        ),
         child: const Icon(Icons.create),
       ),
       body: child,

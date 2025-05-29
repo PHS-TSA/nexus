@@ -26,7 +26,9 @@ class SettingsPage extends ConsumerWidget {
   /// {@macro harvest_hub.features.settings.presentation.preferences}
   ///
   /// Construct a new [SettingsPage] widget.
-  const SettingsPage({super.key});
+  const SettingsPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -134,7 +136,10 @@ class SettingsPage extends ConsumerWidget {
 }
 
 class _AppDescription extends HookWidget {
-  const _AppDescription({super.key, this.followLink});
+  const _AppDescription({
+    super.key,
+    this.followLink,
+  });
 
   final FollowLink? followLink;
 

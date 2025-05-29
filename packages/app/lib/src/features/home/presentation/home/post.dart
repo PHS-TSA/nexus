@@ -17,7 +17,9 @@ class Post extends StatelessWidget {
   /// {@macro harvest_hub.features.home.presentation.home.post}
   ///
   /// Construct a new [Post] widget for a [].
-  const Post({super.key});
+  const Post({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,9 @@ class Post extends StatelessWidget {
 }
 
 class _PosterInfo extends ConsumerWidget {
-  const _PosterInfo({super.key});
+  const _PosterInfo({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -69,11 +73,10 @@ class _PosterInfo extends ConsumerWidget {
                     ),
                     Timeago(
                       date: timestamp,
-                      builder:
-                          (context, value) => Text(
-                            value,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
+                      builder: (context, value) => Text(
+                        value,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     ),
                   ],
                 ),
@@ -88,7 +91,9 @@ class _PosterInfo extends ConsumerWidget {
 }
 
 class _PostAvatar extends ConsumerWidget {
-  const _PostAvatar({super.key});
+  const _PostAvatar({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -99,7 +104,9 @@ class _PostAvatar extends ConsumerWidget {
 }
 
 class _PostBody extends ConsumerWidget {
-  const _PostBody({super.key});
+  const _PostBody({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -127,7 +134,9 @@ class _PostBody extends ConsumerWidget {
 }
 
 class _PostImages extends ConsumerWidget {
-  const _PostImages({super.key});
+  const _PostImages({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -158,7 +167,9 @@ class _PostImages extends ConsumerWidget {
 }
 
 class _PostInteractables extends HookConsumerWidget {
-  const _PostInteractables({super.key});
+  const _PostInteractables({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -207,7 +218,10 @@ class _PostInteractables extends HookConsumerWidget {
 
         Row(
           spacing: 2,
-          children: [Text('$numComments'), const Icon(Icons.comment)],
+          children: [
+            Text('$numComments'),
+            const Icon(Icons.comment),
+          ],
         ),
       ],
     );

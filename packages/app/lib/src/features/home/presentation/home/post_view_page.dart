@@ -24,7 +24,10 @@ class PostViewPage extends ConsumerWidget {
   /// {@macro harvest_hub.features.home.presentation.home.post_view_page}
   ///
   /// Construct a new [PostViewPage] widget.
-  const PostViewPage({@PathParam('id') required this.id, super.key});
+  const PostViewPage({
+    @PathParam('id') required this.id,
+    super.key,
+  });
 
   /// [PostId] for this post.
   final String id;
@@ -48,23 +51,22 @@ class PostViewPage extends ConsumerWidget {
         ),
       ),
       floatingActionButton: Consumer(
-        builder:
-            (context, ref, _) => FloatingActionButton(
-              onPressed: () async {
-                final post = ref.read(postServiceProvider(_postId)).valueOrNull;
-                if (post == null) {
-                  return;
-                }
+        builder: (context, ref, _) => FloatingActionButton(
+          onPressed: () async {
+            final post = ref.read(postServiceProvider(_postId)).valueOrNull;
+            if (post == null) {
+              return;
+            }
 
-                await showDialog<void>(
-                  context: context,
-                  builder: (context) => CreateComment(post: post),
-                );
+            await showDialog<void>(
+              context: context,
+              builder: (context) => CreateComment(post: post),
+            );
 
-                ref.invalidate(singlePostProvider(_postId));
-              },
-              child: const Icon(Icons.add_comment),
-            ),
+            ref.invalidate(singlePostProvider(_postId));
+          },
+          child: const Icon(Icons.add_comment),
+        ),
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -92,6 +94,8 @@ class PostViewPage extends ConsumerWidget {
                             style: const TextStyle(color: Colors.red),
                           ),
                         ),
+                      // Intentional, we don’t want to match null.
+                      // ignore: async_value_nullable_pattern
                       AsyncValue(:final value?, hasValue: true) => Column(
                         children: [
                           ProviderScope(
@@ -133,7 +137,10 @@ class PostViewPage extends ConsumerWidget {
 }
 
 class _Comments extends StatelessWidget {
-  const _Comments({required this.comments, super.key});
+  const _Comments({
+    required this.comments,
+    super.key,
+  });
 
   final IList<CommentEntity> comments;
 
