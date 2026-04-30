@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - name: 📚 Git checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: recursive
           clean: true
@@ -46,7 +46,7 @@ jobs:
       - name: 🌐 Disable analytics
         run: flutter --disable-analytics
       - name: ⚙️ Cache generated files
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: |
             .dart_tool/
@@ -110,7 +110,7 @@ jobs:
 
     steps:
       - name: 📚 Git checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: recursive
           clean: true
@@ -126,7 +126,7 @@ jobs:
           cache: true
       - name: ☕ Setup Java
         if: ${{ matrix.target == 'appbundle' }}
-        uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4.6.0
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           distribution: "jetbrains"
           java-version: "17"
@@ -136,7 +136,7 @@ jobs:
       - name: 🌐 Disable analytics
         run: flutter --disable-analytics
       - name: ⚙️ Cache generated files
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: |
             .dart_tool/
@@ -158,7 +158,7 @@ jobs:
         working-directory: packages/app/
       - name: ⚙️ Upload build
         if: ${{ matrix.target == 'web' }}
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: build-${{ matrix.target }}
           path: "./packages/app/build/${{ matrix.target }}/"
@@ -172,7 +172,7 @@ jobs:
 
     steps:
       - name: 📚 Git checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: recursive
           clean: true
@@ -189,7 +189,7 @@ jobs:
       - name: 🌐 Disable analytics
         run: flutter --disable-analytics
       - name: ⚙️ Cache generated files
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: |
             .dart_tool/
@@ -225,7 +225,7 @@ jobs:
 
     steps:
       - name: 📚 Git checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: recursive
           clean: true
@@ -242,7 +242,7 @@ jobs:
       - name: 🌐 Disable analytics
         run: flutter --disable-analytics
       - name: ⚙️ Cache generated files
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: |
             .dart_tool/
@@ -282,7 +282,7 @@ jobs:
 
     steps:
       - name: 📚 Git checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: recursive
           clean: true
@@ -318,7 +318,7 @@ jobs:
 
     steps:
       - name: 📚 Git checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: recursive
           clean: true
@@ -327,7 +327,7 @@ jobs:
           fetch-depth: 1
           sparse-checkout: packages/server
       - name: ⚙️ Download build
-        uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4.1.4
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: build-web
           path: "./packages/server/static"
@@ -349,7 +349,7 @@ jobs:
 
     steps:
       - name: 📚 Git checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: recursive
           clean: true
@@ -388,7 +388,7 @@ jobs:
 
     steps:
       - name: 📚 Git checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: recursive
           clean: true
@@ -416,7 +416,7 @@ jobs:
 
     steps:
       - name: 📚 Git Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: recursive
           clean: true
