@@ -69,7 +69,7 @@ jobs:
             DATABASE_ID=${{ secrets.DATABASE_ID }}
             POSTS_COLLECTION_ID=${{ secrets.POSTS_COLLECTION_ID }}
       - name: 📦 Install dependencies
-        uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
+        uses: bluefireteam/melos-action@62e2570ad84b9f7c84a1d324f2077a30bf3f877d # v3
         with:
           run-bootstrap: true
           enforce-lockfile: true
@@ -204,7 +204,7 @@ jobs:
           key: generated-${{ steps.flutter.outputs.CHANNEL }}-${{ runner.os }}-${{ hashFiles('**/build.yaml') }}-${{ hashFiles('packages/*/lib/**.dart') }}
           restore-keys: generated-${{ steps.flutter.outputs.CHANNEL }}-${{ runner.os }}-
       - name: 🌋 Install Melos
-        uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
+        uses: bluefireteam/melos-action@62e2570ad84b9f7c84a1d324f2077a30bf3f877d # v3
         with:
           run-bootstrap: false
       - name: 📦 Install dependencies
@@ -257,7 +257,7 @@ jobs:
           key: generated-${{ steps.flutter.outputs.CHANNEL }}-${{ runner.os }}-${{ hashFiles('**/build.yaml') }}-${{ hashFiles('packages/*/lib/**.dart') }}
           restore-keys: generated-${{ steps.flutter.outputs.CHANNEL }}-${{ runner.os }}-
       - name: 🌋 Install Melos
-        uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3
+        uses: bluefireteam/melos-action@62e2570ad84b9f7c84a1d324f2077a30bf3f877d # v3
         with:
           run-bootstrap: false
       - name: 📦 Install dependencies
